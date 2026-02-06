@@ -1,17 +1,20 @@
 import { Link } from "react-router-dom";
 import { Menu, Search, User } from "lucide-react";
+import authStore from "../store/authStore";
+import UserMenu from "../components/common/UserMenu";
 
 export default function TopBar({ onMenuClick }) {
+  const { isAuthenticated } = authStore();
 
   return (
     <header className="h-16 flex items-center justify-between px-4 border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-black sticky top-0 z-40">
-
+      
       {/* Left */}
       <div className="flex items-center gap-3">
         <button onClick={onMenuClick} className="p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800">
           <Menu size={20} />
         </button>
-        <Link to="/" className="font-bold text-xl tracking-tighter">Vibernet</Link>
+        <Link to="/" className="font-bold text-xl tracking-tighter text-purple-600">VidFlow</Link>
       </div>
 
       {/* Center (Search) */}
@@ -28,13 +31,17 @@ export default function TopBar({ onMenuClick }) {
 
       {/* Right - Conditional Rendering */}
       <div className="flex items-center gap-2">
-        <Link
-          to="/signin"
-          className="flex gap-2 border border-gray-300 dark:border-gray-700 px-4 py-1.5 items-center rounded-full hover:bg-gray-100 dark:hover:bg-zinc-800 text-sm font-medium"
-        >
-          <User size={18} className="text-purple-600" />
-          Sign In
-        </Link>
+        {isAuthenticated ? (
+          <UserMenu />
+        ) : (
+          <Link
+            to="/signin"
+            className="flex gap-2 border border-gray-300 dark:border-gray-700 px-4 py-1.5 items-center rounded-full hover:bg-gray-100 dark:hover:bg-zinc-800 text-sm font-medium"
+          >
+            <User size={18} className="text-purple-600" />
+            Sign In
+          </Link>
+        )}
       </div>
     </header>
   );

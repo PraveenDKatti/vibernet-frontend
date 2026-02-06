@@ -22,7 +22,7 @@ export default function MainLayout() {
       <div className="flex flex-1 overflow-hidden">
         <Sidebar />
 
-        <main className="flex-1 overflow-y-auto p-4">
+        <main className="flex-1 overflow-y-auto px-4 py-4 sm:px-6 lg:px-8">
           <Outlet />
         </main>
       </div>
