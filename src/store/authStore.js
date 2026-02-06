@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import * as authApi from "../api/auth.api";
 
-export const useAuthStore = create((set, get) => ({
+const authStore = create((set, get) => ({
   // 🔹 state
   user: null,
   isAuthenticated: false,
@@ -86,3 +86,6 @@ export const useAuthStore = create((set, get) => ({
     }
   },
 }));
+
+
+export default authStore
