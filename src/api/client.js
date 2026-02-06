@@ -1,8 +1,10 @@
 import axios from "axios";
 
+const API_URL = import.meta.env.VITE_API_URL ?? "http://localhost:8000/api/v1";
+
 const client = axios.create(
     {
-        baseURL: "http://localhost:8000/api/v1",
+        baseURL:  API_URL,
         withCredentials: true
     }
 )
@@ -32,7 +34,7 @@ client.interceptors.response.use(
             try {
                 // Corrected path to avoid double slashes
                 await axios.post(
-                    `http://localhost:8000/api/v1/users/refresh-token`,
+                    `${API_URL}/users/refresh-token`,
                     {},
                     { withCredentials: true }
                 );
