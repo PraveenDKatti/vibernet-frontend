@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
 import Sidebar from "./Sidebar";
-import TopBar from "./TopBar";
+import TopBar from "./Topbar";
 import OverlaySidebar from "./OverlaySidebar";
 import { useState } from "react";
 
