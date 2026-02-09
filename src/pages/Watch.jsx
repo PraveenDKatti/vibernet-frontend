@@ -1,23 +1,49 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { ThumbsUp, ThumbsDown, Forward, Minus, EllipsisVertical } from 'lucide-react'
+import { useParams } from 'react-router-dom'
+import {getVideoById} from '../api/video.api'
+import {getVideoComments} from "../api/comment.api"
+import {formatDistanceToNow} from "date-fns";
 
-const comments = Array(10).fill(0)
 const videos = Array(10).fill(0)
 
 export default function Watch() {
+
+    const {videoId} = useParams()
+    const [video, setVideo] = useState()
+    const [comments, setComments] = useState()
+
+    useEffect(() => {
+        async function getVideo() {
+            const response = await getVideoById(videoId)
+            setVideo(response.data)
+        }
+
+        async function getComments() {
+            const response = await getVideoComments(videoId)
+            setComments(response.data.docs)
+        }
+
+        getVideo()
+        getComments()
+    },[video])
+
+    if(!video) return <p>...Loading</p>
+    if(!comments) return <p>...Loading</p>
+    
     return (
-        <div className='grid grid-cols-1 lg:grid-cols-4 lg:space-x-4'>
-            <div className='lg:col-span-3 space-y-4'>
+        <div className='grid grid-cols-1 lg:grid-cols-10 lg:space-x-4'>
+            <div className='lg:col-span-7 space-y-4'>
                 <div className='space-y-4'>
                     <div className='rounded-md h-100 bg-black'></div>
                     <div className=''>
-                        <p className='text-xl font-bold'>Trump Holds Back on Military Action Against Iran as Risks and Regional Challenges Mount | WION</p>
+                        <p className='text-xl font-bold'>{video.title}</p>
                     </div>
                     <div className='flex justify-between items-center'>
                         <div className='flex space-x-4'>
-                            <img src="" className='rounded-full bg-yellow-500 h-10 w-10' />
+                            <img src={video.thumbnail} className='rounded-full bg-yellow-500 h-10 w-10' />
                             <div className='text-sm'>
-                                <p>WION</p>
+                                <p>{video.owner.username}</p>
                                 <p className='text-gray-500 text-sm'>10.3M subscribers</p>
                             </div>
                             <button className='rounded-full bg-black text-white p-2'>Subscribe</button>
@@ -52,22 +78,22 @@ export default function Watch() {
                         <button className='bg-black text-white px-5 rounded-full'>Send</button>
                     </div>
                     <div className='space-y-6'>
-                        {comments.map((c, i) => (
-                            <div key={i} className='flex space-x-4'>
-                                <button className='rounded-full w-10 h-10 bg-orange-600 text-white text-xl'>{c}</button>
+                        {comments.map((c) => (
+                            <div key={c.id} className='flex space-x-4'>
+                                <button className='rounded-full w-10 h-10 bg-orange-600 text-white text-xl'>{c.owner.avatar}</button>
                                 <div className='flex-1'>
                                     <div className='flex'>
                                         <p className='font-bold'>
-                                            @RodneySlinger
+                                            {c.owner.username}
                                         </p>
-                                        <p className='text-gray-500'>14 minutes ago</p>
+                                        <p className='text-gray-500'>{formatDistanceToNow(new Date(c.createdAt))}</p>
                                     </div>
                                     <div>
-                                        <p>Trump being bag boy for Netanyahu</p>
+                                        <p>{c.content}</p>
                                     </div>
                                     <div className='flex space-x-4'>
-                                        <div className='flex space-x-2 items-center'><ThumbsUp size={20}/> <p className='text-gray-500' >1</p> </div>
-                                        <div className='flex space-x-2 items-center'><ThumbsDown size={20}/> <p className='text-gray-500' >1</p> </div>
+                                        <div className='flex space-x-2 items-center'><ThumbsUp size={20} /> <p className='text-gray-500' >1</p> </div>
+                                        <div className='flex space-x-2 items-center'><ThumbsDown size={20} /> <p className='text-gray-500' >1</p> </div>
                                         <button className='font-bold'>reply</button>
                                     </div>
                                 </div>
@@ -77,7 +103,7 @@ export default function Watch() {
                     </div>
                 </div>
             </div>
-            <div className='hidden lg:block space-y-4'>
+            <div className='hidden lg:block col-span-3 space-y-4'>
                 {
                     videos.map((v, i) => (
                         <div key={i} className='flex space-x-4 text-xs h-25'>

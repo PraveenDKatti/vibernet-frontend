@@ -1,25 +1,43 @@
 import { EllipsisVertical } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { getAllVideos } from '../api/video.api';
+import { formatDistanceToNow } from "date-fns";
 
 const Home = () => {
-  const videos = Array(20).fill(0);
+  const [videos, setVideos] = useState([])
+
+  useEffect(() => {
+    async function getVideos() {
+      const response = await getAllVideos()
+      setVideos(response.data.docs)
+    }
+
+    getVideos()
+  }, [])
 
   const navigate = useNavigate()
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 min-h-screen">
-      {videos.map((v, i) => (
-        <div key={i} className="hover:bg-gray-100 space-y-2 p-2 cursor-pointer" onClick={() => navigate('/Watch')}>
-          <div className="h-40 bg-black rounded-md"></div>
-          <div className="flex justify-between items-start">
-            <div className="flex-1 space-y-1">
-              <h1 className="text-sm font-semibold">title</h1>
-              <p className="text-xs text-gray-500">description</p>
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4 min-h-screen">
+      {videos.map((video) => {
+        return (
+          <div key={video._id} className="hover:bg-blue-50 rounded-2xl space-y-2 cursor-pointer" onClick={() => navigate(`/Watch/${video._id}`)}>
+            <div className="h-50 bg-black rounded-md"></div>
+            <div className="flex justify-between items-start">
+              <div className="flex-1">
+                <p className="font-medium">{video.title}</p>
+                <p className="text-sm text-gray-500">{video.owner.username}</p>
+                <div className='flex space-x-2 text-gray-500 text-sm'>
+                  <span>{video.views}</span>
+                  <span className="text-zinc-700">•</span>
+                  <span>{formatDistanceToNow(new Date(video.createdAt))}</span>
+                </div>
+              </div>
+              <EllipsisVertical size={20} />
             </div>
-            <EllipsisVertical size={20} />
-          </div>
-        </div>
-      ))}
+          </div>)
+      })}
     </div>
   );
 };

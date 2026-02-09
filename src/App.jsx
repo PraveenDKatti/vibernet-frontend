@@ -12,7 +12,7 @@ export default function App() {
         <Route element={<MainLayout />}>
           {/* Home page */}
           <Route path="/" element={<Home />} />
-          <Route path="/Watch" element={<Watch />} />
+          <Route path="/Watch/:videoId" element={<Watch />} />
         </Route>
       </Routes>
     </BrowserRouter>

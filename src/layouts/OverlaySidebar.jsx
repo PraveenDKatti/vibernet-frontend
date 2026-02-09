@@ -21,17 +21,17 @@ export default function OverlaySidebar({ onClose }) {
 
         {/* Nav */}
         <nav className="flex flex-col py-4 gap-2">
-          <Link to="/" className="flex items-center gap-4 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800">
+          <Link to="/" onClick={onClose} className="flex items-center gap-4 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800">
             <Home size={20} />
             <span>Home</span>
           </Link>
 
-          <Link to="/subscriptions" className="flex items-center gap-4 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800">
+          <Link to="/subscriptions" onClick={onClose} className="flex items-center gap-4 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800">
             <Layers size={20} />
             <span>Subscriptions</span>
           </Link>
 
-          <Link to="/profile" className="flex items-center gap-4 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800">
+          <Link to="/profile" onClick={onClose} className="flex items-center gap-4 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800">
             <User2 size={20} />
             <span>Profile</span>
           </Link>

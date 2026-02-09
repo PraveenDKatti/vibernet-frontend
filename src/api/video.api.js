@@ -17,7 +17,7 @@ export const deleteVideo = (videoId) =>
 
 
 export const getAllVideos = (params) =>
-  client.get("/videos/search",{ params }).then(res => res.data)
+  client.get("/videos",{ params }).then(res => res.data)
 
 
 export const getVideoById = (videoId) =>
