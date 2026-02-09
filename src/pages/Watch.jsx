@@ -32,10 +32,10 @@ export default function Watch() {
     if(!comments) return <p>...Loading</p>
     
     return (
-        <div className='grid grid-cols-1 lg:grid-cols-10 lg:space-x-4'>
-            <div className='lg:col-span-7 space-y-4'>
+        <div className='grid grid-cols-1 lg:grid-cols-9 lg:space-x-4'>
+            <div className='lg:col-span-6 space-y-4'>
                 <div className='space-y-4'>
-                    <div className='rounded-md h-100 bg-black'></div>
+                    <div className='rounded-md h-110 bg-black'></div>
                     <div className=''>
                         <p className='text-xl font-bold'>{video.title}</p>
                     </div>
@@ -62,13 +62,8 @@ export default function Watch() {
                         </div>
                     </div>
                     <div className='rounded-md bg-gray-200 p-4'>
-                        <p>5167 views  Feb 06, 2026</p>
-                        <p>U.S. President Donald Trump has so far stopped short of launching direct military strikes on Iran,
-                            despite rising tensions over Tehran’s nuclear programme and regional proxies. Meanwhile, defence
-                            sources and analysts have raised concerns about the strain on U.S. missile defence stocks after
-                            previous conflicts, complicating options for a sustained campaign. With a major U.S. naval presence
-                            now deployed but diplomatic talks ongoing, Washington appears to be weighing the risks of escalation
-                            against the high political and military cost of an all-out conflict.</p>
+                        <p className='font-medium'>{video.views} views {formatDistanceToNow(new Date(video.createdAt))} ago </p>
+                        <p>{video.description}</p>
                     </div>
                 </div>
                 <div className='w-full space-y-4'>
@@ -82,11 +77,11 @@ export default function Watch() {
                             <div key={c.id} className='flex space-x-4'>
                                 <button className='rounded-full w-10 h-10 bg-orange-600 text-white text-xl'>{c.owner.avatar}</button>
                                 <div className='flex-1'>
-                                    <div className='flex'>
+                                    <div className='flex space-x-4'>
                                         <p className='font-bold'>
                                             {c.owner.username}
                                         </p>
-                                        <p className='text-gray-500'>{formatDistanceToNow(new Date(c.createdAt))}</p>
+                                        <p className='text-gray-500'>{formatDistanceToNow(new Date(c.createdAt))} ago</p>
                                     </div>
                                     <div>
                                         <p>{c.content}</p>
@@ -113,7 +108,7 @@ export default function Watch() {
                                 <p>New Nature</p>
                                 <p>2M views  7 days ago</p>
                             </div>
-                            <div>:</div>
+                            <EllipsisVertical />
                         </div>
                     ))
                 }

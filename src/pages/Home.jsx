@@ -31,7 +31,7 @@ const Home = () => {
                 <div className='flex space-x-2 text-gray-500 text-sm'>
                   <span>{video.views}</span>
                   <span className="text-zinc-700">•</span>
-                  <span>{formatDistanceToNow(new Date(video.createdAt))}</span>
+                  <span>{formatDistanceToNow(new Date(video.createdAt))} ago</span>
                 </div>
               </div>
               <EllipsisVertical size={20} />
