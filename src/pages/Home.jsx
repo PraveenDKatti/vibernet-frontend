@@ -23,15 +23,24 @@ const Home = () => {
       {videos.map((video) => {
         return (
           <div key={video._id} className="hover:bg-blue-50 rounded-2xl space-y-2 cursor-pointer" onClick={() => navigate(`/Watch/${video._id}`)}>
-            <div className="h-50 bg-black rounded-md"></div>
+            <div className="relative h-50">
+              <img src={video.thumbnail} className='h-full w-full rounded-xl' />
+              <div
+                className='absolute bg-black/60 text-white font-medium right-2 bottom-2 px-1 py-0.5 text-xs rounded-md'
+              >{parseInt(video.duration / 60)}:{(video.duration) % 60}
+              </div>
+            </div>
             <div className="flex justify-between items-start">
-              <div className="flex-1">
-                <p className="font-medium">{video.title}</p>
-                <p className="text-sm text-gray-500">{video.owner.username}</p>
-                <div className='flex space-x-2 text-gray-500 text-sm'>
-                  <span>{video.views}</span>
-                  <span className="text-zinc-700">•</span>
-                  <span>{formatDistanceToNow(new Date(video.createdAt))} ago</span>
+              <div className="flex flex-1 space-x-3">
+                <img src={video.owner.avatar} alt={video.owner.username} className='rounded-full w-10 h-10' />
+                <div>
+                  <p className="font-medium">{video.title}</p>
+                  <p className="text-sm text-gray-500">{video.owner.username}</p>
+                  <div className='flex space-x-2 text-gray-500 text-sm'>
+                    <span>{video.views}</span>
+                    <span className="text-zinc-700">•</span>
+                    <span>{formatDistanceToNow(new Date(video.createdAt))} ago</span>
+                  </div>
                 </div>
               </div>
               <EllipsisVertical size={20} />
