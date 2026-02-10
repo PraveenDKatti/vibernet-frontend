@@ -4,8 +4,6 @@ import { useParams } from 'react-router-dom'
 import { getVideoById } from '../api/video.api'
 import { getVideoComments } from "../api/comment.api"
 import { formatDistanceToNow } from "date-fns";
-import ReactPlayer from "react-player"
-
 const videos = Array(10).fill(0)
 
 export default function Watch() {
