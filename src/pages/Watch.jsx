@@ -77,17 +77,17 @@ export default function Watch() {
                 </div>
                 <div className='w-full space-y-4'>
                     <div className='flex space-x-4 mb-10'>
-                        <button className='rounded-full w-12 h-12 bg-green-600 text-white text-xl'>u</button>
+                        <button className='rounded-full w-10 h-10 bg-green-600 text-white text-xl'>u</button>
                         <input type="textarea" placeholder='Add a comment' className='flex-1 border-gray-200 outline-none border-b-1' />
                         <button className='bg-black text-white px-5 rounded-full'>Send</button>
                     </div>
                     <div className='space-y-6'>
                         {comments.map((c) => (
                             <div key={c._id} className='flex space-x-4'>
-                                <button className='rounded-full w-10 h-10 bg-orange-600 text-white text-xl'>{c.owner.avatar}</button>
+                                <img src={c.owner.avatar} className='rounded-full w-10 h-10 text-white text-xl'/>
                                 <div className='flex-1'>
                                     <div className='flex space-x-4'>
-                                        <p className='font-bold'>
+                                        <p className='font-medium'>
                                             {c.owner.username}
                                         </p>
                                         <p className='text-gray-500'>{formatDistanceToNow(new Date(c.createdAt))} ago</p>
@@ -98,7 +98,7 @@ export default function Watch() {
                                     <div className='flex space-x-4'>
                                         <div className='flex space-x-2 items-center'><ThumbsUp size={20} /> <p className='text-gray-500' >1</p> </div>
                                         <div className='flex space-x-2 items-center'><ThumbsDown size={20} /> <p className='text-gray-500' >1</p> </div>
-                                        <button className='font-bold'>reply</button>
+                                        <button className='font-medium'>reply</button>
                                     </div>
                                 </div>
                                 <EllipsisVertical />

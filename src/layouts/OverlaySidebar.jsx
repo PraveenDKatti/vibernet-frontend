@@ -16,30 +16,30 @@ export default function OverlaySidebar({ onClose }) {
           >
             <Menu size={20} />
           </button>
-          <span className="font-semibold text-lg">MyTube</span>
+          <Link to="/" className="text-3xl font-phenomonaRegular">Vibernet</Link>
         </header>
 
         {/* Nav */}
-        <nav className="flex flex-col py-4 gap-2">
-          <Link to="/" onClick={onClose} className="flex items-center gap-4 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800">
+        <nav className="flex flex-col p-4 gap-4">
+          <Link to="/" onClick={onClose} className="flex items-center gap-4 p-2 hover:bg-gray-100 dark:hover:bg-gray-800">
             <Home size={20} />
-            <span>Home</span>
+            <span className="leading-none">Home</span>
           </Link>
 
-          <Link to="/subscriptions" onClick={onClose} className="flex items-center gap-4 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800">
+          <Link to="/subscriptions" onClick={onClose} className="flex items-center gap-4 p-2 hover:bg-gray-100 dark:hover:bg-gray-800">
             <Layers size={20} />
-            <span>Subscriptions</span>
+            <span className="leading-none">Subscriptions</span>
           </Link>
 
-          <Link to="/profile" onClick={onClose} className="flex items-center gap-4 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800">
+          <Link to="/profile" onClick={onClose} className="flex items-center gap-4 p-2 hover:bg-gray-100 dark:hover:bg-gray-800">
             <User2 size={20} />
-            <span>Profile</span>
+            <span className="leading-none">Profile</span>
           </Link>
         </nav>
 
-        <hr />
+        <div className="h-2 border-b border-gray-400 mx-4"/>
 
-        <div className="flex flex-col">
+        <div className="flex flex-col p-4">
           <button className="px-4 py-2 text-left hover:bg-gray-100">Help</button>
           <button className="px-4 py-2 text-left hover:bg-gray-100">Report</button>
           <button className="px-4 py-2 text-left hover:bg-gray-100">Feedback</button>
