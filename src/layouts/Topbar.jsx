@@ -14,7 +14,7 @@ export default function TopBar({ onMenuClick }) {
         <button onClick={onMenuClick} className="p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800">
           <Menu size={20} />
         </button>
-        <Link to="/" className="font-bold text-xl tracking-tighter text-purple-600">Vibernet</Link>
+        <Link to="/" className="text-3xl font-phenomonaRegular">Vibernet</Link>
       </div>
 
       {/* Center (Search) */}
