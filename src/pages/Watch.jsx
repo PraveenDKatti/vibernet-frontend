@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import { ThumbsUp, ThumbsDown, Forward, Minus, EllipsisVertical } from 'lucide-react'
 import { useParams } from 'react-router-dom'
-import {getVideoById} from '../api/video.api'
-import {getVideoComments} from "../api/comment.api"
-import {formatDistanceToNow} from "date-fns";
+import { getVideoById } from '../api/video.api'
+import { getVideoComments } from "../api/comment.api"
+import { formatDistanceToNow } from "date-fns";
+import ReactPlayer from "react-player"
 
 const videos = Array(10).fill(0)
 
 export default function Watch() {
 
-    const {videoId} = useParams()
+    const { videoId } = useParams()
     const [video, setVideo] = useState()
     const [comments, setComments] = useState()
 
@@ -26,16 +27,26 @@ export default function Watch() {
 
         getVideo()
         getComments()
-    },[video])
+    }, [videoId])
 
-    if(!video) return <p>...Loading</p>
-    if(!comments) return <p>...Loading</p>
-    
+
+    if (!video) return <p>...Loading</p>
+    if (!comments) return <p>...Loading</p>
+
     return (
         <div className='grid grid-cols-1 lg:grid-cols-9 lg:space-x-4'>
             <div className='lg:col-span-6 space-y-4'>
                 <div className='space-y-4'>
-                    <div className='rounded-md h-110 bg-black'></div>
+                    <div className='aspect-video'>
+                        <video
+                            src={video.videoFile}
+                            controls
+                            muted
+                            style={{ width: '100%', height: '100%', borderRadius: '12px', backgroundColor: '#000' }}
+                            onError={(e) => console.log("Error loading video:", e)}
+                            onPause={() => console.log('Video paused')}
+                        ></video>
+                    </div>
                     <div className=''>
                         <p className='text-xl font-bold'>{video.title}</p>
                     </div>
@@ -74,7 +85,7 @@ export default function Watch() {
                     </div>
                     <div className='space-y-6'>
                         {comments.map((c) => (
-                            <div key={c.id} className='flex space-x-4'>
+                            <div key={c._id} className='flex space-x-4'>
                                 <button className='rounded-full w-10 h-10 bg-orange-600 text-white text-xl'>{c.owner.avatar}</button>
                                 <div className='flex-1'>
                                     <div className='flex space-x-4'>
@@ -98,7 +109,7 @@ export default function Watch() {
                     </div>
                 </div>
             </div>
-            <div className='hidden lg:block col-span-3 space-y-4'>
+            {<div className='hidden lg:block col-span-3 space-y-4'>
                 {
                     videos.map((v, i) => (
                         <div key={i} className='flex space-x-4 text-xs h-25'>
@@ -112,7 +123,7 @@ export default function Watch() {
                         </div>
                     ))
                 }
-            </div>
+            </div>}
         </div>
     )
 }
