@@ -13,18 +13,18 @@ const authStore = create((set, get) => ({
     set({ loading: true, error: null });
 
     try {
-      const data = await authApi.login(credentials);
+      if(!credentials.email || !credentials.password) throw new Error("Email and password are required")
 
       set({
-        user: data.user,
+        user: response.data,
         isAuthenticated: true,
         loading: false,
       });
 
-      return data;
+      return response;
     } catch (err) {
       set({
-        error: err.response?.data?.message || "Login failed",
+        error: err.message || "Login failed",
         loading: false,
       });
       throw err;
@@ -35,18 +35,19 @@ const authStore = create((set, get) => ({
     set({ loading: true, error: null });
 
     try {
-      const data = await authApi.register(payload);
+      if ([...payload.entries()].some(([key,value]) => !value)) throw new Error("All text fields and images are required");
+      const response = await authApi.register(payload);
 
       set({
-        user: data.user,
+        user: response.data,
         isAuthenticated: true,
         loading: false,
       });
 
-      return data;
+      return response;
     } catch (err) {
       set({
-        error: err.response?.data?.message || "Registration failed",
+        error: err.message || "Registration failed",
         loading: false,
       });
       throw err;
@@ -70,14 +71,14 @@ const authStore = create((set, get) => ({
 
   refresh: async () => {
     try {
-      const data = await authApi.refresh();
+      const response = await authApi.refresh();
 
       set({
-        user: data.user,
+        user: response.data,
         isAuthenticated: true,
       });
 
-      return data;
+      return response;
     } catch {
       set({
         user: null,

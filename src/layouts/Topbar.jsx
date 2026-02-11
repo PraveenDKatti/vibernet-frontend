@@ -35,11 +35,11 @@ export default function TopBar({ onMenuClick }) {
           <UserMenu />
         ) : (
           <Link
-            to="/signin"
+            to="/login"
             className="flex gap-2 border border-gray-300 dark:border-gray-700 px-4 py-1.5 items-center rounded-full hover:bg-gray-100 dark:hover:bg-zinc-800 text-sm font-medium"
           >
             <User size={18} className="text-gray-700" />
-            Sign In
+            Log In
           </Link>
         )}
       </div>

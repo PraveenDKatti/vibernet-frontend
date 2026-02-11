@@ -4,6 +4,9 @@ import MainLayout from "./layouts/MainLayout";
 import WatchLayout from "./layouts/WatchLayout"
 import Home from "./pages/Home";
 import Watch from "./pages/Watch"
+import Login from "./pages/Auth/Login";
+import Register from "./pages/Auth/Register";
+import AuthLayout from "./layouts/AuthLayout";
 
 export default function App() {
   return (
@@ -14,6 +17,12 @@ export default function App() {
           {/* Home page */}
           <Route path="/" element={<Home />} />
         </Route>
+
+        <Route element={<AuthLayout authentication={false} />}>
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+        </Route>
+
         <Route element={<WatchLayout />}>
           <Route path="/Watch/:videoId" element={<Watch />} />
         </Route>

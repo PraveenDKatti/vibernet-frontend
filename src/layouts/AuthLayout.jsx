@@ -2,7 +2,7 @@
 import React, {useEffect} from 'react'
 import { useNavigate, Outlet } from 'react-router-dom'
 import authStore from '../store/authStore'
-import PageLoader from '../common/PageLoader'
+import PageLoader from '../components/common/PageLoader'
 
 export default function AuthLayout({ authentication = true }) {
     const navigate = useNavigate()
