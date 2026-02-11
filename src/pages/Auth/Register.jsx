@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import Modal from "../../components/UI/Modal";
+import Modal from "../../components/ui/Modal";
 import useAuthStore from "../../store/authStore";
 
 export default function SignUp() {
