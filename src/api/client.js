@@ -30,9 +30,8 @@ client.interceptors.response.use(
             prevRequest.sent = true;
 
             try {
-                // Corrected path to avoid double slashes
                 await axios.post(
-                    `${API_URL}/users/refresh-token`,
+                    `${API_URL}/api/v1/users/refresh-token`,
                     {},
                     { withCredentials: true }
                 );
