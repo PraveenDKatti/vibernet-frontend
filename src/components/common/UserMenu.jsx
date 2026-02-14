@@ -1,11 +1,11 @@
 import { useState, useRef, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { User, Settings, LogOut, LayoutDashboard } from "lucide-react";
-import authStore from "../../store/authStore";
+import useAuthStore from "../../store/authStore";
 
 export default function UserMenu() {
   const [isOpen, setIsOpen] = useState(false);
-  const { user, logout } = authStore();
+  const { user, logout } = useAuthStore();
   const navigate = useNavigate();
   const menuRef = useRef();
 

@@ -2,19 +2,21 @@ import { Link } from "react-router-dom";
 import { Menu, Search, User } from "lucide-react";
 import authStore from "../store/authStore";
 import UserMenu from "../components/common/UserMenu";
+import logo from "../assets/icons/logo.svg"
+import logo2 from "../assets/icons/logo2.svg"
 
 export default function TopBar({ onMenuClick }) {
   const { isAuthenticated } = authStore();
 
   return (
-    <header className="h-16 flex items-center justify-between px-4 border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-black sticky top-0 z-40">
+    <header className="h-14 flex items-center justify-between px-4 sticky top-0 z-40">
       
       {/* Left */}
       <div className="flex items-center gap-3">
         <button onClick={onMenuClick} className="p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800">
-          <Menu size={20} />
+          <Menu size={22} />
         </button>
-        <Link to="/" className="text-3xl font-phenomonaRegular">Vibernet</Link>
+        <Link to="/" className="flex items-center gap-1"><img src={logo2} className="h-5" alt="logo" /><p className="text-[22px] font-semibold leading-none font-googleRoboto">Vibernet</p></Link>
       </div>
 
       {/* Center (Search) */}

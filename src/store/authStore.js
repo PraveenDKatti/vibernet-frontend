@@ -1,7 +1,8 @@
 import { create } from "zustand";
 import * as authApi from "../api/auth.api";
+import client from "../api/client";
 
-const authStore = create((set, get) => ({
+const useAuthStore = create((set, get) => ({
   // 🔹 state
   user: null,
   isAuthenticated: false,
@@ -9,11 +10,22 @@ const authStore = create((set, get) => ({
   error: null,
 
   // 🔹 actions
+  checkAuth: async () => {
+    try {
+      const response = await client.get("/users/current-user");
+      set({ user: response.data.data, isAuthenticated: true, loading: false });
+    } catch (error) {
+      set({ user: null, isAuthenticated: false, loading: false });
+    }
+  },
+
   login: async (credentials) => {
     set({ loading: true, error: null });
 
     try {
-      if(!credentials.email || !credentials.password) throw new Error("Email and password are required")
+      if (!credentials.email || !credentials.password) throw new Error("Email and password are required")
+      
+      const response = await authApi.login(credentials)
 
       set({
         user: response.data,
@@ -35,7 +47,7 @@ const authStore = create((set, get) => ({
     set({ loading: true, error: null });
 
     try {
-      if ([...payload.entries()].some(([key,value]) => !value)) throw new Error("All text fields and images are required");
+      if ([...payload.entries()].some(([key, value]) => !value)) throw new Error("All text fields and images are required");
       const response = await authApi.register(payload);
 
       set({
@@ -89,4 +101,4 @@ const authStore = create((set, get) => ({
 }));
 
 
-export default authStore
+export default useAuthStore
