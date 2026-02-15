@@ -10,6 +10,7 @@ import AuthLayout from "./layouts/AuthLayout";
 import useAuthStore from "./store/authStore";
 import Profile from "./pages/profile/Profile";
 import Subscription from "./pages/Subscription";
+import Channel from "./pages/channel/Channel"
 
 
 export default function App() {
@@ -31,6 +32,7 @@ export default function App() {
           <Route element={<AuthLayout authentication={true} />}>
             <Route path="/profile" element={<Profile />} />
             <Route path="/subscription" element={<Subscription />} />
+            <Route path="/:username" element={<Channel />} />
           </Route>
         </Route>
         

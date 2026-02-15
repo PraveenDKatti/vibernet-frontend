@@ -16,8 +16,8 @@ export const coverImage = (data) =>
   client.patch("/users/coverImage", data).then(res => res.data)
 
 
-export const profile = (username) =>
-  client.get(`/users/c/${username}`).then(res => res.data)
+export const channelProfile = (username) =>
+  client.get(`/users/${username}`).then(res => res.data)
 
 
 export const watchHistory = () =>

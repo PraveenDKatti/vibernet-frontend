@@ -41,7 +41,7 @@ export default function UserMenu() {
             <p className="text-xs text-gray-500 truncate">@{user?.username}</p>
           </div>
           
-          <Link to={`/channel/${user?.username}`} className="flex items-center gap-3 px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-800">
+          <Link to={`/${user?.username}`} className="flex items-center gap-3 px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-800">
             <User size={16} /> Your Channel
           </Link>
           <Link to="/profile" className="flex items-center gap-3 px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-800">
