@@ -8,7 +8,7 @@ import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
 import AuthLayout from "./layouts/AuthLayout";
 import useAuthStore from "./store/authStore";
-import Profile from "./pages/Profile";
+import Profile from "./pages/profile/Profile";
 import Subscription from "./pages/Subscription";
 
 
