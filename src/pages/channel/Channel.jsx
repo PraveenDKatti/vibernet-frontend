@@ -35,8 +35,6 @@ export default function Channel() {
                 setLoading(true);
 
                 const resChannel = await channelProfile(username);
-                console.log("FULL RESPONSE:", resChannel);
-                console.log("DATA:", resChannel.data);
                 setChannel(resChannel.data);
 
                 const resSubscriber = await getUserChannelSubscribers(username);
@@ -69,17 +67,16 @@ export default function Channel() {
         );
     }
 
-    const ActiveComponent =
-        tabs.find((tab) => tab.id === activeTab)?.component || HomeTab;
+    const ActiveComponent = tabs.find((tab) => tab.id === activeTab)?.component || HomeTab;
 
     return (
         <div>
             <div className="relative">
                 <div className="px-10 space-y-4">
-                    {/* Cover Image */}
+                    {/* Cover */}
                     <div className="h-44">
                         <img
-                            src={channel.coverImage}
+                            src={channel.cover}
                             alt="cover"
                             className="rounded-xl w-full h-full object-cover"
                         />

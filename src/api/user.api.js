@@ -12,8 +12,8 @@ export const avatar = (data) =>
   client.patch("/users/avatar", data).then(res => res.data)
 
 
-export const coverImage = (data) =>
-  client.patch("/users/coverImage", data).then(res => res.data)
+export const cover = (data) =>
+  client.patch("/users/cover", data).then(res => res.data)
 
 
 export const channelProfile = (username) =>

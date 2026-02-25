@@ -4,8 +4,8 @@ export const createPlaylist = (data) =>
   client.post("/playlists", data).then(res => res.data)
 
 
-export const getUserPlaylists = (userId) =>
-  client.get(`/playlists/user/${userId}`).then(res => res.data)
+export const getUserPlaylists = (username) =>
+  client.get(`/playlists/${username}`).then(res => res.data)
 
 
 export const getPlaylistById = (playlistId) =>

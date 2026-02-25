@@ -1,11 +1,11 @@
 import client from "./client";
 
-export const toggleSubscription = (channelId) =>
-  client.post(`/subscriptions/channel/${channelId}`).then(res => res.data)
+export const toggleSubscription = (username) =>
+  client.post(`/subscriptions/${username}`).then(res => res.data)
 
 
-export const getUserChannelSubscribers = (channelId) =>
-  client.get(`/subscriptions/channel/${channelId}`).then(res => res.data)
+export const getUserChannelSubscribers = (username) =>
+  client.get(`/subscriptions/${username}`).then(res => res.data)
 
 
 export const getSubscribedChannels = (subscriberId) =>

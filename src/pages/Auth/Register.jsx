@@ -9,7 +9,6 @@ export default function SignUp() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [avatar, setAvatar] = useState(null);
-  const [coverImage, setCoverImage] = useState(null);
 
   const navigate = useNavigate();
   const { register, login, loading, error } = useAuthStore();
@@ -21,7 +20,6 @@ export default function SignUp() {
     formData.append("email", email);
     formData.append("password", password);
     formData.append("avatar", avatar);
-    formData.append("coverImage", coverImage);
 
     const success = await register(formData);
     if (success) {
@@ -77,16 +75,6 @@ export default function SignUp() {
             type="file"
             accept="image/*"
             onChange={(e) => setAvatar(e.target.files[0])}
-            className="text-xs text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-zinc-800 file:text-white hover:file:bg-zinc-700 cursor-pointer"
-          />
-        </div>
-
-        <div className="pt-2 pb-4">
-          <label className="text-xs text-gray-400 block mb-1">Cover Image (Required)</label>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={(e) => setCoverImage(e.target.files[0])}
             className="text-xs text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-zinc-800 file:text-white hover:file:bg-zinc-700 cursor-pointer"
           />
         </div>
