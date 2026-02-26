@@ -19,11 +19,11 @@ const Home = () => {
   const navigate = useNavigate()
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4 min-h-screen">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4 space-y-4 min-h-screen">
       {videos.map((video) => {
         return (
-          <div key={video._id} className="hover:bg-blue-50 rounded-2xl space-y-2 cursor-pointer" onClick={() => navigate(`/Watch/${video._id}`)}>
-            <div className="relative h-50">
+          <div key={video._id} className="hover:bg-blue-50 rounded-2xl space-y-3 cursor-pointer" onClick={() => navigate(`/Watch/${video._id}`)}>
+            <div className="relative h-52">
               <img src={video.thumbnail} className='h-full w-full rounded-xl' />
               <div
                 className='absolute bg-black/60 text-white font-medium right-2 bottom-2 px-1 py-0.5 text-xs rounded-md'

@@ -25,7 +25,7 @@ export default function UserMenu() {
   };
 
   return (
-    <div className="relative" ref={menuRef}>
+    <div className="relative mx-4" ref={menuRef}>
       <button onClick={() => setIsOpen(!isOpen)} className="flex items-center">
         <img 
           src={user?.avatar} 
