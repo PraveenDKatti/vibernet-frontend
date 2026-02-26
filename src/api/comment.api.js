@@ -1,11 +1,11 @@
 import client from "./client";
 
 export const getVideoComments = (videoId) =>
-  client.get(`/comments/${videoId}/comments`).then(res => res.data)
+  client.get(`/comments/v/${videoId}`).then(res => res.data)
 
 
 export const addComment = (videoId, data) =>
-  client.post(`/comments/${videoId}/comments`, data).then(res => res.data)
+  client.post(`/comments/${videoId}`, data).then(res => res.data)
 
 
 export const updateComment = (commentId, data) =>

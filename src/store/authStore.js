@@ -6,7 +6,7 @@ const useAuthStore = create((set, get) => ({
   // 🔹 state
   user: null,
   isAuthenticated: false,
-  loading: false,
+  loading: true,
   error: null,
 
   // 🔹 actions
@@ -16,6 +16,8 @@ const useAuthStore = create((set, get) => ({
       set({ user: response.data.data, isAuthenticated: true, loading: false });
     } catch (error) {
       set({ user: null, isAuthenticated: false, loading: false });
+    }finally{
+      set({loading:false})
     }
   },
 

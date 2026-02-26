@@ -8,7 +8,6 @@ export default function LikedVideos({user, loading}) {
     useEffect(() => {
         async function getVideos() {
             const response = await getLikedVideos()
-            console.log(response)
             setVideos(response.data)
         }
         getVideos()

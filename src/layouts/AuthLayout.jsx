@@ -11,16 +11,22 @@ export default function AuthLayout({ authentication = true }) {
     const location = useLocation()
 
     useEffect(() => {
-        if (!loading) {
-            if (authentication && !isAuthenticated) {
-                navigate("/login", {
-                    replace: true,
-                    state: { from: location }
-                });
-            }
-            if (!authentication && isAuthenticated) navigate("/")
+        if (loading) return;
+
+        if (authentication && !isAuthenticated) {
+            navigate("/login", {
+                replace: true,
+                state: { from: location }
+            });
+            return;
         }
-    }, [isAuthenticated, authentication, loading, navigate])
+
+        if (!authentication && isAuthenticated) {
+            navigate(location.state?.from?.pathname || "/", {
+                replace: true
+            });
+        }
+    }, [isAuthenticated, authentication, loading, navigate, location]);
 
     return loading ? <PageLoader /> : <Outlet />
 }
