@@ -1,6 +1,7 @@
 import React from "react";
 import History from './History'
 import PlayList from './PlayList'
+import WatchLater from './WatchLater'
 import LikedVideos from './LikedVideos'
 import useAuthStore from "../../store/authStore";
 import PageLoader from "../../components/common/PageLoader";
@@ -28,9 +29,10 @@ export default function Profile() {
 
       {/* Sections */}
       <div className="space-y-10 mt-6">
-        <History user={user} loading={loading} />
-        <PlayList user={user} loading={loading} />
-        <LikedVideos user={user} loading={loading} />
+        <History user={user}/>
+        <PlayList user={user}/>
+        <LikedVideos user={user}/>
+        <WatchLater user={user}/>
       </div>
     </div>
   );

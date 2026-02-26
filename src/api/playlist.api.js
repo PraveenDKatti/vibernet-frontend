@@ -5,7 +5,11 @@ export const createPlaylist = (data) =>
 
 
 export const getUserPlaylists = (username) =>
-  client.get(`/playlists/${username}`).then(res => res.data)
+  client.get(`/playlists/user/${username}`).then(res => res.data)
+
+
+export const getMyPlaylists = () =>
+  client.get('/playlists').then(res => res.data)
 
 
 export const getPlaylistById = (playlistId) =>

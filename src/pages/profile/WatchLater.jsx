@@ -1,36 +1,35 @@
-import { useEffect, useState } from "react";
-import { CircleChevronLeft, CircleChevronRight, EllipsisVertical } from "lucide-react";
+import { CircleChevronLeft, CircleChevronRight, EllipsisVertical } from 'lucide-react'
+import { useEffect, useState } from 'react'
 import PageLoader from '../../components/common/PageLoader'
-import { getWatchHistory, removeFromHistory } from '../../api/history.api'
+import { getWatchLaterVideos, toggleWatchLater, deleteFromWatchLater } from '../../api/watchlater.api'
 
-export default function History({ user }) {
-    const [history, setHistory] = useState([])
+export default function LikedVideos({user}) {
+    const [watchList, setWatchList] = useState()
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
-        async function getHistory() {
+        async function getWatchList() {
             try {
                 setLoading(true)
-                const response = await getWatchHistory()
-                setHistory(response.data)
+                const response = await getWatchLaterVideos() 
+                setWatchList(response.data)
             } catch (error) {
                 console.log(error)
             } finally {
                 setLoading(false)
             }
         }
-        getHistory()
+        getWatchList()
     }, [])
 
     if (loading) return <PageLoader />
-    if (!history) return <p>your watch history appears here</p>
 
     return (
         <div className="space-y-4">
             <div className="flex justify-between">
                 <div>
-                    <p className="text-xl font-bold">History</p>
-                    <p className="text-sm text-gray-500">videos watched</p>
+                    <p className="text-xl font-bold">Watch Later</p>
+                    <p className="text-sm text-gray-500">save to watch later</p>
                 </div>
                 <div className="flex text-sm font-medium h-10 space-x-2">
                     <button className="w-20 rounded-full border border-gray-200">
@@ -42,9 +41,9 @@ export default function History({ user }) {
             </div>
 
             <div className="grid grid-cols-4 gap-4">
-                {history.map((v) => (
+                {watchList.map((v) => (
                     <div key={v._id} className="space-y-2">
-                        <div className="h-38 bg-black rounded-md"></div>
+                        <div className="h-38 bg-red-900 rounded-md"></div>
                         <div className="flex space-x-4">
                             <img src={v.owner.avatar} className="w-10 h-10 rounded-full" />
                             <div className="flex-1">

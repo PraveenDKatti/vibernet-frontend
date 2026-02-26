@@ -1,28 +1,43 @@
-import { useEffect, useState } from "react";
-import { getUserPlaylists } from "../../api/playlist.api";
-import { CircleChevronLeft, CircleChevronRight, EllipsisVertical } from "lucide-react";
+import { useEffect, useState } from 'react'
+import { useParams } from 'react-router-dom'
+import PageLoader from '../../components/common/PageLoader'
+import { CircleChevronLeft, CircleChevronRight, EllipsisVertical } from 'lucide-react'
+import { getUserPlaylists, getMyPlaylists } from '../../api/playlist.api'
 
-export default function PlayList({user, loading}) {
-    const [playlists, setPlaylists] = useState()
+export default function PlayList() {
+    const { username } = useParams()
+
+    const [playlists, setPlaylists] = useState([])
+    const [loading, setLoading] = useState(true)
 
     useEffect(() => {
-        async function getPlaylists() {
-            const response = await getUserPlaylists(user._id)
-            console.log(response)
-            setPlaylists(response.data)
+        async function fetchPlaylists() {
+            try {
+                setLoading(true)
+
+                const response = username
+                    ? await getUserPlaylists(username) // public
+                    : await getMyPlaylists() // logged-in user
+
+                setPlaylists(response.data)
+            } catch (error) {
+                console.log(error)
+            } finally {
+                setLoading(false)
+            }
         }
-        getPlaylists()
-    },[])
+
+        fetchPlaylists()
+    }, [username])
 
     if (loading) return <PageLoader />
-    if(!playlists) return <p>your playlists will appears here</p>
 
     return (
         <div className="space-y-4">
             <div className="flex justify-between">
                 <div>
                     <p className="text-xl font-bold">PlayList</p>
-                    <p className="text-sm text-gray-500">your created playlists</p>
+                    <p className="text-sm text-gray-500">Your created playlists</p>
                 </div>
                 <div className="flex text-sm font-medium h-10 space-x-2">
                     <button className="w-20 rounded-full border border-gray-200">
@@ -49,5 +64,5 @@ export default function PlayList({user, loading}) {
                 ))}
             </div>
         </div>
-    );
-};
+    )
+}
