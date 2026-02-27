@@ -9,7 +9,7 @@ export default function Watch() {
 
     const { videoId } = useParams()
     const [currentVideo, setCurrentVideo] = useState() //playing video in watch page
-    const [suggestedVideos, setSugggestedVideos] = useState() //Suggested videos at Watch page 
+    const [suggestedVideos, setSugggestedVideos] = useState([]) //Suggested videos at Watch page 
     const [videoComments, setVideoComments] = useState()
 
     useEffect(() => {
@@ -90,7 +90,7 @@ export default function Watch() {
                     <div className='space-y-6'>
                         {videoComments.map((c) => (
                             <div key={c._id} className='flex space-x-4'>
-                                <img src={c.owner.avatar} className='rounded-full w-10 h-10 text-white text-xl'/>
+                                <img src={c.owner.avatar} className='rounded-full w-10 h-10 text-white text-xl' />
                                 <div className='flex-1'>
                                     <div className='flex space-x-4'>
                                         <p className='font-medium'>
@@ -115,9 +115,22 @@ export default function Watch() {
             </div>
             {<div className='hidden lg:block col-span-3 space-y-4'>
                 {
-                    suggestedVideos.map((v, i) => (
-                        <div key={i} className='flex space-x-4 text-xs h-25'>
-                            <div className='w-[40%] h-full rounded-md bg-black'></div>
+                    suggestedVideos.map((v) => (
+                        <div key={v._id} className='flex space-x-4 text-xs h-25'>
+                            <div className='aspect-video w-[40%]'>
+                                <video
+                                    src={v.videoFile}
+                                    muted
+                                    playsInline
+                                    onMouseEnter={(e) => e.currentTarget.play()}
+                                    onMouseLeave={(e) => {
+                                        e.currentTarget.pause();
+                                        e.currentTarget.currentTime = 0;
+                                    }}
+                                    style={{ width: '100%', height: '100%', borderRadius: '12px' }}
+                                    onError={(e) => console.log("Error loading video:", e)}
+                                />
+                            </div>
                             <div className='w-[50%] h-full text-gray-500'>
                                 <p className='font-bold text-black'>{v.title}</p>
                                 <p>{v.username}</p>
