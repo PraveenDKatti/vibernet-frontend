@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import { getUserChannelSubscribers } from "../../api/subscription.api";
-import { channelProfile } from "../../api/user.api";
-import useAuthStore from "../../store/authStore";
+import React, { useState, useEffect } from "react"
+import { useParams } from "react-router-dom"
+import { getUserChannelSubscribers } from "../../api/subscription.api"
+import { channelProfile } from "../../api/user.api"
+import useAuthStore from "../../store/authStore"
+import PageLoader from '../../components/common/PageLoader'
 
 import HomeTab from "./HomeTab";
 import VideosTab from "./VideosTab";
@@ -53,9 +54,7 @@ export default function Channel() {
 
     if (loading) {
         return (
-            <div className="flex justify-center items-center h-60">
-                <p className="text-gray-500">Loading channel...</p>
-            </div>
+            <PageLoader />
         );
     }
 

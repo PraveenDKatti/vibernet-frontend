@@ -3,7 +3,8 @@ import { ThumbsUp, ThumbsDown, Forward, Minus, EllipsisVertical } from 'lucide-r
 import { useParams } from 'react-router-dom'
 import { getVideoById, getAllVideos } from '../api/video.api'
 import { getVideoComments } from "../api/comment.api"
-import { formatDistanceToNow } from "date-fns";
+import { formatDistanceToNow } from "date-fns"
+import PageLoader from '../components/common/PageLoader'
 
 export default function Watch() {
 
@@ -34,8 +35,8 @@ export default function Watch() {
     }, [videoId])
 
 
-    if (!currentVideo) return <p>...Loading</p>
-    if (!videoComments) return <p>...Loading</p>
+    if (!currentVideo) return <PageLoader />
+    if (!videoComments) return <p>No Comments yet</p>
 
     return (
         <div className='grid grid-cols-1 lg:grid-cols-9 lg:space-x-4'>

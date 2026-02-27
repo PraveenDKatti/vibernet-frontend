@@ -1,8 +1,9 @@
-import { EllipsisVertical } from 'lucide-react';
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { getAllVideos } from '../api/video.api';
-import { formatDistanceToNow, set } from "date-fns";
+import { EllipsisVertical } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { getAllVideos } from '../api/video.api'
+import { formatDistanceToNow, set } from "date-fns"
+import PageLoader from '../components/common/PageLoader'
 
 const Home = () => {
   const [homeFeed, setHomeFeed] = useState([]) //videos for home feed.
@@ -28,9 +29,7 @@ const Home = () => {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-60">
-        <p className="text-gray-500">Loading...</p>
-      </div>
+      <PageLoader />
     );
   }
 
