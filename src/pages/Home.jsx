@@ -2,21 +2,37 @@ import { EllipsisVertical } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getAllVideos } from '../api/video.api';
-import { formatDistanceToNow } from "date-fns";
+import { formatDistanceToNow, set } from "date-fns";
 
 const Home = () => {
   const [homeFeed, setHomeFeed] = useState([]) //videos for home feed.
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     async function fetchVideos() {
-      const response = await getAllVideos()
-      setHomeFeed(response.data.docs)
+      try {
+        setLoading(true)
+        const response = await getAllVideos()
+        setHomeFeed(response.data.docs)
+      } catch (error) {
+        console.log(error)
+      } finally {
+        setLoading(false)
+      }
     }
 
     fetchVideos()
   }, [])
 
   const navigate = useNavigate()
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-60">
+        <p className="text-gray-500">Loading channel...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4 space-y-4 min-h-screen">
