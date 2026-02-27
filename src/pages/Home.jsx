@@ -29,7 +29,7 @@ const Home = () => {
   if (loading) {
     return (
       <div className="flex justify-center items-center h-60">
-        <p className="text-gray-500">Loading channel...</p>
+        <p className="text-gray-500">Loading...</p>
       </div>
     );
   }
