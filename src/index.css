@@ -2,4 +2,12 @@
 
 @theme {
   --font-googleRoboto: "Roboto Condensed", sans-serif;
+
+  --animate-slide: slide 2s linear infinite;
+
+  @keyframes slide {
+    0% { left: -33%; }
+    50% { left: 100%; }
+    100% { left: -33%; }
+  }
 }

@@ -11,6 +11,7 @@ import useAuthStore from "./store/authStore";
 import Profile from "./pages/profile/Profile";
 import Subscription from "./pages/Subscription";
 import Channel from "./pages/channel/Channel"
+import SearchResults from "./pages/SearchResults"
 
 
 export default function App() {
@@ -28,6 +29,7 @@ export default function App() {
         <Route element={<MainLayout />}>
           {/* Home page */}
           <Route path="/" element={<Home />} />
+          <Route path="/results" element={<SearchResults />} />
 
           <Route element={<AuthLayout authentication={true} />}>
             <Route path="/profile" element={<Profile />} />

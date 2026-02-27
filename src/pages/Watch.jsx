@@ -36,7 +36,6 @@ export default function Watch() {
 
 
     if (!currentVideo) return <PageLoader />
-    if (!videoComments) return <p>No Comments yet</p>
 
     return (
         <div className='grid grid-cols-1 lg:grid-cols-9 lg:space-x-4'>
@@ -88,58 +87,61 @@ export default function Watch() {
                         <input type="textarea" placeholder='Add a comment' className='flex-1 border-gray-200 outline-none border-b-1' />
                         <button className='bg-black text-white px-5 rounded-full'>Send</button>
                     </div>
-                    <div className='space-y-6'>
-                        {videoComments.map((c) => (
-                            <div key={c._id} className='flex space-x-4'>
-                                <img src={c.owner.avatar} className='rounded-full w-10 h-10 text-white text-xl' />
-                                <div className='flex-1'>
-                                    <div className='flex space-x-4'>
-                                        <p className='font-medium'>
-                                            {c.owner.username}
-                                        </p>
-                                        <p className='text-gray-500'>{formatDistanceToNow(new Date(c.createdAt))} ago</p>
+                    {videoComments.length === 0 ? (
+                        <div className='text-center'>No comments yet.</div>
+                    ) : (
+                        <div className='space-y-6'>
+                            {videoComments.map((c) => (
+                                <div key={c._id} className='flex space-x-4'>
+                                    <img src={c.owner.avatar} className='rounded-full w-10 h-10 text-white text-xl' />
+                                    <div className='flex-1'>
+                                        <div className='flex space-x-4'>
+                                            <p className='font-medium'>
+                                                {c.owner.username}
+                                            </p>
+                                            <p className='text-gray-500'>{formatDistanceToNow(new Date(c.createdAt))} ago</p>
+                                        </div>
+                                        <div>
+                                            <p>{c.content}</p>
+                                        </div>
+                                        <div className='flex space-x-4'>
+                                            <div className='flex space-x-2 items-center'><ThumbsUp size={20} /> <p className='text-gray-500' >1</p> </div>
+                                            <div className='flex space-x-2 items-center'><ThumbsDown size={20} /> <p className='text-gray-500' >1</p> </div>
+                                            <button className='font-medium'>reply</button>
+                                        </div>
                                     </div>
-                                    <div>
-                                        <p>{c.content}</p>
-                                    </div>
-                                    <div className='flex space-x-4'>
-                                        <div className='flex space-x-2 items-center'><ThumbsUp size={20} /> <p className='text-gray-500' >1</p> </div>
-                                        <div className='flex space-x-2 items-center'><ThumbsDown size={20} /> <p className='text-gray-500' >1</p> </div>
-                                        <button className='font-medium'>reply</button>
-                                    </div>
+                                    <EllipsisVertical />
                                 </div>
-                                <EllipsisVertical />
-                            </div>
-                        ))}
-                    </div>
+                            ))}
+                        </div>
+                    )}
                 </div>
             </div>
             {<div className='hidden lg:block col-span-3 space-y-4'>
-                {
-                    suggestedVideos.map((v) => (
-                        <div key={v._id} className='flex space-x-4 text-xs h-25'>
-                            <div className='aspect-video w-[40%]'>
-                                <video
-                                    src={v.videoFile}
-                                    muted
-                                    playsInline
-                                    onMouseEnter={(e) => e.currentTarget.play()}
-                                    onMouseLeave={(e) => {
-                                        e.currentTarget.pause();
-                                        e.currentTarget.currentTime = 0;
-                                    }}
-                                    style={{ width: '100%', height: '100%', borderRadius: '12px' }}
-                                    onError={(e) => console.log("Error loading video:", e)}
-                                />
-                            </div>
-                            <div className='w-[50%] h-full text-gray-500'>
-                                <p className='font-bold text-black'>{v.title}</p>
-                                <p>{v.username}</p>
-                                <p>{v.views} views {formatDistanceToNow(new Date(v.createdAt))} ago </p>
-                            </div>
-                            <EllipsisVertical />
+                {suggestedVideos.map((v) => (
+                    <div key={v._id} className='flex space-x-4 text-xs h-25'>
+                        <div className='aspect-video w-[40%]'>
+                            <video
+                                src={v.videoFile}
+                                muted
+                                playsInline
+                                onMouseEnter={(e) => e.currentTarget.play()}
+                                onMouseLeave={(e) => {
+                                    e.currentTarget.pause();
+                                    e.currentTarget.currentTime = 0;
+                                }}
+                                style={{ width: '100%', height: '100%', borderRadius: '12px' }}
+                                onError={(e) => console.log("Error loading video:", e)}
+                            />
                         </div>
-                    ))
+                        <div className='w-[50%] h-full text-gray-500'>
+                            <p className='font-bold text-black'>{v.title}</p>
+                            <p>{v.username}</p>
+                            <p>{v.views} views {formatDistanceToNow(new Date(v.createdAt))} ago </p>
+                        </div>
+                        <EllipsisVertical />
+                    </div>
+                ))
                 }
             </div>}
         </div>
