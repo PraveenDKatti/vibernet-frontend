@@ -9,7 +9,7 @@ export default function VideosTab() {
   const { username } = useParams();
   const { user } = useAuthStore();
 
-  const [videos, setVideos] = useState([]);
+  const [channelVideos, setChannelVideos] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const isOwner = user?.username === username;
@@ -19,7 +19,7 @@ export default function VideosTab() {
       try {
         setLoading(true);
         const resVideos = await getAllVideos({username});
-        setVideos(resVideos.data.docs);
+        setChannelVideos(resVideos.data.docs);
       } catch (error) {
         console.error("Failed to fetch channel data:", error);
       } finally {
@@ -40,7 +40,7 @@ export default function VideosTab() {
     );
   }
 
-  if (!videos.length) {
+  if (!channelVideos.length) {
     return (
       <div className="flex justify-center items-center h-60">
         <p className="text-gray-500">Videos not found</p>
@@ -51,7 +51,7 @@ export default function VideosTab() {
   return (
     <div className="py-6">
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {videos.map((video) => (
+        {channelVideos.map((video) => (
           <div key={video._id} className="hover:bg-blue-50 rounded-2xl space-y-2 cursor-pointer" onClick={() => navigate(`/Watch/${video._id}`)}>
             <div className="relative h-50">
               <img src={video.thumbnail} className='h-full w-full rounded-xl' />

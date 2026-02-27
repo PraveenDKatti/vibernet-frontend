@@ -13,8 +13,8 @@ export default function PostEditor({
 }) {
   const { user } = useAuthStore();
 
-  const [content, setContent] = useState("");
-  const [type, setType] = useState("text");
+  const [postContent, setPostContent] = useState("");
+  const [postType, setPostType] = useState("text");
   const [images, setImages] = useState([]);
   const [videoId, setVideoId] = useState("");
   const [poll, setPoll] = useState({
@@ -24,8 +24,8 @@ export default function PostEditor({
 
   useEffect(() => {
     if (mode === "edit" && initialData) {
-      setContent(initialData.content || "");
-      setType(initialData.type || "text");
+      setPostContent(initialData.postContent || "");
+      setPostType(initialData.postType || "text");
       setVideoId(initialData.videoId || "");
       setPoll(
         initialData.poll || { question: "", options: ["", ""] }
@@ -38,11 +38,11 @@ export default function PostEditor({
   }, [mode, initialData]);
 
   function resetForm() {
-    setContent("");
+    setPostContent("");
     setImages([]);
     setVideoId("");
     setPoll({ question: "", options: ["", ""] });
-    setType("text");
+    setPostType("text");
   }
 
   const handleImagePost = (e, fn) => {
@@ -59,14 +59,14 @@ export default function PostEditor({
 
   async function handleSubmit() {
     try {
-      if (!content && type === "text") return
+      if (!postContent && postType === "text") return
 
-      let payload = { content, type,}
+      let payload = { postContent, postType,}
 
       // IMAGE POST (FormData)
-      if (type === "image") {
+      if (postType === "image") {
         const formData = new FormData();
-        formData.append("content", content);
+        formData.append("content", postContent);
         formData.append("type", "image");
 
         images.forEach((file) => {
@@ -79,11 +79,11 @@ export default function PostEditor({
       // OTHER TYPES (JSON)
       else {
 
-        if (type === "video") {
+        if (postType === "video") {
           payload.videoId = videoId;
         }
 
-        if (type === "poll") {
+        if (postType === "poll") {
           payload.poll = poll;
         }
       }
@@ -121,29 +121,29 @@ export default function PostEditor({
       {/* TEXTAREA */}
       <textarea
         placeholder="What's on your mind?"
-        value={content}
-        onChange={(e) => setContent(e.target.value)}
+        value={postContent}
+        onChange={(e) => setPostContent(e.target.value)}
         rows={2}
         className="w-full resize-none rounded-lg px-3 py-2 focus:outline-none"
       />
 
       {/* MEDIA SECTION */}
       <div>
-        {type === "image" && (
+        {postType === "image" && (
           <ImagePost
             images={images}
             handleImagePost={handleImagePost}
           />
         )}
 
-        {type === "video" && (
+        {postType === "video" && (
           <VideoPost
             videoId={videoId}
             setVideoId={setVideoId}
           />
         )}
 
-        {type === "poll" && (
+        {postType === "poll" && (
           <PollPost
             poll={poll}
             setPoll={setPoll}
@@ -157,7 +157,7 @@ export default function PostEditor({
         {/* TYPE SELECTORS */}
         <div className="flex gap-4">
           <div
-            onClick={() => setType("image")}
+            onClick={() => setPostType("image")}
             className="flex rounded-full hover:bg-zinc-200 p-2 gap-2 items-center text-gray-600 cursor-pointer"
           >
             <Image size={20} />
@@ -165,7 +165,7 @@ export default function PostEditor({
           </div>
 
           <div
-            onClick={() => setType("video")}
+            onClick={() => setPostType("video")}
             className="flex rounded-full hover:bg-zinc-200 p-2 gap-2 items-center text-gray-600 cursor-pointer"
           >
             <Video size={20} />
@@ -173,7 +173,7 @@ export default function PostEditor({
           </div>
 
           <div
-            onClick={() => setType("poll")}
+            onClick={() => setPostType("poll")}
             className="flex rounded-full hover:bg-zinc-200 p-2 gap-2 items-center text-gray-600 cursor-pointer"
           >
             <AlignStartVertical size={20} />

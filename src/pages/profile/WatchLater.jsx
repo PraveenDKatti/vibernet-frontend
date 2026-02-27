@@ -4,22 +4,22 @@ import PageLoader from '../../components/common/PageLoader'
 import { getWatchLaterVideos, toggleWatchLater, deleteFromWatchLater } from '../../api/watchlater.api'
 
 export default function LikedVideos({user}) {
-    const [watchList, setWatchList] = useState()
+    const [watchLaterFeed, setWatchLaterFeed] = useState() //watch later videos
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
-        async function getWatchList() {
+        async function fetchWatchList() {
             try {
                 setLoading(true)
                 const response = await getWatchLaterVideos() 
-                setWatchList(response.data)
+                setWatchLaterFeed(response.data)
             } catch (error) {
                 console.log(error)
             } finally {
                 setLoading(false)
             }
         }
-        getWatchList()
+        fetchWatchList()
     }, [])
 
     if (loading) return <PageLoader />
@@ -41,7 +41,7 @@ export default function LikedVideos({user}) {
             </div>
 
             <div className="grid grid-cols-4 gap-4">
-                {watchList.map((v) => (
+                {watchLaterFeed.map((v) => (
                     <div key={v._id} className="space-y-2">
                         <div className="h-38 bg-red-900 rounded-md"></div>
                         <div className="flex space-x-4">

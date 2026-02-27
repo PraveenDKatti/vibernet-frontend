@@ -1,35 +1,41 @@
 import React, { useEffect, useState } from 'react'
 import { ThumbsUp, ThumbsDown, Forward, Minus, EllipsisVertical } from 'lucide-react'
 import { useParams } from 'react-router-dom'
-import { getVideoById } from '../api/video.api'
+import { getVideoById, getAllVideos } from '../api/video.api'
 import { getVideoComments } from "../api/comment.api"
 import { formatDistanceToNow } from "date-fns";
-const videos = Array(10).fill(0)
 
 export default function Watch() {
 
     const { videoId } = useParams()
-    const [video, setVideo] = useState()
-    const [comments, setComments] = useState()
+    const [currentVideo, setCurrentVideo] = useState() //playing video in watch page
+    const [suggestedVideos, setSugggestedVideos] = useState() //Suggested videos at Watch page 
+    const [videoComments, setVideoComments] = useState()
 
     useEffect(() => {
-        async function getVideo() {
+        async function fetchVideo() {
             const response = await getVideoById(videoId)
-            setVideo(response.data)
+            setCurrentVideo(response.data)
         }
 
-        async function getComments() {
+        async function fetchVideoComments() {
             const response = await getVideoComments(videoId)
-            setComments(response.data.docs)
+            setVideoComments(response.data.docs)
         }
 
-        getVideo()
-        getComments()
+        async function fetchVideos() {
+            const response = await getAllVideos()
+            setSugggestedVideos(response.data.docs)
+        }
+
+        fetchVideo()
+        fetchVideoComments()
+        fetchVideos()
     }, [videoId])
 
 
-    if (!video) return <p>...Loading</p>
-    if (!comments) return <p>...Loading</p>
+    if (!currentVideo) return <p>...Loading</p>
+    if (!videoComments) return <p>...Loading</p>
 
     return (
         <div className='grid grid-cols-1 lg:grid-cols-9 lg:space-x-4'>
@@ -37,7 +43,7 @@ export default function Watch() {
                 <div className='space-y-4'>
                     <div className='aspect-video'>
                         <video
-                            src={video.videoFile}
+                            src={currentVideo.videoFile}
                             controls
                             muted
                             style={{ width: '100%', height: '100%', borderRadius: '12px', backgroundColor: '#000' }}
@@ -46,13 +52,13 @@ export default function Watch() {
                         ></video>
                     </div>
                     <div className=''>
-                        <p className='text-xl font-bold'>{video.title}</p>
+                        <p className='text-xl font-bold'>{currentVideo.title}</p>
                     </div>
                     <div className='flex justify-between items-center'>
                         <div className='flex space-x-4'>
-                            <img src={video.thumbnail} className='rounded-full bg-yellow-500 h-10 w-10' />
+                            <img src={currentVideo.thumbnail} className='rounded-full bg-yellow-500 h-10 w-10' />
                             <div className='text-sm'>
-                                <p>{video.owner.username}</p>
+                                <p>{currentVideo.owner.username}</p>
                                 <p className='text-gray-500 text-sm'>10.3M subscribers</p>
                             </div>
                             <button className='rounded-full bg-black text-white p-2'>Subscribe</button>
@@ -71,8 +77,8 @@ export default function Watch() {
                         </div>
                     </div>
                     <div className='rounded-md bg-gray-200 p-4'>
-                        <p className='font-medium'>{video.views} views {formatDistanceToNow(new Date(video.createdAt))} ago </p>
-                        <p>{video.description}</p>
+                        <p className='font-medium'>{currentVideo.views} views {formatDistanceToNow(new Date(currentVideo.createdAt))} ago </p>
+                        <p>{currentVideo.description}</p>
                     </div>
                 </div>
                 <div className='w-full space-y-4'>
@@ -82,7 +88,7 @@ export default function Watch() {
                         <button className='bg-black text-white px-5 rounded-full'>Send</button>
                     </div>
                     <div className='space-y-6'>
-                        {comments.map((c) => (
+                        {videoComments.map((c) => (
                             <div key={c._id} className='flex space-x-4'>
                                 <img src={c.owner.avatar} className='rounded-full w-10 h-10 text-white text-xl'/>
                                 <div className='flex-1'>
@@ -109,13 +115,13 @@ export default function Watch() {
             </div>
             {<div className='hidden lg:block col-span-3 space-y-4'>
                 {
-                    videos.map((v, i) => (
+                    suggestedVideos.map((v, i) => (
                         <div key={i} className='flex space-x-4 text-xs h-25'>
                             <div className='w-[40%] h-full rounded-md bg-black'></div>
                             <div className='w-[50%] h-full text-gray-500'>
-                                <p className='font-bold text-black'>What’s Hidden Under Antarctica Will Cause Global Tension</p>
-                                <p>New Nature</p>
-                                <p>2M views  7 days ago</p>
+                                <p className='font-bold text-black'>{v.title}</p>
+                                <p>{v.username}</p>
+                                <p>{v.views} views {formatDistanceToNow(new Date(v.createdAt))} ago </p>
                             </div>
                             <EllipsisVertical />
                         </div>

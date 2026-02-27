@@ -9,7 +9,7 @@ import PageLoader from '../components/common/PageLoader'
 export default function Subscription() {
     const [subscriptions, setSubscriptions] = useState([])
     const [channels, setChannels] = useState([])
-    const [view, setView] = useState('feed') // 'feed' | 'channels'
+    const [view, setView] = useState('feed') // 'subscription feed' | 'subscribed channels'
 
     const navigate = useNavigate()
     const { user, loading } = useAuthStore()
@@ -17,7 +17,7 @@ export default function Subscription() {
     useEffect(() => {
         if (!user?._id) return
 
-        async function getData() {
+        async function fetchSubscriptionData() {
             try {
                 const [responseChannel, responseFeed] = await Promise.all([
                     getSubscribedChannels(user._id),
@@ -31,7 +31,7 @@ export default function Subscription() {
             }
         }
 
-        getData()
+        fetchSubscriptionData()
     }, [user])
 
     if (loading) return <PageLoader />

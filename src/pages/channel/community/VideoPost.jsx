@@ -2,13 +2,13 @@ import React, { useEffect, useState } from "react";
 import { getAllVideos } from "../../../api/video.api";
 
 export default function VideoPost({ videoId, setVideoId }) {
-  const [videos, setVideos] = useState([]);
+  const [uploadedVideos, setUploadedVideos] = useState([]);
 
   useEffect(() => {
     async function fetchVideos() {
       try {
         const response = await getAllVideos();
-        setVideos(response.data.docs || []);
+        setUploadedVideos(response.data.docs || []);
       } catch (err) {
         console.error("Error fetching videos:", err);
       }
@@ -26,7 +26,7 @@ export default function VideoPost({ videoId, setVideoId }) {
     <div className="space-y-2">
       {/* Video selection */}
       <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-        {videos.map((video) => (
+        {uploadedVideos.map((video) => (
           <label
             key={video._id}
             className={`border rounded-lg p-2 cursor-pointer ${
@@ -54,7 +54,7 @@ export default function VideoPost({ videoId, setVideoId }) {
       {videoId && (
         <div className="mt-2 aspect-video w-full">
           <video
-            src={videos.find((v) => v._id === videoId)?.videoFile}
+            src={uploadedVideos.find((v) => v._id === videoId)?.videoFile}
             controls
             className="w-full h-full rounded-lg"
           />

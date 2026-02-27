@@ -3,18 +3,18 @@ import { useEffect, useState } from "react";
 import { getLikedVideos } from '../../api/like.api'
 
 export default function LikedVideos({user, loading}) {
-    const [videos, setVideos] = useState()
+    const [likedFeed, setLikedFeed] = useState() //liked videos
 
     useEffect(() => {
-        async function getVideos() {
+        async function fetchLikedVideos() {
             const response = await getLikedVideos()
-            setVideos(response.data)
+            setLikedFeed(response.data)
         }
-        getVideos()
+        fetchLikedVideos()
     },[])
 
     if (loading) return <PageLoader />
-    if(!videos) return <p>your liked videos appears here</p>
+    if(!likedFeed) return <p>your liked videos appears here</p>
 
     return (
         <div className="space-y-4">
@@ -33,7 +33,7 @@ export default function LikedVideos({user, loading}) {
             </div>
 
             <div className="grid grid-cols-4 gap-4">
-                {videos.map((v) => (
+                {likedFeed.map((v) => (
                     <div key={v._id} className="space-y-2">
                         <div className="h-38 bg-red-900 rounded-md"></div>
                         <div className="flex space-x-4">

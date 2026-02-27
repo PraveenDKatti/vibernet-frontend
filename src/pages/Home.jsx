@@ -5,22 +5,22 @@ import { getAllVideos } from '../api/video.api';
 import { formatDistanceToNow } from "date-fns";
 
 const Home = () => {
-  const [videos, setVideos] = useState([])
+  const [homeFeed, setHomeFeed] = useState([]) //videos for home feed.
 
   useEffect(() => {
-    async function getVideos() {
+    async function fetchVideos() {
       const response = await getAllVideos()
-      setVideos(response.data.docs)
+      setHomeFeed(response.data.docs)
     }
 
-    getVideos()
+    fetchVideos()
   }, [])
 
   const navigate = useNavigate()
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4 space-y-4 min-h-screen">
-      {videos.map((video) => {
+      {homeFeed.map((video) => {
         return (
           <div key={video._id} className="hover:bg-blue-50 rounded-2xl space-y-3 cursor-pointer" onClick={() => navigate(`/Watch/${video._id}`)}>
             <div className="relative h-52">

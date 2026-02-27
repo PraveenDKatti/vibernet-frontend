@@ -181,7 +181,6 @@ export default function PostCard({ post, setPosts }) {
           )}
 
           {/* Video */}
-          {console.log(post)}
           {post.type === "video" && post.video && (
             <video controls className="rounded-lg w-full max-h-[500px]">
               <source src={post.video.videoFile} type="video/mp4" />

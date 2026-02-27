@@ -4,22 +4,22 @@ import PageLoader from '../../components/common/PageLoader'
 import { getWatchHistory, removeFromHistory } from '../../api/history.api'
 
 export default function History({ user }) {
-    const [history, setHistory] = useState([])
+    const [historyFeed, setHistoryFeed] = useState([]) //user video watch history
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
-        async function getHistory() {
+        async function fetchHistory() {
             try {
                 setLoading(true)
                 const response = await getWatchHistory()
-                setHistory(response.data)
+                setHistoryFeed(response.data)
             } catch (error) {
                 console.log(error)
             } finally {
                 setLoading(false)
             }
         }
-        getHistory()
+        fetchHistory()
     }, [])
 
     if (loading) return <PageLoader />
@@ -42,7 +42,7 @@ export default function History({ user }) {
             </div>
 
             <div className="grid grid-cols-4 gap-4">
-                {history.map((v) => (
+                {historyFeed.map((v) => (
                     <div key={v._id} className="space-y-2">
                         <div className="h-38 bg-black rounded-md"></div>
                         <div className="flex space-x-4">
