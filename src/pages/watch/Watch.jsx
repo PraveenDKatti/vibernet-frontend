@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { ThumbsUp, ThumbsDown, Forward, Minus, EllipsisVertical } from 'lucide-react'
 import { useParams } from 'react-router-dom'
-import { getVideoById, getAllVideos } from '../api/video.api'
-import { getVideoComments } from "../api/comment.api"
+import { getVideoById, getAllVideos } from '../../api/video.api'
+import { getVideoComments } from "../../api/comment.api"
 import { formatDistanceToNow } from "date-fns"
 import PageLoader from '../components/common/PageLoader'
 
