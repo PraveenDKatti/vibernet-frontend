@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import useAuthStore from "../../../store/authStore";
+import useAuthStore from "../../store/authStore";
 import {
   EllipsisVertical,
   ThumbsUp,
@@ -10,8 +10,8 @@ import { formatDistanceToNow } from "date-fns";
 import {
   updatePost,
   deletePost,
-} from "../../../api/post.api";
-import {toggleLikeReaction} from '../../../api/like.api';
+} from "../../api/post.api";
+import {toggleLikeReaction} from '../../api/like.api';
 
 import PostEditor from "./PostEditor";
 

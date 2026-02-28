@@ -3,7 +3,7 @@ import { Home, User2, Layers } from "lucide-react";
 
 export default function Sidebar() {
   return (
-    <aside className="w-18 flex flex-col items-center py-4 gap-2">
+    <aside className="hidden w-18 md:flex flex-col items-center py-4 gap-2">
       <Link
         to="/"
         className="p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800"
@@ -12,7 +12,7 @@ export default function Sidebar() {
       </Link>
 
        <Link
-        to="/subscription"
+        to="/profile/subscriptions"
         className="p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800"
       >
         <Layers size={22} />

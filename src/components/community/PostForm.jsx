@@ -1,7 +1,7 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import useAuthStore from "../../../store/authStore";
-import { createPost } from "../../../api/post.api";
+import useAuthStore from "../../store/authStore";
+import { createPost } from "../../api/post.api";
 import PostEditor from "./PostEditor";
 
 export default function PostForm({ setPosts }) {

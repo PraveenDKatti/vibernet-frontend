@@ -17,7 +17,10 @@ export default function OverlaySidebar({ onClose }) {
           >
             <Menu size={22} />
           </button>
-          <Link to="/" className="flex items-center gap-1"><img src={logo2} className="h-5" alt="logo" /><p className="text-[22px] font-semibold leading-none font-googleRoboto">Vibernet</p></Link>
+          <Link to="/" className="flex items-center gap-1">
+            <img src={logo2} className="h-5" alt="logo" />
+            <p className="text-[22px] font-semibold leading-none font-googleRoboto">Vibernet</p>
+          </Link>
         </header>
 
         {/* Nav */}
@@ -27,7 +30,7 @@ export default function OverlaySidebar({ onClose }) {
             <span className="leading-none">Home</span>
           </Link>
 
-          <Link to="/subscriptions" onClick={onClose} className="flex items-center gap-4 p-2 hover:bg-gray-100 dark:hover:bg-gray-800">
+          <Link to="/profile/subscriptions" onClick={onClose} className="flex items-center gap-4 p-2 hover:bg-gray-100 dark:hover:bg-gray-800">
             <Layers size={22} />
             <span className="leading-none">Subscriptions</span>
           </Link>

@@ -10,8 +10,10 @@ import AuthLayout from "./layouts/AuthLayout";
 import useAuthStore from "./store/authStore";
 import Profile from "./pages/profile/Profile";
 import Subscription from "./pages/Subscription";
+import SubscribedChannels from "./pages/SubscribedChannels";
 import Channel from "./pages/channel/Channel"
 import SearchResults from "./pages/SearchResults"
+import NotFound from './pages/NotFound'
 
 
 export default function App() {
@@ -33,7 +35,8 @@ export default function App() {
 
           <Route element={<AuthLayout authentication={true} />}>
             <Route path="/profile" element={<Profile />} />
-            <Route path="/subscription" element={<Subscription />} />
+            <Route path="/profile/subscriptions" element={<Subscription />} />
+            <Route path="/profile/channels" element={<SubscribedChannels />} />
             <Route path="/:username" element={<Channel />} />
           </Route>
         </Route>
@@ -46,6 +49,8 @@ export default function App() {
         <Route element={<WatchLayout />}>
           <Route path="/Watch/:videoId" element={<Watch />} />
         </Route>
+
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   );

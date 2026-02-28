@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getAllVideos } from "../../../api/video.api";
+import { getAllVideos } from "../../api/video.api";
 
 export default function VideoPost({ videoId, setVideoId }) {
   const [uploadedVideos, setUploadedVideos] = useState([]);

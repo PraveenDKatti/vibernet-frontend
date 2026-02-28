@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { useParams } from "react-router-dom";
-import useAuthStore from "../../store/authStore";
-import { channelPosts } from "../../api/post.api";
-import PostForm from "./community/PostForm";
-import PostCard from "./community/PostCard";
+import useAuthStore from "../../../store/authStore";
+import { channelPosts } from "../../../api/post.api";
+import PostForm from "../../../components/community/PostForm";
+import PostCard from "../../../components/community/PostCard";
 
 export default function CommunityTab() {
   const { username } = useParams();

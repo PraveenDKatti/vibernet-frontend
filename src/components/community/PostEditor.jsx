@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import useAuthStore from "../../../store/authStore";
+import useAuthStore from "../../store/authStore";
 import { Image, Video, AlignStartVertical } from "lucide-react";
 import ImagePost from "./ImagePost";
 import VideoPost from "./VideoPost";

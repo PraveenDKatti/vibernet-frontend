@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import { UserRound } from 'lucide-react';
-import { updateAccount, avatar, cover } from "../../api/user.api";
+import { updateAccount, avatar, cover } from "../../../api/user.api";
 
 export default function ChannelTab() {
   const [previews, setPreviews] = useState({

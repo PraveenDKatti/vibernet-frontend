@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import useAuthStore from "../../store/authStore";
-import { getUserPlaylists } from "../../api/playlist.api";
+import useAuthStore from "../../../store/authStore";
+import { getUserPlaylists } from "../../../api/playlist.api";
 import { useParams } from "react-router-dom";
 import { EllipsisVertical } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";

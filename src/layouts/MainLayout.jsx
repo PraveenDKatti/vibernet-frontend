@@ -19,7 +19,7 @@ export default function MainLayout() {
       )}
 
       {/* Below top bar */}
-      <div className="flex flex-1 overflow-hidden">
+      <div className="md:flex flex-1 overflow-hidden">
         <Sidebar />
 
         <main className="flex-1 overflow-y-auto px-4 sm:px-5 lg:px-6">

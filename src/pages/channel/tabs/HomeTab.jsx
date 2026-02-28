@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import useAuthStore from "../../store/authStore";
-import { getAllVideos } from "../../api/video.api";
+import useAuthStore from "../../../store/authStore";
+import { getAllVideos } from "../../../api/video.api";
 
 export default function VideosTab() {
   const { username } = useParams();

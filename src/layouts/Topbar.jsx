@@ -45,7 +45,7 @@ export default function TopBar({ onMenuClick }) {
       </div>
 
       {/* Center (Search) */}
-      <div className="hidden md:flex items-center w-2/3 max-w-[650px] h-10">
+      <div className="hidden ml-15 md:flex items-center md:w-[650px] h-10">
         <input
           value={query}
           onChange={(e) => setQuery(e.target.value)}
@@ -58,7 +58,7 @@ export default function TopBar({ onMenuClick }) {
         <button
           onClick={handleSearch}
           disabled={!query.trim()}
-          className="w-15 flex justify-center items-center h-full bg-gray-50 dark:bg-zinc-800 hover:bg-gray-100 border border-l-0 border-gray-300 dark:border-gray-700 rounded-r-full disabled:opacity-50"
+          className="w-15 flex justify-center items-center h-full bg-zinc-50 hover:bg-zinc-100 border border-l-0 border-gray-300 rounded-r-full"
         >
           <Search size={22} />
         </button>
@@ -79,8 +79,8 @@ export default function TopBar({ onMenuClick }) {
               </button>
             </label>
 
-            <button className="mr-1">
-              <Bell size={24} className="mx-2" />
+            <button className="mr-1 hover:bg-zinc-200 rounded-full">
+              <Bell size={24} className="m-2" />
             </button>
 
             <UserMenu />

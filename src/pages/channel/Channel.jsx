@@ -5,11 +5,11 @@ import { channelProfile } from "../../api/user.api"
 import useAuthStore from "../../store/authStore"
 import PageLoader from '../../components/common/PageLoader'
 
-import HomeTab from "./HomeTab";
-import VideosTab from "./VideosTab";
-import PlaylistsTab from "./PlaylistsTab";
-import CommunityTab from "./CommunityTab";
-import ChannelTab from "./ChannelTab";
+import HomeTab from "./tabs/HomeTab";
+import VideosTab from "./tabs/VideosTab";
+import PlaylistsTab from "./tabs/PlaylistsTab";
+import CommunityTab from "./tabs/CommunityTab";
+import ChannelTab from "./tabs/ChannelTab";
 
 const tabs = [
     { id: "Home", label: "Home", component: HomeTab },
