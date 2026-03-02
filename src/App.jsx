@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import MainLayout from "./layouts/MainLayout";
 import WatchLayout from "./layouts/WatchLayout"
 import Home from "./pages/Home";
-import Watch from "./pages/watch/Watch"
+import Watch from "./pages/Watch"
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
 import AuthLayout from "./layouts/AuthLayout";

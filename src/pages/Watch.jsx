@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { getVideoById } from '../../api/video.api'
-import CommentSection from '../../components/watch/CommentSection'
-import SuggestedVideos from '../../components/watch/SuggestedVideos'
-import VideoInfo from '../../components/watch/VideoInfo'
-import PageLoader from '../../components/common/PageLoader'
+import { getVideoById } from '../api/video.api'
+import CommentSection from '../components/watch/CommentSection'
+import SuggestedVideos from '../components/watch/SuggestedVideos'
+import VideoInfo from '../components/watch/VideoInfo'
+import PageLoader from '../components/common/PageLoader'
 
 export default function Watch() {
 
