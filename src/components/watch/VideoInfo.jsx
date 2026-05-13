@@ -1,8 +1,31 @@
 import React, { useEffect, useState } from 'react'
 import { ThumbsUp, ThumbsDown, Forward, Minus, EllipsisVertical } from 'lucide-react'
 import { formatDistanceToNow } from "date-fns"
+import { toggleSubscription } from '../../api/subscription.api'
+import { toggleLikeReaction } from '../../api/like.api'
 
-export default function VideoInfo({video}) {
+export default function VideoInfo({ video }) {
+
+    const handleSubscription = async () => {
+        try {
+            await toggleSubscription(video.owner.username)
+        } catch (error) {
+            console.error(error);
+        }
+    };
+    
+
+    const handleReaction = async (videoId, type) => {
+        try {
+            await toggleLikeReaction({
+                targetId: videoId,
+                type,
+                targetType: "video"
+            })
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
     return (
         <div className='space-y-4 leading-none'>
@@ -14,13 +37,27 @@ export default function VideoInfo({video}) {
                         <p>{video.owner.username}</p>
                         <p className='text-gray-500 text-sm'>10.3M subscribers</p>
                     </div>
-                    <button className='rounded-full bg-black text-sm font-semibold text-white px-3 py-2 h-9'>Subscribe</button>
+                    <button
+                        onClick={handleSubscription} 
+                        className='rounded-full bg-black text-sm font-semibold text-white px-3 py-2 h-9'
+                    >Subscribe</button>
                 </div>
                 <div className='flex space-x-2 font-semibold text-md'>
                     <div className='flex items-center bg-gray-100 rounded-full px-3 py-2 h-9'>
-                        <div className='flex space-x-2'><ThumbsUp size={20} /><p> 1</p></div>
+                        <div className='flex space-x-2'>
+                            <ThumbsUp
+                                size={20}
+                                fill={video.isLiked ? "black" : "white"}
+                                onClick={() => handleReaction(video._id, "like")} />
+                            <p className="text-gray-500">{video.likesCount || 0}</p>
+                        </div>
                         <Minus strokeWidth={1} size={35} className='text-gray-400 mr-0 transform rotate-90' />
-                        <ThumbsDown size={20} />
+                        <div>
+                            <ThumbsDown
+                            size={20}
+                            fill={video.isDisliked ? "black" : "white"}
+                            onClick={() => handleReaction(video._id, "dislike")} />
+                        </div>
                     </div>
                     <div className='flex items-center space-x-4 rounded-full bg-gray-100 px-3 py-2 h-9'>
                         <Forward />

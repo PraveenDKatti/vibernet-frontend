@@ -27,7 +27,6 @@ export default function CommentSection({ videoId, video }) {
     const fetchComments = async () => {
         try {
             const { data } = await getVideoComments(videoId);
-            console.log(data)
             setComments(data?.docs || []);
         } catch (err) {
             console.error(err);
