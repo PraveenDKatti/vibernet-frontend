@@ -54,13 +54,13 @@ export default function VideosTab() {
       {/* Featured Video */}
       <div className="space-y-4">
         <p className="font-medium text-xl">Featured Videos</p>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
           {featuredVideos.map((video) => (
             <div key={video._id} className="space-y-2">
               <img
                 src={video.thumbnail}
                 alt={video.title}
-                className="w-full h-40 object-cover rounded-xl"
+                className="w-full h-30 object-cover rounded-xl"
               />
               <p className="font-medium line-clamp-2">
                 {video.title}
@@ -76,13 +76,13 @@ export default function VideosTab() {
       {/* Latest Uploads */}
       <div className="space-y-4">
         <p className="font-medium text-xl">Latest Uploads</p>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
           {latestVideos.map((video) => (
             <div key={video._id} className="space-y-2">
               <img
                 src={video.thumbnail}
                 alt={video.title}
-                className="w-full h-40 object-cover rounded-xl"
+                className="w-full h-30 object-cover rounded-xl"
               />
               <p className="font-medium line-clamp-2">
                 {video.title}

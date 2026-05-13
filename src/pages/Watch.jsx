@@ -10,7 +10,6 @@ export default function Watch() {
 
     const { videoId } = useParams()
     const [currentVideo, setCurrentVideo] = useState() //playing video in watch page
-
     useEffect(() => {
         async function fetchVideo() {
             const response = await getVideoById(videoId)

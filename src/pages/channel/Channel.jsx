@@ -142,7 +142,7 @@ export default function Channel() {
             </div>
 
             {/* Tab Content */}
-            <div className="px-10 py-6">
+            <div className="px-8 py-6">
                 <ActiveComponent channel={channel} isOwner={isOwner} />
             </div>
         </div>

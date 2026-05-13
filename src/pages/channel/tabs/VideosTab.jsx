@@ -50,10 +50,10 @@ export default function VideosTab() {
 
   return (
     <div className="py-6">
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {channelVideos.map((video) => (
           <div key={video._id} className="hover:bg-blue-50 rounded-2xl space-y-2 cursor-pointer" onClick={() => navigate(`/Watch/${video._id}`)}>
-            <div className="relative h-50">
+            <div className="relative h-36">
               <img src={video.thumbnail} className='h-full w-full rounded-xl' />
               <div
                 className='absolute bg-black/60 text-white font-medium right-2 bottom-2 px-1 py-0.5 text-xs rounded-md'
