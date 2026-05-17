@@ -16,7 +16,7 @@ export default function Watch() {
             setCurrentVideo(response.data)
         }
         fetchVideo()
-    }, [videoId])
+    }, [videoId, currentVideo])
 
     if (!currentVideo) return <PageLoader />
 
