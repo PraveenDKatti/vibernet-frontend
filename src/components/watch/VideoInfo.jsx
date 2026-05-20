@@ -3,8 +3,10 @@ import { ThumbsUp, ThumbsDown, Forward, Minus, EllipsisVertical } from 'lucide-r
 import { formatDistanceToNow } from "date-fns"
 import { toggleSubscription } from '../../api/subscription.api'
 import { toggleLikeReaction } from '../../api/like.api'
+import useVideoStore from '../../store/videoStore'
 
-export default function VideoInfo({ video }) {
+export default function VideoInfo() {
+    const video = useVideoStore((s) => s.currentVideo)
 
     const handleSubscription = async () => {
         try {

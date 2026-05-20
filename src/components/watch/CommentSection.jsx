@@ -8,11 +8,14 @@ import {
 } from "../../api/comment.api";
 import { toggleLikeReaction } from '../../api/like.api'
 import useAuthStore from "../../store/authStore";
+import useVideoStore from '../../store/videoStore'
 import { formatDistanceToNow } from "date-fns";
 import EmojiPicker from "emoji-picker-react";
 
-export default function CommentSection({ videoId, video }) {
+export default function CommentSection() {
     const { user, isAuthenticated } = useAuthStore();
+    const videoId = useVideoStore((s) => s.currentVideo._id)
+    const commentsCount = useVideoStore((s) => s.currentVideo.commentsCount)
 
     const [text, setText] = useState("");
     const [comments, setComments] = useState([]);
@@ -101,7 +104,7 @@ export default function CommentSection({ videoId, video }) {
     return (
         <div className="w-full space-y-4">
             <p className="text-xl font-semibold">
-                {video?.commentsCount || 0} comments
+                {commentsCount || 0} comments
             </p>
 
             {/* Add Comment */}

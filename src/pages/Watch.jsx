@@ -1,22 +1,21 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
-import { getVideoById } from '../api/video.api'
+import useVideoStore from '../store/videoStore'
 import CommentSection from '../components/watch/CommentSection'
 import SuggestedVideos from '../components/watch/SuggestedVideos'
 import VideoInfo from '../components/watch/VideoInfo'
 import PageLoader from '../components/common/PageLoader'
 
 export default function Watch() {
-
+    
     const { videoId } = useParams()
-    const [currentVideo, setCurrentVideo] = useState() //playing video in watch page
+
+    const currentVideo = useVideoStore((s) => s.currentVideo)
+    const fetchVideo = useVideoStore((s) => s.fetchVideo)
+
     useEffect(() => {
-        async function fetchVideo() {
-            const response = await getVideoById(videoId)
-            setCurrentVideo(response.data)
-        }
-        fetchVideo()
-    }, [videoId, currentVideo])
+        fetchVideo(videoId)
+    }, [videoId, fetchVideo])
 
     if (!currentVideo) return <PageLoader />
 
@@ -29,15 +28,21 @@ export default function Watch() {
                             src={currentVideo.videoFile}
                             controls
                             muted
-                            style={{ width: '100%', height: '100%', borderRadius: '12px', backgroundColor: '#000' }}
-                            onError={(e) => console.log("Error loading video:", e)}
-                            onPause={() => console.log('Video paused')}
-                        ></video>
+                            style={{
+                                width: '100%',
+                                height: '100%',
+                                borderRadius: '12px',
+                                backgroundColor: '#000'
+                            }}
+                        />
                     </div>
-                    <VideoInfo video={currentVideo} />
+
+                    <VideoInfo />
                 </div>
-                <CommentSection videoId={videoId} video={currentVideo} />
+
+                <CommentSection />
             </div>
+
             <SuggestedVideos />
         </div>
     )
