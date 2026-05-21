@@ -7,15 +7,18 @@ import useVideoStore from '../../store/videoStore'
 
 export default function VideoInfo() {
     const video = useVideoStore((s) => s.currentVideo)
+    const updateSubscriptionStatus = useVideoStore((s) => s.updateSubscriptionStatus)
 
     const handleSubscription = async () => {
         try {
-            await toggleSubscription(video.owner.username)
+            const res = await toggleSubscription(video.owner.username)
+            updateSubscriptionStatus(res.data.subscribed)
         } catch (error) {
             console.error(error);
         }
     };
-    
+
+    console.log(video)
 
     const handleReaction = async (videoId, type) => {
         try {
@@ -40,9 +43,9 @@ export default function VideoInfo() {
                         <p className='text-gray-500 text-sm'>10.3M subscribers</p>
                     </div>
                     <button
-                        onClick={handleSubscription} 
-                        className='rounded-full bg-black text-sm font-semibold text-white px-3 py-2 h-9'
-                    >Subscribe</button>
+                        onClick={handleSubscription}
+                        className={`rounded-full ${video.owner.isSubscribed ? "bg-zinc-200 text-black" : "bg-black text-white"} text-sm font-semibold px-3 py-2 h-9`}
+                    >{video.owner.isSubscribed ? "Unsubscribe" : "Subscribe"}</button>
                 </div>
                 <div className='flex space-x-2 font-semibold text-md'>
                     <div className='flex items-center bg-gray-100 rounded-full px-3 py-2 h-9'>
@@ -56,9 +59,9 @@ export default function VideoInfo() {
                         <Minus strokeWidth={1} size={35} className='text-gray-400 mr-0 transform rotate-90' />
                         <div>
                             <ThumbsDown
-                            size={20}
-                            fill={video.isDisliked ? "black" : "white"}
-                            onClick={() => handleReaction(video._id, "dislike")} />
+                                size={20}
+                                fill={video.isDisliked ? "black" : "white"}
+                                onClick={() => handleReaction(video._id, "dislike")} />
                         </div>
                     </div>
                     <div className='flex items-center space-x-4 rounded-full bg-gray-100 px-3 py-2 h-9'>
