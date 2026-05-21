@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Menu, Search, User, Mic, Plus, Bell, EllipsisVertical } from "lucide-react";
+import { Menu, Search, X, User, Mic, Plus, Bell, EllipsisVertical } from "lucide-react";
 import useAuthStore from "../store/authStore";
 import UserMenu from "../components/common/UserMenu";
 import logo2 from "../assets/icons/logo2.svg";
@@ -26,17 +26,32 @@ export default function TopBar({ onMenuClick }) {
   };
 
   const [isOpen, setIsOpen] = useState(false);
-  const { transcript, resetTranscript } = useSpeechRecognition();
+  const { transcript, listening, resetTranscript } = useSpeechRecognition();
 
-  const handleStart = () => {
+  useEffect(() => {
+    if (!listening && transcript) {
+      setIsOpen(false);
+    }
+  }, [listening, transcript]);
+
+  useEffect(() => {
+    setQuery(transcript);
+  }, [transcript]);
+
+  const handleStart = async () => {
     resetTranscript();
     setIsOpen(true);
-    SpeechRecognition.startListening({ continuous: true, language: 'en-US' });
+
+    await SpeechRecognition.startListening({
+      continuous: false,
+      interimResults: true,
+      language: "en-US",
+    });
   };
 
   const handleClose = () => {
-    setIsOpen(false);
     SpeechRecognition.stopListening();
+    setIsOpen(false);
   };
 
   return (
@@ -93,36 +108,32 @@ export default function TopBar({ onMenuClick }) {
             {/* Modal Box */}
             <div
               onClick={(e) => e.stopPropagation()} // Prevents closing when clicking inside
-              className="w-full max-w-md transform rounded-2xl bg-white p-6 text-center shadow-2xl transition-all scale-100"
+              className="w-full max-w-md transform rounded-2xl bg-white p-6 shadow-2xl transition-all scale-100"
             >
-              {/* Pulsing Voice Indicator */}
-              <div className="relative mx-auto mb-4 flex h-12 w-12 items-center justify-center">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-400 opacity-75"></span>
-                <span className="relative inline-flex h-4 w-4 rounded-full bg-red-600"></span>
+              {/* Top container */}
+              <div className="w-full flex justify-between">
+                {/* Status Headings */}
+                <h3 className="inline text-xl font-bold text-gray-800">Listening...</h3>
+                <span onClick={handleClose}><X /></span>
               </div>
 
-              {/* Status Headings */}
-              <h3 className="text-xl font-bold text-gray-800">Listening...</h3>
-              <p className="mt-1 text-sm text-gray-500">Speak clearly into your microphone</p>
-
               {/* Real-time Translation Box */}
-              <div className="mt-4 min-h-[100px] rounded-xl bg-gray-50 p-4 text-left border border-gray-100">
+              <div className="mb-4 min-h-[100px] rounded-xl p-4 text-left">
                 {transcript ? (
                   <p className="text-gray-800 font-medium leading-relaxed">{transcript}</p>
                 ) : (
-                  <p className="italic text-gray-400">Translating your voice live...</p>
+                  <p className="italic text-gray-400">Speak clearly into your microphone</p>
                 )}
               </div>
 
-              {/* Actions */}
-              <div className="mt-6 flex justify-end gap-3">
-                <button
-                  onClick={handleClose}
-                  className="w-full rounded-lg bg-gray-900 px-4 py-2.5 font-medium text-white shadow hover:bg-gray-800 transition-colors"
-                >
-                  Done
-                </button>
+              {/* Pulsing Voice Indicator */}
+              <div className="flex items-center justify-center">
+                <div className="relative my-4 h-12 w-12">
+                  <span className={`absolute inline-flex h-full w-full ${listening ? "animate-ping" : ""} rounded-full bg-red-400 opacity-75`}></span>
+                  <span className="relative inline-flex h-full w-full rounded-full bg-red-600 text-white justify-center items-center"><Mic size={22} /></span>
+                </div>
               </div>
+
             </div>
           </div>
         )}
