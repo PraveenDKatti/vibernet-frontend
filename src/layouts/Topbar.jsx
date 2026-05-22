@@ -1,34 +1,17 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Menu, Search, X, User, Mic, Plus, Bell, EllipsisVertical, Moon, Languages, Settings, Info, MessageSquareWarning, ChevronRight  } from "lucide-react";
+import { Menu, Search, X, User, Mic, Plus, Bell  } from "lucide-react";
 import useAuthStore from "../store/authStore";
 import UserMenu from "../components/common/UserMenu";
+import PageMenu from "../components/common/PageMenu"
 import logo2 from "../assets/icons/logo2.svg";
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 
 export default function TopBar({ onMenuClick }) {
   const [query, setQuery] = useState("");
-  const [active, setActive] = useState(false)
   const [isOpen, setIsOpen] = useState(false);
   const { transcript, listening, resetTranscript } = useSpeechRecognition();
   const { isAuthenticated } = useAuthStore();
-
-  const modalRef = useRef(null)
-
-  useEffect(() => {
-    function handleClickOutside(event) {
-      if (modalRef.current && !modalRef.current.contains(event.target)) {
-        setActive(false)
-      }
-    }
-
-    if (active) {
-      document.addEventListener('mousedown', handleClickOutside);
-    }
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    }
-  }, [active])
 
   const handleSearch = () => {
     const trimmedQuery = query.trim();
@@ -177,35 +160,7 @@ export default function TopBar({ onMenuClick }) {
           <div className="flex items-center">
             {/* page menu container */}
             <div>
-              <EllipsisVertical onClick={() => setActive(!active)} />
-              {/* page menu */}
-              <div className='relative'>
-                {active && (
-                  <div
-                    ref={modalRef}
-                    className="absolute rounded-xl py-2 px-1 w-56 bg-white right-1 top-2 
-                    shadow-[0px_0px_10px_0.1px_rgba(0,0,0,0.1)] z-50 text-sm text-gray-700"
-                  >
-                    {[
-                      { icon: <Moon size={18} />, label: "Appearance:", toggle: true },
-                      { icon: <Languages size={18} />, label: "Display Language:", toggle: true },
-                      { icon: <Settings size={18} />, label: "Settings:", extra: "", hasBorder: true },
-                      { icon: <Info size={18} />, label: "Help" },
-                      { icon: <MessageSquareWarning size={18} />, label: "Feedback" },
-                    ].map((item, index) => (
-                      <button
-                        key={index}
-                        className={`w-full flex items-center justify-between px-4 py-2.5 text-left hover:bg-gray-100 
-                          dark:hover:bg-zinc-800 transition-colors
-                          ${item.hasBorder ? 'border-t border-b border-gray-100 my-1 py-3' : ''}`}
-                      >
-                        <span className="flex gap-4">{item.icon} {item.label}</span>
-                        {item.toggle && <ChevronRight size={18} />}
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </div>
+              <PageMenu />
             </div>
             <Link
               to="/login"
