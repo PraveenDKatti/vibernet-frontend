@@ -18,8 +18,6 @@ export default function VideoInfo() {
         }
     };
 
-    console.log(video)
-
     const handleReaction = async (videoId, type) => {
         try {
             await toggleLikeReaction({
@@ -37,7 +35,7 @@ export default function VideoInfo() {
             <p className='leading-none text-xl font-bold'>{video.title}</p>
             <div className='flex justify-between items-center'>
                 <div className='flex space-x-4'>
-                    <img src={video.thumbnail} className='rounded-full bg-yellow-500 h-10 w-10' />
+                    <img src={video.owner.avatar} className='rounded-full bg-yellow-500 h-10 w-10' />
                     <div className='text-sm'>
                         <p>{video.owner.username}</p>
                         <p className='text-gray-500 text-sm'>10.3M subscribers</p>
