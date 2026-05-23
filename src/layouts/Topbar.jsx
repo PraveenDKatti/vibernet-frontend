@@ -3,7 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { Menu, Search, X, User, Mic, Plus, Bell  } from "lucide-react";
 import useAuthStore from "../store/authStore";
 import UserMenu from "../components/common/UserMenu";
-import PageMenu from "../components/common/PageMenu"
+import PageMenu from "../components/common/PageMenu";
+import Modal from "../components/ui/Modal";
 import logo2 from "../assets/icons/logo2.svg";
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 
@@ -100,10 +101,8 @@ export default function TopBar({ onMenuClick }) {
 
         {/* Modal Overlay (Shadow Background) */}
         {isOpen && (
-          <div
-            onClick={handleClose}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm transition-opacity duration-300"
-          >
+          <Modal onClick={handleClose}>
+            
             {/* Modal Box */}
             <div
               onClick={(e) => e.stopPropagation()} // Prevents closing when clicking inside
@@ -134,7 +133,7 @@ export default function TopBar({ onMenuClick }) {
               </div>
 
             </div>
-          </div>
+          </Modal>
         )}
 
       </div>

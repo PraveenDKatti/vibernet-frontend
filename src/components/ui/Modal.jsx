@@ -1,9 +1,7 @@
 export default function Modal({ children }) {
   return (
-    <div className="fixed inset-0 bg-black/60 flex items-center justify-center">
-      <div className="bg-card p-6 rounded-xl w-full max-w-md">
-        {children}
-      </div>
+    <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm transition-opacity duration-300">
+      {children}
     </div>
   );
 }
