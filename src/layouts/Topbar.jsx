@@ -1,18 +1,22 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Menu, Search, X, User, Mic, Plus, Bell  } from "lucide-react";
+import { Menu, Search, X, User, Mic, Plus, Bell, SquarePlay, Radio, SquarePen } from "lucide-react";
 import useAuthStore from "../store/authStore";
 import UserMenu from "../components/common/UserMenu";
 import PageMenu from "../components/common/PageMenu";
 import Modal from "../components/ui/Modal";
 import logo2 from "../assets/icons/logo2.svg";
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
+import MenuModal from "../components/ui/MenuModal";
 
 export default function TopBar({ onMenuClick }) {
   const [query, setQuery] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const { transcript, listening, resetTranscript } = useSpeechRecognition();
   const { isAuthenticated } = useAuthStore();
+  
+  const {user} = useAuthStore()
+  const navigate = useNavigate()
 
   const handleSearch = () => {
     const trimmedQuery = query.trim();
@@ -25,6 +29,11 @@ export default function TopBar({ onMenuClick }) {
       handleSearch();
     }
   };
+
+  const handleAction = (item) => {
+    if(item.label === "Upload Video"){}
+    if(item.label === "Create Post"){ navigate(`/${user.username}/community`)}
+  }
 
   const handleStart = async () => {
     resetTranscript();
@@ -102,7 +111,7 @@ export default function TopBar({ onMenuClick }) {
         {/* Modal Overlay (Shadow Background) */}
         {isOpen && (
           <Modal onClick={handleClose}>
-            
+
             {/* Modal Box */}
             <div
               onClick={(e) => e.stopPropagation()} // Prevents closing when clicking inside
@@ -142,12 +151,30 @@ export default function TopBar({ onMenuClick }) {
       <div className="px-2">
         {isAuthenticated ? (
           <div className="flex items-center h-10">
-            <label className="flex mr-2 px-3 py-1.5 bg-zinc-100 dark:bg-zinc-200 hover:bg-zinc-200 rounded-full cursor-pointer">
-              <Plus size={24} />
-              <button className="text-sm font-medium ml-1">
-                Create
-              </button>
-            </label>
+            <MenuModal
+              definer={
+                <label className="flex mr-2 px-3 py-1.5 bg-zinc-100 dark:bg-zinc-200 hover:bg-zinc-200 rounded-full cursor-pointer">
+                  <Plus size={24} />
+                  <button className="text-sm font-medium ml-1">
+                    Create
+                  </button>
+                </label>
+              }
+            >
+              {[
+                { icon: <SquarePlay  size={18} />, label: "Upload Video" },
+                { icon: <Radio size={18} />, label: "Go Live" },
+                { icon: <SquarePen size={18} />, label: "Create Post" },
+              ].map((item, index) => (
+                <button
+                  key={index}
+                  onClick={() => handleAction(item)}
+                  className="w-full flex items-center justify-between px-4 py-2.5 text-left hover:bg-gray-100 dark:hover:bg-zinc-800 transition-colors"
+                >
+                  <span className="flex gap-4 items-center">{item.icon} {item.label}</span>
+                </button>
+              ))}
+            </MenuModal>
 
             <button className="mr-1 hover:bg-zinc-200 rounded-full">
               <Bell size={24} className="m-2" />

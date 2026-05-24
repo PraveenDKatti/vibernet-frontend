@@ -1,29 +1,21 @@
 import React, { useState, useEffect } from "react"
-import { useParams } from "react-router-dom"
+import { NavLink, Outlet, useParams } from "react-router-dom"
 import { getUserChannelSubscribers } from "../../api/subscription.api"
 import { channelProfile } from "../../api/user.api"
 import useAuthStore from "../../store/authStore"
 import PageLoader from '../../components/common/PageLoader'
 
-import HomeTab from "./tabs/HomeTab";
-import VideosTab from "./tabs/VideosTab";
-import PlaylistsTab from "./tabs/PlaylistsTab";
-import CommunityTab from "./tabs/CommunityTab";
-import ChannelTab from "./tabs/ChannelTab";
-
 const tabs = [
-    { id: "Home", label: "Home", component: HomeTab },
-    { id: "Videos", label: "Videos", component: VideosTab },
-    { id: "Playlists", label: "Playlists", component: PlaylistsTab },
-    { id: "Community", label: "Community", component: CommunityTab },
-    { id: "Channel", label: "Channel", component: ChannelTab },
+    { id: "Home", label: "Home" },
+    { id: "Videos", label: "Videos" },
+    { id: "Playlists", label: "Playlists" },
+    { id: "Community", label: "Community" },
+    { id: "Channel", label: "Channel" },
 ];
 
 export default function Channel() {
     const { username } = useParams();
     const { user } = useAuthStore();
-
-    const [activeTab, setActiveTab] = useState(tabs[0].id);
     const [channel, setChannel] = useState(null);
     const [subscribers, setSubscribers] = useState(0);
     const [loading, setLoading] = useState(true);
@@ -65,8 +57,6 @@ export default function Channel() {
             </div>
         );
     }
-
-    const ActiveComponent = tabs.find((tab) => tab.id === activeTab)?.component || HomeTab;
 
     return (
         <div>
@@ -126,16 +116,19 @@ export default function Channel() {
                     <div className="absolute w-full -bottom-[1px] border-b border-gray-200"></div>
                     <div className="flex px-10">
                         {tabs.map(({ id, label }) => (
-                            <button
+                            <NavLink
                                 key={id}
-                                onClick={() => setActiveTab(id)}
-                                className={`py-3 mr-8 font-medium border-b-2 transition ${activeTab === id
+                                to={label === "Home" ? "" : label.toLowerCase()}
+                                end={label === "Home"}
+                                className={({ isActive }) =>
+                                    `py-3 mr-8 font-medium border-b-2 transition ${isActive
                                         ? "border-black text-black"
                                         : "border-transparent text-gray-500 hover:border-gray-400"
-                                    }`}
+                                    }`
+                                }
                             >
                                 {label}
-                            </button>
+                            </NavLink>
                         ))}
                     </div>
                 </div>
@@ -143,7 +136,7 @@ export default function Channel() {
 
             {/* Tab Content */}
             <div className="px-8 py-6">
-                <ActiveComponent channel={channel} isOwner={isOwner} />
+                <Outlet context={{ channel, isOwner }} />
             </div>
         </div>
     );

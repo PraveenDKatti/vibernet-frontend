@@ -15,6 +15,11 @@ import Channel from "./pages/channel/Channel"
 import SearchResults from "./pages/SearchResults"
 import NotFound from './pages/NotFound'
 
+import HomeTab from "./pages/channel/tabs/HomeTab";
+import VideosTab from "./pages/channel/tabs/VideosTab";
+import PlaylistsTab from "./pages/channel/tabs/PlaylistsTab";
+import CommunityTab from "./pages/channel/tabs/CommunityTab";
+import ChannelTab from "./pages/channel/tabs/ChannelTab";
 
 export default function App() {
   const { checkAuth } = useAuthStore();
@@ -37,10 +42,16 @@ export default function App() {
             <Route path="/profile" element={<Profile />} />
             <Route path="/profile/subscriptions" element={<Subscription />} />
             <Route path="/profile/channels" element={<SubscribedChannels />} />
-            <Route path="/:username" element={<Channel />} />
+            <Route path="/:username" element={<Channel />}>
+              <Route index element={<HomeTab />} />
+              <Route path="videos" element={<VideosTab />} />
+              <Route path="playlists" element={<PlaylistsTab />} />
+              <Route path="community" element={<CommunityTab />} />
+              <Route path="channel" element={<ChannelTab />} />
+            </Route>
           </Route>
         </Route>
-        
+
         <Route element={<AuthLayout authentication={false} />}>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />

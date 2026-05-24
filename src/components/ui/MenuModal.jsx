@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { EllipsisVertical, Moon, Languages, Settings, Info, MessageSquareWarning, ChevronRight } from 'lucide-react';
 
-export default function MenuModal({children, definer}) {
+export default function MenuModal({ children, definer }) {
     const [active, setActive] = useState(false);
     const modalRef = useRef(null)
 
@@ -24,7 +24,7 @@ export default function MenuModal({children, definer}) {
     return (
         <>
             <div className='relative'>
-            <div onClick={() => setActive(!active)}> {definer} </div>
+                <div onClick={() => setActive(!active)}> {definer} </div>
                 {active && (
                     <div
                         ref={modalRef}
@@ -37,4 +37,3 @@ export default function MenuModal({children, definer}) {
         </>
     )
 }
- 
