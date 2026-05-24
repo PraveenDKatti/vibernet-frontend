@@ -51,8 +51,9 @@ export default function SubscribedChannels() {
                     : c
             )
         )
-
-        // TODO: Call an API here to save the notification preference to the backend if applicable
+        
+        //Future updates
+        // Call an API here to save the notification preference to the backend if applicable
         // await updateNotificationPreference(targetChannel.channelDetails.username, item.label)
     }
 
