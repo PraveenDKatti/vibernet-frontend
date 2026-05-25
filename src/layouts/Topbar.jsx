@@ -31,7 +31,7 @@ export default function TopBar({ onMenuClick }) {
   };
 
   const handleAction = (item) => {
-    if(item.label === "Upload Video"){}
+    if(item.label === "Upload Video"){ navigate('/upload')}
     if(item.label === "Create Post"){ navigate(`/${user.username}/community`)}
   }
 
@@ -153,12 +153,12 @@ export default function TopBar({ onMenuClick }) {
           <div className="flex items-center h-10">
             <MenuModal
               definer={
-                <label className="flex mr-2 px-3 py-1.5 bg-zinc-100 dark:bg-zinc-200 hover:bg-zinc-200 rounded-full cursor-pointer">
+                <button className="flex mr-2 px-3 py-1.5 bg-zinc-100 dark:bg-zinc-200 hover:bg-zinc-200 rounded-full cursor-pointer">
                   <Plus size={24} />
-                  <button className="text-sm font-medium ml-1">
+                  <label className="text-sm font-medium ml-1">
                     Create
-                  </button>
-                </label>
+                  </label>
+                </button>
               }
             >
               {[

@@ -14,6 +14,7 @@ import SubscribedChannels from "./pages/SubscribedChannels";
 import Channel from "./pages/channel/Channel"
 import SearchResults from "./pages/SearchResults"
 import NotFound from './pages/NotFound'
+import UploadVideo from "./pages/UploadVideo";
 
 import HomeTab from "./pages/channel/tabs/HomeTab";
 import VideosTab from "./pages/channel/tabs/VideosTab";
@@ -49,6 +50,7 @@ export default function App() {
               <Route path="community" element={<CommunityTab />} />
               <Route path="channel" element={<ChannelTab />} />
             </Route>
+            <Route path="/upload" element={<UploadVideo />} />
           </Route>
         </Route>
 
