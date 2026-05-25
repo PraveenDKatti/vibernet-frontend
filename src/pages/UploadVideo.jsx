@@ -1,63 +1,215 @@
 import React, { useState } from 'react'
-import { X, ArrowUpFromLine } from 'lucide-react'
+import { X, ArrowUpFromLine, Check } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import { publishVideo } from '../api/video.api'
+import useAuthStore from '../store/authStore'
+
+const STEPS = ["Video Info", "Elements", "Privacy", "Overview"]
 
 export default function UploadVideo() {
-    const [videoFile, setVideoFile] = useState()
-    const [title, setTitle] = useState()
-    const [description, setDescription] = useState()
-    const [thumbnail, setThumbnail] = useState()
-    const [privacy, setPrivacy] = useState()
+    const [videoFile, setVideoFile] = useState(null)
+    const [currentStep, setCurrentStep] = useState(0) // Tracks progressive step (0 to 3)
+
+    // Form Inputs State
+    const [title, setTitle] = useState("")
+    const [description, setDescription] = useState("")
+    const [thumbnail, setThumbnail] = useState(null)
+    const [privacy, setPrivacy] = useState("private")
 
     const navigate = useNavigate()
+    const { user } = useAuthStore()
 
     const fetchFile = (e) => {
         const doc = e.target.files[0]
         if (doc) {
             setVideoFile(doc)
+            setCurrentStep(0) // Default to first step when a file is successfully uploaded
+        }
+    }
+
+    const handleNext = () => {
+        if (currentStep < STEPS.length - 1) {
+            setCurrentStep((prev) => prev + 1)
+        }
+    }
+
+    const handleBack = () => {
+        if (currentStep > 0) {
+            setCurrentStep((prev) => prev - 1)
         }
     }
 
     const uploadVideo = async () => {
-        const success = await publishVideo(data) //once all data is fetched publish the video
-    }
+        const formData = new FormData();
+        formData.append('videoFile', videoFile);
+        formData.append('title', title || '');
+        formData.append('description', description || '');
+        formData.append('privacy', privacy);
 
+        if (thumbnail) {
+            formData.append('thumbnail', thumbnail);
+        }
+        const success = await publishVideo(formData);
+
+        if (success) {
+            navigate(`/${username}/videos`);
+        }
+    }
     const handleClose = () => {
         navigate('/')
     }
 
     return (
-        <div className='h-screen bg-black/40 fixed inset-0 z-50 flex items-center justify-center'>
-            {/* The UI to insert the video */}
-            <div className='w-[75vw] h-[85vh] rounded-3xl bg-white'>
-                <div className='flex items-center justify-between py-4 px-5 border-b-1 border-gray-200'>
-                    <span className='text-xl font-semibold'>Upload Videos</span>
-                    <X size={22} onClick={handleClose} />
-                </div>
-                <div className='grid place-items-center m-10'>
-                    <div className="flex flex-col items-center justify-center" >
-                        <label 
-                            className='relative group w-35 h-35 rounded-full grid place-items-center text-black/50 bg-zinc-100 my-5'>
-                            <ArrowUpFromLine size={20} className='w-10 h-10' />
-                            <input type="file" accept='video/*' onChange={fetchFile} className="hidden" />
-                        </label>
-                    </div>
-                    <p className='font-md'>Drag and drop video files to upload</p>
-                    <p className='text-sm text-gray-500'>Your videos will be private until you publish them.</p>
-                    <label
-                        className='relative group text-white font-semibold text-sm bg-black rounded-full my-10 px-4 py-2'>
-                        Select files
-                        <input type="file" accept='video/*' onChange={fetchFile} className="hidden" />
-                    </label>
-                    <p className='text-xs text-gray-500 text-center mt-5'>By submitting your videos to YouTube, you acknowledge that you agree to YouTube's
-                        Terms of Service and Community Guidelines. Please be sure not to violate others'
-                        copyright or privacy rights. Learn more
-                    </p>
-                </div>
-            </div>
+        <div className='h-screen bg-black/40 fixed inset-0 z-50 flex items-center justify-center text-zinc-900'>
+            <div className='w-[75vw] h-[85vh] rounded-3xl bg-white flex flex-col overflow-hidden shadow-2xl'>
 
-            {/* Future Need: progressive Steps UI for video details */}
+                {/* Header Row */}
+                <div className='flex items-center justify-between py-4 px-6 border-b border-gray-200'>
+                    <span className='text-xl font-bold'>
+                        {videoFile ? (videoFile.name.length > 30 ? `${videoFile.name.substring(0, 30)}...` : videoFile.name) : "Upload Videos"}
+                    </span>
+                    <X size={22} className="cursor-pointer hover:text-red-500 transition-colors" onClick={handleClose} />
+                </div>
+
+                {/* Progressive Stepper UI Header (Only visible after file insertion) */}
+                {videoFile && (
+                    <div className='flex items-center justify-between px-16 py-4 bg-zinc-50 border-b border-gray-200 select-none'>
+                        {STEPS.map((step, index) => (
+                            <React.Fragment key={step}>
+                                <div className='flex items-center space-x-3'>
+                                    <div className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-semibold border-2 transition-all duration-300
+                                        ${index < currentStep ? 'bg-black border-black text-white' :
+                                            index === currentStep ? 'border-black text-black ring-4 ring-black/10' : 'border-gray-300 text-gray-400'}`}
+                                    >
+                                        {index < currentStep ? <Check size={14} strokeWidth={3} /> : index + 1}
+                                    </div>
+                                    <span className={`text-sm font-medium transition-colors duration-300 ${index === currentStep ? 'text-black font-semibold' : 'text-gray-400'}`}>
+                                        {step}
+                                    </span>
+                                </div>
+                                {index < STEPS.length - 1 && (
+                                    <div className={`flex-1 h-[2px] mx-4 transition-all duration-500 ${index < currentStep ? 'bg-black' : 'bg-gray-200'}`} />
+                                )}
+                            </React.Fragment>
+                        ))}
+                    </div>
+                )}
+
+                {/* Main Dynamic View Content */}
+                <div className='flex-1 overflow-y-auto p-6'>
+                    {!videoFile ? (
+                        /* STEP 0: Initial File Drop UI */
+                        <div className='grid place-items-center h-full max-w-2xl mx-auto text-center'>
+                            <div className="flex flex-col items-center justify-center" >
+                                <label className='cursor-pointer relative group w-32 h-32 rounded-full grid place-items-center text-black/50 bg-zinc-100 my-5 hover:bg-zinc-200 transition-colors'>
+                                    <ArrowUpFromLine className='w-10 h-10 text-gray-600 group-hover:scale-110 transition-transform' />
+                                    <input type="file" accept='video/*' onChange={fetchFile} className="hidden" />
+                                </label>
+                            </div>
+                            <p className='font-medium text-lg text-zinc-700'>Drag and drop video files to upload</p>
+                            <p className='text-sm text-gray-500 mt-1'>Your videos will be private until you publish them.</p>
+
+                            <label className='cursor-pointer text-white font-semibold text-sm bg-black rounded-full my-8 px-6 py-2.5 hover:bg-zinc-800 transition-colors'>
+                                Select files
+                                <input type="file" accept='video/*' onChange={fetchFile} className="hidden" />
+                            </label>
+
+                            <p className='text-xs text-gray-400 max-w-lg leading-relaxed'>
+                                By submitting your videos, you acknowledge that you agree to our Terms of Service and Community Guidelines. Please be sure not to violate others' copyright or privacy rights.
+                            </p>
+                        </div>
+                    ) : (
+                        /* STEP 1-4: Sequential Multi-step Setup Subforms */
+                        <div className='h-full max-w-4xl mx-auto py-4'>
+                            {currentStep === 0 && (
+                                <div className='space-y-5 animate-fadeIn'>
+                                    <h3 className='text-lg font-bold text-zinc-800'>Details</h3>
+                                    <div className='flex flex-col space-y-2'>
+                                        <label className='text-xs font-semibold text-zinc-500 uppercase tracking-wider'>Title (required)</label>
+                                        <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Add a title that describes your video" className='w-full border border-gray-300 rounded-lg p-3 outline-none focus:border-black transition-colors' />
+                                    </div>
+                                    <div className='flex flex-col space-y-2'>
+                                        <label className='text-xs font-semibold text-zinc-500 uppercase tracking-wider'>Description</label>
+                                        <textarea value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Tell viewers about your video" rows={4} className='w-full border border-gray-300 rounded-lg p-3 outline-none focus:border-black transition-colors resize-none' />
+                                    </div>
+                                    <div className='flex flex-col space-y-2'>
+                                        <label className='text-xs font-semibold text-zinc-500 uppercase tracking-wider'>Thumbnail</label>
+                                        <input type="file" accept="image/*" onChange={(e) => setThumbnail(e.target.files[0])} className='text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-zinc-100 file:text-black hover:file:bg-zinc-200 cursor-pointer' />
+                                    </div>
+                                </div>
+                            )}
+
+                            {currentStep === 1 && (
+                                <div className='space-y-4 animate-fadeIn'>
+                                    <h3 className='text-lg font-bold text-zinc-800'>Video Elements</h3>
+                                    <p className='text-sm text-gray-500'>Use cards and an end screen to show viewers related videos, websites, and calls to action.</p>
+                                    <div className='border border-dashed border-gray-300 rounded-xl p-8 text-center text-gray-400 text-sm bg-zinc-50'>
+                                        Optional configuration configuration hooks can go here (e.g., Subtitles, End Screens, Cards).
+                                    </div>
+                                </div>
+                            )}
+
+                            {currentStep === 2 && (
+                                <div className='space-y-4 animate-fadeIn'>
+                                    <h3 className='text-lg font-bold text-zinc-800'>Privacy & Visibility</h3>
+                                    <p className='text-sm text-gray-500'>Choose when to publish and who can see your video.</p>
+                                    <div className='border border-gray-200 rounded-xl p-5 bg-zinc-50 space-y-4 max-w-md'>
+                                        {['private', 'unlisted', 'public'].map((option) => (
+                                            <label key={option} className='flex items-center space-x-3 cursor-pointer capitalize font-medium text-sm text-zinc-700'>
+                                                <input type="radio" name="privacy" value={option} checked={privacy === option} onChange={(e) => setPrivacy(e.target.value)} className='w-4 h-4 accent-black' />
+                                                <span>{option}</span>
+                                            </label>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+
+                            {currentStep === 3 && (
+                                <div className='space-y-5 animate-fadeIn'>
+                                    <h3 className='text-lg font-bold text-zinc-800'>Overview & Review</h3>
+                                    <p className='text-sm text-gray-500'>Check your configuration settings before final upload publishing.</p>
+                                    <div className='bg-zinc-50 border border-gray-200 rounded-xl p-6 space-y-3 text-sm'>
+                                        <p><strong>File Name:</strong> {videoFile?.name}</p>
+                                        <p><strong>Title:</strong> {title || <span className="text-red-400 italic">No Title provided</span>}</p>
+                                        <p><strong>Description:</strong> {description || <span className="text-gray-400 italic">No description provided</span>}</p>
+                                        <p><strong>Thumbnail chosen:</strong> {thumbnail ? thumbnail.name : "None selected"}</p>
+                                        <p className="capitalize"><strong>Visibility:</strong> {privacy}</p>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    )}
+                </div>
+
+                {/* Sticky Progress Control Footer Block */}
+                {videoFile && (
+                    <div className='flex items-center justify-between px-6 py-4 bg-zinc-50 border-t border-gray-200'>
+                        <button
+                            onClick={handleBack}
+                            disabled={currentStep === 0}
+                            className={`px-5 py-2 rounded-full font-semibold text-sm transition-colors border ${currentStep === 0 ? 'text-gray-300 border-gray-200 cursor-not-allowed' : 'text-zinc-700 border-gray-300 hover:bg-zinc-100'}`}
+                        >
+                            Back
+                        </button>
+
+                        {currentStep < STEPS.length - 1 ? (
+                            <button
+                                onClick={handleNext}
+                                className='px-6 py-2 bg-black text-white rounded-full font-semibold text-sm hover:bg-zinc-800 transition-colors'
+                            >
+                                Next
+                            </button>
+                        ) : (
+                            <button
+                                onClick={uploadVideo}
+                                className='px-6 py-2 bg-emerald-600 text-white rounded-full font-semibold text-sm hover:bg-emerald-700 transition-colors'
+                            >
+                                Publish Video
+                            </button>
+                        )}
+                    </div>
+                )}
+            </div>
         </div>
     )
 }
