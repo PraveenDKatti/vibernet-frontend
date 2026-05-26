@@ -30,7 +30,7 @@ const useAuthStore = create((set, get) => ({
       const response = await authApi.login(credentials)
 
       set({
-        user: response.data,
+        user: response.data.user,
         isAuthenticated: true,
         loading: false,
       });
