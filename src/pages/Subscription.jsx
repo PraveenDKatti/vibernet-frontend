@@ -52,7 +52,7 @@ export default function Subscription() {
                 <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-6'>
                     {subscriptions.map((video) => {
                         const minutes = Math.floor(video.duration / 60)
-                        const seconds = String(video.duration % 60).padStart(2, '0')
+                        const seconds = Math.floor(video.duration % 60)
 
                         return (
                             <div

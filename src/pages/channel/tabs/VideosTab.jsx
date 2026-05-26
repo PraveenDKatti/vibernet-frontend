@@ -57,7 +57,7 @@ export default function VideosTab() {
               <img src={video.thumbnail} className='h-full w-full rounded-xl' />
               <div
                 className='absolute bg-black/60 text-white font-medium right-2 bottom-2 px-1 py-0.5 text-xs rounded-md'
-              >{parseInt(video.duration / 60)}:{(video.duration) % 60}
+              >{parseInt(video.duration / 60)}:{parseInt(video.duration) % 60}
               </div>
             </div>
             <div className="flex justify-between items-start">
