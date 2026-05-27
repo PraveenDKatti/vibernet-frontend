@@ -36,13 +36,15 @@ const Home = () => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4 space-y-4 min-h-screen">
       {homeFeed.map((video) => {
+        const minutes = parseInt(video.duration / 60)
+        const seconds = String(parseInt(video.duration) % 60).padStart(2, '0')
         return (
           <div key={video._id} className="hover:bg-blue-50 rounded-2xl space-y-3 cursor-pointer" onClick={() => navigate(`/Watch/${video._id}`)}>
             <div className="relative h-52">
               <img src={video.thumbnail} className='h-full w-full rounded-xl' />
               <div
                 className='absolute bg-black/60 text-white font-medium right-2 bottom-2 px-1 py-0.5 text-xs rounded-md'
-              >{parseInt(video.duration / 60)}:{parseInt(video.duration) % 60}
+              >{minutes}:{seconds}
               </div>
             </div>
             <div className="flex justify-between items-start">

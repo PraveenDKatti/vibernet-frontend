@@ -16,8 +16,8 @@ export default function Subscription() {
         if (!user?._id) return
         async function fetchSubscriptionData() {
             try {
-                const response = getSubscribedFeed()
-                setSubscriptions(response?.data?.docs || [])
+                const response = await getSubscribedFeed()
+                setSubscriptions(response?.data || [])
             } catch (error) {
                 console.error(error)
             }
@@ -52,7 +52,7 @@ export default function Subscription() {
                 <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-6'>
                     {subscriptions.map((video) => {
                         const minutes = Math.floor(video.duration / 60)
-                        const seconds = Math.floor(video.duration % 60)
+                        const seconds = String(Math.floor(video.duration % 60)).padStart(2, '0')
 
                         return (
                             <div
