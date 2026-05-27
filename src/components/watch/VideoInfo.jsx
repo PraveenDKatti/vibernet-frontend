@@ -8,6 +8,7 @@ import useVideoStore from '../../store/videoStore'
 export default function VideoInfo() {
     const video = useVideoStore((s) => s.currentVideo)
     const updateSubscriptionStatus = useVideoStore((s) => s.updateSubscriptionStatus)
+    const updateLikeStatus = useVideoStore((s) => s.updateLikeStatus)
 
     const handleSubscription = async () => {
         try {
@@ -20,11 +21,12 @@ export default function VideoInfo() {
 
     const handleReaction = async (videoId, type) => {
         try {
-            await toggleLikeReaction({
-                targetId: videoId,
-                type,
-                targetType: "video"
-            })
+            const res = await toggleLikeReaction({
+                    targetId: videoId,
+                    type,
+                    targetType: "video"
+                })
+            updateLikeStatus(res.data.status)
         } catch (error) {
             console.error(error);
         }
