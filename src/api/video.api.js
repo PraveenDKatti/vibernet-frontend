@@ -1,4 +1,4 @@
-import client from "./client";
+import client from "../utils/client.js";
 
 export const publishVideo = (data) =>
   client.post("/videos/publish", data).then(res => res.data)

@@ -1,7 +1,7 @@
 import { EllipsisVertical } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
-import client from '../api/client'
+import client from '../utils/client'
 import { formatDistanceToNow } from "date-fns"
 import PageLoader from '../components/common/PageLoader'
 

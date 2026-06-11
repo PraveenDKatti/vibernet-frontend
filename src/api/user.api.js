@@ -1,4 +1,4 @@
-import client from "./client";
+import client from "../utils/client.js";
 
 export const currentUser = () =>
   client.get("/users/current-user").then(res => res.data)

@@ -1,4 +1,4 @@
-import client from "./client";
+import client from "../utils/client.js";
 
 export const toggleWatchLater = (videoId) =>
   client.post(`/watchlater/${videoId}`).then(res => res.data)

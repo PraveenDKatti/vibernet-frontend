@@ -1,4 +1,4 @@
-import client from "./client";
+import client from "../utils/client.js";
 
 export const getChannelStats = () =>
   client.get("/channel/stats").then(res => res.data)
