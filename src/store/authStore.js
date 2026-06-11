@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import * as authApi from "../api/auth.api";
-import client from "../utils/client";
+import client from "../api/client";
 
 const useAuthStore = create((set, get) => ({
   // 🔹 state

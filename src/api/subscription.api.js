@@ -1,4 +1,4 @@
-import client from "../utils/client.js";
+import client from "./client";
 
 export const toggleSubscription = (username) =>
   client.post(`/subscriptions/${username}`).then(res => res.data)

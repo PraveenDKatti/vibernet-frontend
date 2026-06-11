@@ -1,4 +1,4 @@
-import client from "../utils/client.js";
+import client from "./client";
 
 export const createPlaylist = (data) =>
   client.post("/playlists", data).then(res => res.data)

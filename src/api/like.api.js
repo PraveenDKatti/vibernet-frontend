@@ -1,4 +1,4 @@
-import client from "../utils/client.js";
+import client from "./client";
 
 export const toggleLikeReaction = ({ targetId, type, targetType }) =>
   client

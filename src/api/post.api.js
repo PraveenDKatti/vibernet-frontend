@@ -1,4 +1,4 @@
-import client from "../utils/client.js";
+import client from "./client";
 
 export const createPost = (data) =>
   client.post("/posts", data).then(res => res.data)

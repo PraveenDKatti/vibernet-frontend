@@ -1,4 +1,4 @@
-import client from "../utils/client.js";
+import client from "./client";
 
 export const getVideoComments = (videoId) =>
   client.get(`/comments/v/${videoId}`).then(res => res.data)

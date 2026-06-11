@@ -1,4 +1,4 @@
-import client from "../utils/client.js";
+import client from "./client";
 
 export const updateHistory = (videoId) =>
   client.post(`/history/${videoId}`).then(res => res.data)
