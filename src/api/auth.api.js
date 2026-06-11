@@ -1,4 +1,4 @@
-import client from "../utils/client.js";
+import client from "./client.js";
 
 export const login = (credentials) => 
     client.post("/users/login", credentials).then(res => res.data)
