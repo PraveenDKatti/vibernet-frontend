@@ -32,10 +32,8 @@ export default function SignUp() {
 
     const success = await register(formData);
     if (success) {
-      const loggedIn = await login({ email, password });
-      if (loggedIn) {
-        navigate("/");
-      }
+      console.log(success)
+      navigate("/login");
     }
     console.log(error);
   };

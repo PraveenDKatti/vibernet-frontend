@@ -53,10 +53,15 @@ const useAuthStore = create((set, get) => ({
       const response = await authApi.register(payload);
 
       set({
+        loading: false
+      })
+
+      //if data is set and authenticated logins immediately without navigating to login page.
+      /* set({
         user: response.data,
         isAuthenticated: true,
         loading: false,
-      });
+      }); */
 
       return response;
     } catch (err) {
