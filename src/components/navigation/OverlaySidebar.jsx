@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { Home, User2, Layers, Menu } from "lucide-react";
-import logo2 from "../assets/icons/logo2.svg"
+import logo2 from "../../assets/icons/logo2.svg"
 
 export default function OverlaySidebar({ onClose }) {
   return (

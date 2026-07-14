@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Menu, Search, X, User, Mic, Plus, Bell, SquarePlay, Radio, SquarePen } from "lucide-react";
-import useAuthStore from "../store/authStore";
-import UserMenu from "../components/common/UserMenu";
-import PageMenu from "../components/common/PageMenu";
-import Modal from "../components/ui/Modal";
-import logo2 from "../assets/icons/logo2.svg";
+import useAuthStore from "../../store/authStore";
+import UserMenu from "../common/UserMenu";
+import PageMenu from "../common/PageMenu";
+import Modal from "../ui/Modal";
+import logo2 from "../../assets/icons/logo2.svg";
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
-import MenuModal from "../components/ui/MenuModal";
+import MenuModal from "../ui/MenuModal";
 
 export default function TopBar({ onMenuClick }) {
   const [query, setQuery] = useState("");
