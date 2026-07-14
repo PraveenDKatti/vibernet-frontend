@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { EllipsisVertical } from 'lucide-react'
-import { formatDistanceToNow } from 'date-fns'
+import { formatActionTime } from '../../utils/formatActionTime'
 import useAuthStore from '../../store/authStore'
 import { getSubscribedFeed } from '../../api/subscription.api'
 import PageLoader from '../../components/common/PageLoader'
@@ -95,7 +95,7 @@ export default function Subscription() {
                                                 <span>{viewsCount} views</span>
                                                 <span>•</span>
                                                 <span>
-                                                    {formatDistanceToNow(new Date(video.createdAt))} ago
+                                                    {formatActionTime(video.createdAt)}
                                                 </span>
                                             </div>
                                         </div>

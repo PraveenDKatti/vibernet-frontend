@@ -6,12 +6,12 @@ import {
   ThumbsDown,
   MessageSquareText,
 } from "lucide-react";
-import { formatDistanceToNow } from "date-fns";
+import { formatActionTime } from "../../utils/formatActionTime";
 import {
   updatePost,
   deletePost,
 } from "../../api/post.api";
-import {toggleLikeReaction} from '../../api/like.api';
+import { toggleLikeReaction } from '../../api/like.api';
 
 import PostEditor from "./PostEditor";
 
@@ -122,9 +122,7 @@ export default function PostCard({ post, setPosts }) {
               {post?.owner?.fullName}
             </p>
             <p className="text-sm text-gray-500">
-              {formatDistanceToNow(new Date(post.createdAt), {
-                addSuffix: true,
-              })}
+              {formatActionTime(post.createdAt)}
             </p>
           </div>
 

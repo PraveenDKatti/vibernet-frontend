@@ -3,7 +3,7 @@ import useAuthStore from "../../../store/authStore";
 import { getUserPlaylists } from "../../../api/playlist.api";
 import { useParams } from "react-router-dom";
 import { EllipsisVertical } from "lucide-react";
-import { formatDistanceToNow } from "date-fns";
+import { formatActionTime } from "../../../utils/formatActionTime";
 
 export default function PlaylistsTab() {
   const { username } = useParams();
@@ -53,10 +53,10 @@ export default function PlaylistsTab() {
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6">
         {channelPlaylists.map((pList) => (
           <div key={pList._id} className="space-y-3 group cursor-pointer">
-            
+
             {/* Thumbnail */}
             <div className="bg-gray-300 h-40 rounded-xl relative overflow-hidden">
-              
+
               {/* Videos Count */}
               <div className="absolute bottom-2 right-2 bg-black/80 text-white text-xs px-2 py-1 rounded">
                 {pList?.videos?.length || 0} Videos
@@ -79,9 +79,7 @@ export default function PlaylistsTab() {
                 <span className="text-zinc-700">•</span>
                 <span>
                   {pList?.updatedAt
-                    ? formatDistanceToNow(new Date(pList.updatedAt), {
-                        addSuffix: true,
-                      })
+                    ? formatActionTime(pList.updatedAt)
                     : "Recently updated"}
                 </span>
               </div>

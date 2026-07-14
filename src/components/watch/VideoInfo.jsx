@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { ThumbsUp, ThumbsDown, Forward, Minus, EllipsisVertical } from 'lucide-react'
-import { formatDistanceToNow } from "date-fns"
+import { formatActionTime } from "../../utils/formatActionTime"
 import { toggleSubscription } from '../../api/subscription.api'
 import { toggleLikeReaction } from '../../api/like.api'
 import useVideoStore from '../../store/videoStore'
@@ -25,10 +25,10 @@ export default function VideoInfo() {
     const handleReaction = async (videoId, type) => {
         try {
             const res = await toggleLikeReaction({
-                    targetId: videoId,
-                    type,
-                    targetType: "video"
-                })
+                targetId: videoId,
+                type,
+                targetType: "video"
+            })
             updateLikeStatus(res.data.status)
         } catch (error) {
             console.error(error);
@@ -75,7 +75,7 @@ export default function VideoInfo() {
                 </div>
             </div>
             <div className='rounded-2xl bg-zinc-100 text-sm p-3'>
-                <p className='font-medium'>{viewsCount} views {formatDistanceToNow(new Date(video.createdAt))} ago </p>
+                <p className='font-medium'>{viewsCount} views {formatActionTime(video.createdAt)} </p>
                 <p>{video.description}</p>
             </div>
         </div>

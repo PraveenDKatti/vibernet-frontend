@@ -9,7 +9,7 @@ import {
 import { toggleLikeReaction } from '../../api/like.api'
 import useAuthStore from "../../store/authStore";
 import useVideoStore from '../../store/videoStore'
-import { formatDistanceToNow } from "date-fns";
+import { formatActionTime } from "../../utils/formatActionTime";
 import EmojiPicker from "emoji-picker-react";
 
 export default function CommentSection() {
@@ -180,9 +180,7 @@ export default function CommentSection() {
                                             {c?.owner?.username || "Unknown"}
                                         </p>
                                         <p className="text-gray-500">
-                                            {formatDistanceToNow(new Date(c.createdAt), {
-                                                addSuffix: true,
-                                            })}
+                                            {formatActionTime(c.createdAt)}
                                         </p>
                                     </div>
 

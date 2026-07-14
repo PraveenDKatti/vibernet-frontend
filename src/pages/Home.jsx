@@ -2,7 +2,7 @@ import { EllipsisVertical } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { getAllVideos } from '../api/video.api'
-import { formatDistanceToNow, set } from "date-fns"
+import { formatActionTime } from "../utils/formatActionTime"
 import PageLoader from '../components/common/PageLoader'
 import { formatDuration } from '../utils/formatDuration'
 import { formatCount } from '../utils/formatCount'
@@ -40,7 +40,7 @@ const Home = () => {
       {homeFeed.map((video) => {
         const duration = formatDuration(video.duration)
         const viewsCount = formatCount(video.views)
-        
+
         return (
           <div key={video._id} className="hover:bg-blue-50 rounded-2xl space-y-3 cursor-pointer" onClick={() => navigate(`/Watch/${video._id}`)}>
             <div className="relative h-52">
@@ -59,7 +59,7 @@ const Home = () => {
                   <div className='flex space-x-2 text-gray-500 text-sm'>
                     <span>{viewsCount} views</span>
                     <span className="text-zinc-700">•</span>
-                    <span>{formatDistanceToNow(new Date(video.createdAt))} ago</span>
+                    <span>{formatActionTime(video.createdAt)}</span>
                   </div>
                 </div>
               </div>

@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { formatDistanceToNow } from "date-fns";
+import { formatActionTime } from "../../utils/formatActionTime";
 import { formatDuration } from "../../utils/formatDuration"
 import { formatCount } from "../../utils/formatCount";
 
@@ -9,14 +9,14 @@ export default function VideoCard({ video }) {
   const viewsCount = formatCount(video.views)
 
   return (
-    <div 
+    <div
       className="flex flex-col gap-3 cursor-pointer group"
       onClick={() => navigate(`/watch/${video._id}`)}
     >
       {/* Thumbnail */}
       <div className="relative aspect-video rounded-xl overflow-hidden bg-zinc-800">
-        <img 
-          src={video.thumbnail} 
+        <img
+          src={video.thumbnail}
           alt={video.title}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
         />
@@ -27,8 +27,8 @@ export default function VideoCard({ video }) {
 
       {/* Details */}
       <div className="flex gap-3 px-1">
-        <img 
-          src={video.owner?.avatar} 
+        <img
+          src={video.owner?.avatar}
           className="w-9 h-9 rounded-full object-cover shrink-0 border border-gray-100 dark:border-zinc-800"
           alt="avatar"
           onClick={(e) => {
@@ -46,7 +46,7 @@ export default function VideoCard({ video }) {
           <div className="text-[11px] text-zinc-500 flex items-center gap-1">
             <span>{viewsCount} views</span>
             <span>•</span>
-            <span>{formatDistanceToNow(new Date(video.createdAt))} ago</span>
+            <span>{formatActionTime(video.createdAt)}</span>
           </div>
         </div>
       </div>

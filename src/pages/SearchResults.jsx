@@ -2,7 +2,7 @@ import { EllipsisVertical } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import client from '../api/client'
-import { formatDistanceToNow } from "date-fns"
+import { formatActionTime } from "../utils/formatActionTime"
 import PageLoader from '../components/common/PageLoader'
 import { formatDuration } from '../utils/formatDuration'
 import { formatCount } from '../utils/formatCount'
@@ -52,7 +52,7 @@ const SearchResults = () => {
             {videos.map((video) => {
                 const duration = formatDuration(video.duration)
                 const viewsCount = formatCount(video.views)
-                
+
                 return (
                     <div
                         key={video._id}
@@ -82,9 +82,7 @@ const SearchResults = () => {
                                         <span>{viewsCount} views</span>
                                         <span>•</span>
                                         <span>
-                                            {video.createdAt
-                                                ? formatDistanceToNow(new Date(video.createdAt), { addSuffix: true })
-                                                : ""}
+                                            {formatActionTime(video.createdAt)}
                                         </span>
                                     </div>
                                 </div>

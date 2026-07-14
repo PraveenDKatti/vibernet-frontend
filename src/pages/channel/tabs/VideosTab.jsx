@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import useAuthStore from "../../../store/authStore";
 import { getAllVideos } from '../../../api/video.api';
-import { formatDistanceToNow } from "date-fns";
+import { formatActionTime } from "../../../utils/formatActionTime";
 import { EllipsisVertical } from 'lucide-react'
 import { formatDuration } from "../../../utils/formatDuration";
 import { formatCount } from "../../../utils/formatCount";
@@ -10,6 +10,7 @@ import { formatCount } from "../../../utils/formatCount";
 export default function VideosTab() {
   const { username } = useParams();
   const { user } = useAuthStore();
+  const navigate = useNavigate();
 
   const [channelVideos, setChannelVideos] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -75,7 +76,7 @@ export default function VideosTab() {
                     <div className='flex space-x-2 text-gray-500 text-sm'>
                       <span>{viewsCount}</span>
                       <span className="text-zinc-700">•</span>
-                      <span>{formatDistanceToNow(new Date(video.createdAt))} ago</span>
+                      <span>{formatActionTime(video.createdAt)}</span>
                     </div>
                   </div>
                 </div>
