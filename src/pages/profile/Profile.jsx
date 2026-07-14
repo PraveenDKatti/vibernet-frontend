@@ -10,29 +10,29 @@ export default function Profile() {
   const { user, loading } = useAuthStore();
 
   if (loading) return <PageLoader />;
-  if(!user) return <p>Something Went Wrong..</p>
+  if (!user) return <p>Something Went Wrong..</p>
 
   return (
-    <div>
+    <div className="px-2 md:px-0">
       {/* Profile Header */}
-      <div className="flex h-[135px] items-center gap-4">
-        <img src={user.avatar} className="rounded-full w-30 h-30" />
-        <div className="space-y-2">
-          <p className="text-4xl font-bold">{user.fullName}</p>
-          <div className="flex text-sm space-x-1 text-gray-500">
+      <div className="flex flex-col sm:flex-row h-auto items-center sm:items-start text-center sm:text-left gap-4 py-6 border-b border-gray-200 dark:border-zinc-800">
+        <img src={user.avatar} className="rounded-full w-24 h-24 sm:w-30 sm:h-30 object-cover shrink-0" />
+        <div className="space-y-2 min-w-0">
+          <p className="text-3xl sm:text-4xl font-bold truncate leading-tight">{user.fullName}</p>
+          <div className="flex justify-center sm:justify-start text-sm space-x-1.5 text-gray-500">
             <p>@{user.username}</p>
             <span>•</span>
-            <p>View Channel</p>
+            <p className="hover:underline cursor-pointer">View Channel</p>
           </div>
         </div>
       </div>
 
       {/* Sections */}
       <div className="space-y-10 mt-6">
-        <History user={user}/>
-        <PlayList user={user}/>
-        <LikedVideos user={user}/>
-        <WatchLater user={user}/>
+        <History user={user} />
+        <PlayList user={user} />
+        <LikedVideos user={user} />
+        <WatchLater user={user} />
       </div>
     </div>
   );

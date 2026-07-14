@@ -5,7 +5,7 @@ import { formatActionTime } from "../../utils/formatActionTime"
 import PageLoader from "../../components/common/PageLoader"
 import { formatCount } from '../../utils/formatCount'
 
-export default function LikedVideos({ user, loading }) {
+export default function LikedVideos({ loading }) {
     const [likedFeed, setLikedFeed] = useState() //liked videos
 
     useEffect(() => {
@@ -36,25 +36,27 @@ export default function LikedVideos({ user, loading }) {
                 </div>
             </div>
 
-            <div className="grid grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 {likedFeed.map((v) => {
                     const viewsCount = formatCount(v.views)
 
                     return (
-                        <div key={v._id} className="space-y-2">
-                            <div className="h-38"><img src={v.thumbnail} className="w-full h-full rounded-md" /></div>
-                            <div className="flex space-x-4">
-                                <img src={v.owner.avatar} className="w-10 h-10 rounded-full" />
-                                <div className="flex-1">
-                                    <p className="h-10 leading-tight font-semibold overflow-hidden">{v.title}</p>
-                                    <p className="text-gray-500 text-sm">{v.owner.username}</p>
-                                    <p className='flex space-x-2 text-gray-500 text-sm'>
+                        <div key={v._id} className="space-y-2 p-1 hover:bg-zinc-50 dark:hover:bg-zinc-800/30 rounded-xl transition-colors">
+                            <div className="aspect-video w-full">
+                                <img src={v.thumbnail} className="w-full h-full rounded-md object-cover" />
+                            </div>
+                            <div className="flex space-x-3 text-sm">
+                                <img src={v.owner.avatar} className="w-8 h-8 rounded-full object-cover shrink-0" />
+                                <div className="flex-1 min-w-0">
+                                    <p className="font-semibold line-clamp-1 leading-snug">{v.title}</p>
+                                    <p className="text-gray-500 text-xs truncate mt-0.5">{v.owner.username}</p>
+                                    <div className="flex items-center space-x-1.5 text-gray-500 text-xs mt-0.5">
                                         <span>{viewsCount}</span>
-                                        <span className="text-zinc-700">•</span>
+                                        <span>•</span>
                                         <span>{formatActionTime(v.createdAt)}</span>
-                                    </p>
+                                    </div>
                                 </div>
-                                <EllipsisVertical size={20} />
+                                <EllipsisVertical size={20} className="shrink-0 text-gray-400 hover:text-gray-700" />
                             </div>
                         </div>
                     )

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Menu, Search, X, User, Mic, Plus, Bell, SquarePlay, Radio, SquarePen } from "lucide-react";
+import { Menu, Search, X, User, Mic, Plus, Bell, SquarePlay, Radio, SquarePen, ArrowLeft } from "lucide-react";
 import useAuthStore from "../../store/authStore";
 import UserMenu from "../common/UserMenu";
 import PageMenu from "../common/PageMenu";
@@ -12,10 +12,11 @@ import MenuModal from "../ui/MenuModal";
 export default function TopBar({ onMenuClick }) {
   const [query, setQuery] = useState("");
   const [isOpen, setIsOpen] = useState(false);
+  const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
   const { transcript, listening, resetTranscript } = useSpeechRecognition();
   const { isAuthenticated } = useAuthStore();
-  
-  const {user} = useAuthStore()
+
+  const { user } = useAuthStore()
   const navigate = useNavigate()
 
   const handleSearch = () => {
@@ -27,12 +28,13 @@ export default function TopBar({ onMenuClick }) {
   const handleKeyDown = (e) => {
     if (e.key === "Enter" && query.trim().length > 0) {
       handleSearch();
+      setIsMobileSearchOpen(false);
     }
   };
 
   const handleAction = (item) => {
-    if(item.label === "Upload Video"){ navigate('/upload')}
-    if(item.label === "Create Post"){ navigate(`/${user.username}/community`)}
+    if (item.label === "Upload Video") { navigate('/upload') }
+    if (item.label === "Create Post") { navigate(`/${user.username}/community`) }
   }
 
   const handleStart = async () => {
@@ -55,6 +57,7 @@ export default function TopBar({ onMenuClick }) {
     if (!listening && transcript) {
       setIsOpen(false);
       handleSearch() /* Search immeadialey after speech input stops */
+      setIsMobileSearchOpen(false);
     }
   }, [listening, transcript]);
 
@@ -62,9 +65,80 @@ export default function TopBar({ onMenuClick }) {
     setQuery(transcript);
   }, [transcript]);
 
+  if (isMobileSearchOpen) {
+    return (
+      <header className="h-14 flex items-center gap-2 px-3 sticky top-0 z-40 bg-white dark:bg-zinc-900 border-b border-gray-150 dark:border-gray-800">
+        <button
+          onClick={() => setIsMobileSearchOpen(false)}
+          className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800"
+        >
+          <ArrowLeft size={22} />
+        </button>
+
+        <div className="flex-1 flex items-center h-10">
+          <input
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            onKeyDown={handleKeyDown}
+            type="text"
+            placeholder="Search"
+            autoFocus
+            className="flex-1 px-4 h-full border border-gray-300 dark:border-gray-700 rounded-l-full outline-none bg-transparent focus:border-blue-800"
+          />
+
+          <button
+            onClick={() => {
+              handleSearch();
+              setIsMobileSearchOpen(false);
+            }}
+            disabled={!query.trim()}
+            className="w-12 flex justify-center items-center h-full bg-zinc-50 hover:bg-zinc-100 border border-l-0 border-gray-300 rounded-r-full"
+          >
+            <Search size={20} />
+          </button>
+        </div>
+
+        <button
+          className="p-2 bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 rounded-full"
+          onClick={handleStart}
+        >
+          <Mic size={20} />
+        </button>
+
+        {isOpen && (
+          <Modal onClick={handleClose}>
+            <div
+              onClick={(e) => e.stopPropagation()}
+              className="w-[90vw] max-w-md transform rounded-2xl bg-white p-6 shadow-2xl transition-all scale-100"
+            >
+              <div className="w-full flex justify-between">
+                <h3 className="inline text-xl font-bold text-gray-800">Listening...</h3>
+                <span onClick={handleClose} className="cursor-pointer"><X /></span>
+              </div>
+
+              <div className="mb-4 min-h-[100px] rounded-xl p-4 text-left">
+                {transcript ? (
+                  <p className="text-gray-800 font-medium leading-relaxed">{transcript}</p>
+                ) : (
+                  <p className="italic text-gray-400">Speak clearly into your microphone</p>
+                )}
+              </div>
+
+              <div className="flex items-center justify-center">
+                <div className="relative my-4 h-12 w-12">
+                  <span className={`absolute inline-flex h-full w-full ${listening ? "animate-ping" : ""} rounded-full bg-red-400 opacity-75`}></span>
+                  <span className="relative inline-flex h-full w-full rounded-full bg-red-600 text-white justify-center items-center"><Mic size={22} /></span>
+                </div>
+              </div>
+            </div>
+          </Modal>
+        )}
+      </header>
+    );
+  }
 
   return (
-    <header className="h-14 flex items-center justify-between px-4 sticky top-0 z-40">
+    <header className="h-14 flex items-center justify-between px-4 sticky top-0 z-40 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md">
 
       {/* Left */}
       <div className="flex items-center gap-3 pr-2">
@@ -77,7 +151,7 @@ export default function TopBar({ onMenuClick }) {
 
         <Link to="/" className="flex items-center gap-1">
           <img src={logo2} className="h-5" alt="logo" />
-          <p className="text-[22px] font-semibold leading-none font-googleRoboto">
+          <p className="text-[22px] font-semibold leading-none font-googleRoboto hidden min-[400px]:block">
             Vibernet
           </p>
         </Link>
@@ -148,21 +222,29 @@ export default function TopBar({ onMenuClick }) {
       </div>
 
       {/* Right */}
-      <div className="px-2">
+      <div className="px-2 flex items-center">
+        {/* Mobile Search Icon Button */}
+        <button
+          onClick={() => setIsMobileSearchOpen(true)}
+          className="p-2 rounded-full hover:bg-gray-100 md:hidden mr-1 cursor-pointer"
+        >
+          <Search size={22} />
+        </button>
+
         {isAuthenticated ? (
           <div className="flex items-center h-10">
             <MenuModal
               definer={
                 <button className="flex mr-2 px-3 py-1.5 bg-zinc-100 dark:bg-zinc-200 hover:bg-zinc-200 rounded-full cursor-pointer">
                   <Plus size={24} />
-                  <label className="text-sm font-medium ml-1">
+                  <label className="text-sm font-medium ml-1 hidden sm:block">
                     Create
                   </label>
                 </button>
               }
             >
               {[
-                { icon: <SquarePlay  size={18} />, label: "Upload Video" },
+                { icon: <SquarePlay size={18} />, label: "Upload Video" },
                 { icon: <Radio size={18} />, label: "Go Live" },
                 { icon: <SquarePen size={18} />, label: "Create Post" },
               ].map((item, index) => (
@@ -185,12 +267,12 @@ export default function TopBar({ onMenuClick }) {
         ) : (
           <div className="flex items-center">
             {/* page menu container */}
-            <div>
+            <div className="hidden sm:block">
               <PageMenu />
             </div>
             <Link
               to="/login"
-              className="flex gap-2 border border-gray-300 dark:border-gray-700 px-4 py-1.5 items-center rounded-full hover:bg-gray-100 dark:hover:bg-zinc-800 text-sm font-medium"
+              className="flex gap-2 border border-gray-300 dark:border-gray-700 px-3 sm:px-4 py-1.5 items-center rounded-full hover:bg-gray-100 dark:hover:bg-zinc-800 text-sm font-medium whitespace-nowrap"
             >
               <User size={18} className="text-gray-700" />
               Log In

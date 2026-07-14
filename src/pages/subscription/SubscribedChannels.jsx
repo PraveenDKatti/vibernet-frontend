@@ -51,7 +51,7 @@ export default function SubscribedChannels() {
                     : c
             )
         )
-        
+
         //Future updates
         // Call an API here to save the notification preference to the backend if applicable
         // await updateNotificationPreference(targetChannel.channelDetails.username, item.label)
@@ -60,10 +60,10 @@ export default function SubscribedChannels() {
     if (loading) return <PageLoader />
 
     return (
-        <div className='space-y-6 mx-25'>
+        <div className="space-y-6 mx-4 md:mx-12 lg:mx-25">
             {/* Header */}
             <div className='flex justify-between items-center h-20'>
-                <p className='text-4xl font-bold'>All subscriptions</p>
+                <p className='text-3xl md:text-4xl font-bold'>All subscriptions</p>
 
                 <div className='flex gap-4'>
                     <List
@@ -88,59 +88,61 @@ export default function SubscribedChannels() {
 
             {/* Channels Layout */}
             {/* Quick tip: You have a layout state ('grid' vs 'list') but you aren't changing your Tailwind classes here! */}
-            <div className={layout === 'grid' ? 'grid grid-cols-1 md:grid-cols-2 gap-4' : 'space-y-4'}>
+            <div className={layout === 'grid' ? 'grid grid-cols-1 lg:grid-cols-2 gap-4' : 'space-y-4'}>
                 {channels.map((c) => (
                     <div
                         key={c.channelDetails._id}
-                        className="flex justify-between items-center p-4 border border-zinc-100 rounded-xl"
+                        className="flex flex-col sm:flex-row justify-between sm:items-center p-4 border border-zinc-150 rounded-xl gap-4"
                     >
                         {/* Left Section */}
-                        <div onClick={() => navigate(`/:${c.channelDetails.username}`)} className='flex gap-4 items-center cursor-pointer'>
+                        <div onClick={() => navigate(`/:${c.channelDetails.username}`)} className="flex gap-4 items-center cursor-pointer min-w-0 flex-1 w-full">
                             <img
                                 src={c.channelDetails.avatar}
                                 alt={c.channelDetails.username}
-                                className='w-16 h-16 rounded-full object-cover' // Adjusted size from w-35/h-35 which are non-standard tailwind sizes
+                                className="w-16 h-16 rounded-full object-cover shrink-0"
                             />
 
-                            <div className='space-y-1'>
-                                <p className='font-semibold'>{c.channelDetails.fullName}</p>
-                                <div className='flex gap-2 text-sm text-gray-600'>
-                                    <p>@{c.channelDetails.username}</p>
-                                    <span>•</span>
-                                    <p>{c.channelDetails.subscribersCount} subscribers</p>
+                            <div className="space-y-1 min-w-0 flex-1">
+                                <p className="font-semibold truncate">{c.channelDetails.fullName}</p>
+                                <div className="flex flex-wrap gap-x-2 gap-y-0.5 text-sm text-gray-600">
+                                    <p className="truncate">@{c.channelDetails.username}</p>
+                                    <span className="hidden sm:inline">•</span>
+                                    <p className="shrink-0">{c.channelDetails.subscribersCount} subscribers</p>
                                 </div>
-                                <p className='text-sm text-gray-500 line-clamp-1'>{c.channelDetails.description}</p>
+                                <p className="text-sm text-gray-500 line-clamp-1">{c.channelDetails.description}</p>
                             </div>
                         </div>
 
                         {/* Subscription Settings */}
-                        <MenuModal 
-                            definer={
-                                <button className='flex justify-between items-center bg-zinc-200/60 hover:bg-zinc-200 rounded-full w-40 p-3 text-sm font-medium transition-all'>
-                                    <span className='flex space-x-2 items-center'>
-                                        <Bell size={16} />
-                                        {/* Reads directly from individual item state instead of global state */}
-                                        <span>{c.notificationPreference || "All"}</span>
-                                    </span> 
-                                    <ChevronDown size={16} />
-                                </button>
-                            }
-                        >
-                            {[
-                                { icon: <Bell size={18} />, label: "All" },
-                                { icon: <Bell size={18} />, label: "Personalized" },
-                                { icon: <Bell size={18} />, label: "None" },
-                                { icon: <Bell size={18} />, label: "Unsubscribe" },
-                            ].map((item, index) => (
-                                <button
-                                    key={index}
-                                    onClick={() => handleSubscriptionOption(item, c)}
-                                    className="w-full flex items-center justify-between px-4 py-2.5 text-left hover:bg-gray-100 dark:hover:bg-zinc-800 transition-colors"
-                                >
-                                    <span className="flex gap-4 items-center">{item.icon} {item.label}</span>
-                                </button>
-                            ))}
-                        </MenuModal>
+                        <div className="w-full sm:w-auto flex justify-end shrink-0">
+                            <MenuModal
+                                definer={
+                                    <button className="flex justify-between items-center bg-zinc-200/60 hover:bg-zinc-200 rounded-full w-full sm:w-40 p-3 text-sm font-medium transition-all cursor-pointer">
+                                        <span className="flex space-x-2 items-center">
+                                            <Bell size={16} />
+                                            {/* Reads directly from individual item state instead of global state */}
+                                            <span>{c.notificationPreference || "All"}</span>
+                                        </span>
+                                        <ChevronDown size={16} />
+                                    </button>
+                                }
+                            >
+                                {[
+                                    { icon: <Bell size={18} />, label: "All" },
+                                    { icon: <Bell size={18} />, label: "Personalized" },
+                                    { icon: <Bell size={18} />, label: "None" },
+                                    { icon: <Bell size={18} />, label: "Unsubscribe" },
+                                ].map((item, index) => (
+                                    <button
+                                        key={index}
+                                        onClick={() => handleSubscriptionOption(item, c)}
+                                        className="w-full flex items-center justify-between px-4 py-2.5 text-left hover:bg-gray-100 dark:hover:bg-zinc-800 transition-colors"
+                                    >
+                                        <span className="flex gap-4 items-center">{item.icon} {item.label}</span>
+                                    </button>
+                                ))}
+                            </MenuModal>
+                        </div>
                     </div>
                 ))}
             </div>

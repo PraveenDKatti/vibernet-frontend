@@ -1,0 +1,93 @@
+﻿
+D:\Praveen\Git\vibernet\vibernet-frontend\src\components\community\PostEditor.jsx
+  27:3  warning  Unused eslint-disable directive (no problems were reported from 'react-hooks/set-state-in-effect')
+  30:7  error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+  28 |   useEffect(() => {
+  29 |     if (mode === "edit" && initialData) {
+> 30 |       setPostContent(initialData.postContent || "");
+     |       ^^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  31 |       setPostType(initialData.postType || "text");
+  32 |       setVideoId(initialData.videoId || "");
+  33 |       setPoll(  react-hooks/set-state-in-effect
+
+D:\Praveen\Git\vibernet\vibernet-frontend\src\components\navigation\Topbar.jsx
+  62:6  warning  React Hook useEffect has a missing dependency: 'handleSearch'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+D:\Praveen\Git\vibernet\vibernet-frontend\src\components\watch\CommentSection.jsx
+  27:22  error    Error: Cannot access variable before it is declared
+
+`fetchComments` is accessed before it is declared, which prevents the earlier access from updating when this value changes over time.
+
+  25 |
+  26 |     useEffect(() => {
+> 27 |         if (videoId) fetchComments();
+     |                      ^^^^^^^^^^^^^ `fetchComments` accessed before it is declared
+  28 |     }, [videoId]);
+  29 |
+  30 |     const fetchComments = async () => {
+
+  28 |     }, [videoId]);
+  29 |
+> 30 |     const fetchComments = async () => {
+     |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 31 |         try {
+     | ^^^^^^^^^^^^^
+> 32 |             const { data } = await getVideoComments(videoId);
+     | ^^^^^^^^^^^^^
+> 33 |             setComments(data?.docs || []);
+     | ^^^^^^^^^^^^^
+> 34 |         } catch (err) {
+     | ^^^^^^^^^^^^^
+> 35 |             console.error(err);
+     | ^^^^^^^^^^^^^
+> 36 |         }
+     | ^^^^^^^^^^^^^
+> 37 |     };
+     | ^^^^^^^ `fetchComments` is declared here
+  38 |
+  39 |     const handleReaction = async (commentId, type) => {
+  40 |         try {  react-hooks/immutability
+  28:8   warning  React Hook useEffect has a missing dependency: 'fetchComments'. Either include it or remove the dependency array                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 react-hooks/exhaustive-deps
+
+D:\Praveen\Git\vibernet\vibernet-frontend\src\layouts\WatchLayout.jsx
+  3:10  error  'useState' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+D:\Praveen\Git\vibernet\vibernet-frontend\src\pages\channel\tabs\HomeTab.jsx
+  9:11  error  'user' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+D:\Praveen\Git\vibernet\vibernet-frontend\src\pages\channel\tabs\PlaylistsTab.jsx
+  10:11  error  'user' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+D:\Praveen\Git\vibernet\vibernet-frontend\src\pages\channel\tabs\VideosTab.jsx
+  12:11  error  'user' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+D:\Praveen\Git\vibernet\vibernet-frontend\src\pages\profile\History.jsx
+  4:27  error  'removeFromHistory' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+  6:35  error  'user' is defined but never used                                                          no-unused-vars
+
+D:\Praveen\Git\vibernet\vibernet-frontend\src\pages\profile\LikedVideos.jsx
+  8:39  error  'user' is defined but never used  no-unused-vars
+
+D:\Praveen\Git\vibernet\vibernet-frontend\src\pages\profile\WatchLater.jsx
+  4:31  error  'toggleWatchLater' is defined but never used. Allowed unused vars must match /^[A-Z_]/u      no-unused-vars
+  4:49  error  'deleteFromWatchLater' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+  6:39  error  'user' is defined but never used                                                             no-unused-vars
+
+D:\Praveen\Git\vibernet\vibernet-frontend\src\store\authStore.js
+   5:35  error  'get' is defined but never used    no-unused-vars
+  17:14  error  'error' is defined but never used  no-unused-vars
+  52:41  error  'key' is defined but never used    no-unused-vars
+
+D:\Praveen\Git\vibernet\vibernet-frontend\src\store\videoStore.js
+  4:36  error  'get' is defined but never used  no-unused-vars
+
+Γ£û 19 problems (16 errors, 3 warnings)
+  0 errors and 1 warning potentially fixable with the `--fix` option.
+

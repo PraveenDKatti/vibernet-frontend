@@ -63,35 +63,35 @@ export default function UploadVideo() {
     }
 
     return (
-        <div className='h-screen bg-black/40 fixed inset-0 z-50 flex items-center justify-center text-zinc-900'>
-            <div className='w-[75vw] h-[85vh] rounded-3xl bg-white flex flex-col overflow-hidden shadow-2xl'>
+        <div className='h-screen bg-black/40 fixed inset-0 z-50 flex items-center justify-center text-zinc-900 p-2 sm:p-4'>
+            <div className='w-[96vw] md:w-[75vw] h-[96vh] md:h-[85vh] rounded-2xl md:rounded-3xl bg-white flex flex-col overflow-hidden shadow-2xl'>
 
                 {/* Header Row */}
                 <div className='flex items-center justify-between py-4 px-6 border-b border-gray-200'>
-                    <span className='text-xl font-bold'>
+                    <span className='text-lg md:text-xl font-bold truncate max-w-[80%]'>
                         {videoFile ? (videoFile.name.length > 30 ? `${videoFile.name.substring(0, 30)}...` : videoFile.name) : "Upload Videos"}
                     </span>
-                    <X size={22} className="cursor-pointer hover:text-red-500 transition-colors" onClick={handleClose} />
+                    <X size={22} className="cursor-pointer hover:text-red-500 transition-colors shrink-0" onClick={handleClose} />
                 </div>
 
                 {/* Progressive Stepper UI Header */}
                 {videoFile && (
-                    <div className='flex items-center justify-between px-16 py-4 bg-zinc-50 border-b border-gray-200 select-none'>
+                    <div className='flex items-center justify-between px-4 md:px-16 py-4 bg-zinc-50 border-b border-gray-200 select-none'>
                         {STEPS.map((step, index) => (
                             <React.Fragment key={step}>
-                                <div className='flex items-center space-x-3'>
-                                    <div className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-semibold border-2 transition-all duration-300
+                                <div className='flex items-center space-x-2 md:space-x-3'>
+                                    <div className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-semibold border-2 transition-all duration-300 shrink-0
                                         ${index < currentStep ? 'bg-black border-black text-white' :
                                             index === currentStep ? 'border-black text-black ring-4 ring-black/10' : 'border-gray-300 text-gray-400'}`}
                                     >
                                         {index < currentStep ? <Check size={14} strokeWidth={3} /> : index + 1}
                                     </div>
-                                    <span className={`text-sm font-medium transition-colors duration-300 ${index === currentStep ? 'text-black font-semibold' : 'text-gray-400'}`}>
+                                    <span className={`text-xs md:text-sm font-medium transition-colors duration-300 hidden sm:inline-block ${index === currentStep ? 'text-black font-semibold' : 'text-gray-400'}`}>
                                         {step}
                                     </span>
                                 </div>
                                 {index < STEPS.length - 1 && (
-                                    <div className={`flex-1 h-[2px] mx-4 transition-all duration-500 ${index < currentStep ? 'bg-black' : 'bg-gray-200'}`} />
+                                    <div className={`flex-1 h-[2px] mx-2 md:mx-4 transition-all duration-500 ${index < currentStep ? 'bg-black' : 'bg-gray-200'}`} />
                                 )}
                             </React.Fragment>
                         ))}

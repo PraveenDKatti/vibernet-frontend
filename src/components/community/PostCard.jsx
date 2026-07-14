@@ -106,8 +106,8 @@ export default function PostCard({ post, setPosts }) {
   }
 
   return (
-    <div className="w-2/3">
-      <div className="flex flex-col space-y-4 border p-5 rounded-xl border-gray-300 bg-white">
+    <div className="w-full max-w-2xl px-4 md:px-0">
+      <div className="flex flex-col space-y-4 border p-5 rounded-xl border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
 
         {/* HEADER */}
         <div className="flex gap-4 items-start relative">

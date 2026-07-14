@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import useAuthStore from "../../store/authStore";
 import { Image, Video, AlignStartVertical } from "lucide-react";
 import ImagePost from "./ImagePost";
@@ -15,26 +15,19 @@ export default function PostEditor({
 }) {
   const { user } = useAuthStore();
 
-  const [postContent, setPostContent] = useState("");
-  const [postType, setPostType] = useState("text");
+  const [postContent, setPostContent] = useState(() =>
+    mode === "edit" && initialData ? (initialData.postContent || "") : ""
+  );
+  const [postType, setPostType] = useState(() =>
+    mode === "edit" && initialData ? (initialData.postType || "text") : "text"
+  );
   const [images, setImages] = useState([]);
-  const [videoId, setVideoId] = useState("");
-  const [poll, setPoll] = useState({
-    question: "",
-    options: ["", ""],
-  });
-
-  // eslint-disable-next-line react-hooks/set-state-in-effect
-  useEffect(() => {
-    if (mode === "edit" && initialData) {
-      setPostContent(initialData.postContent || "");
-      setPostType(initialData.postType || "text");
-      setVideoId(initialData.videoId || "");
-      setPoll(
-        initialData.poll || { question: "", options: ["", ""] }
-      );
-    }
-  }, [mode, initialData]);
+  const [videoId, setVideoId] = useState(() =>
+    mode === "edit" && initialData ? (initialData.videoId || "") : ""
+  );
+  const [poll, setPoll] = useState(() =>
+    mode === "edit" && initialData ? (initialData.poll || { question: "", options: ["", ""] }) : { question: "", options: ["", ""] }
+  );
 
   function resetForm() {
     setPostContent("");
@@ -104,7 +97,7 @@ export default function PostEditor({
   }
 
   return (
-    <div className="rounded-2xl border border-gray-300 p-6 space-y-4 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800 w-2/3">
+    <div className="rounded-2xl border p-6 space-y-4 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800 w-full max-w-2xl">
 
       {/* HEADER */}
       <div className="flex items-center gap-3">

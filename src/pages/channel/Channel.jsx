@@ -93,9 +93,9 @@ export default function Channel() {
     return (
         <div>
             <div className="relative">
-                <div className="px-10 space-y-4">
+                <div className="px-4 md:px-10 space-y-4">
                     {/* Cover */}
-                    <div className="h-44">
+                    <div className="h-28 sm:h-36 md:h-44">
                         <img
                             src={channel.cover}
                             alt="cover"
@@ -104,45 +104,45 @@ export default function Channel() {
                     </div>
 
                     {/* Channel Header */}
-                    <div className="flex items-center gap-4">
+                    <div className="flex flex-col md:flex-row items-center md:items-start text-center md:text-left gap-4">
                         <img
                             src={channel.avatar}
                             alt="avatar"
-                            className="rounded-full w-40 h-40 object-cover"
+                            className="rounded-full w-24 h-24 md:w-32 md:h-32 lg:w-40 lg:h-40 object-cover shrink-0"
                         />
 
-                        <div className="flex-1 space-y-2">
-                            <p className="text-4xl font-bold">{channel.fullName}</p>
+                        <div className="flex-1 space-y-2 min-w-0">
+                            <p className="text-2xl md:text-3xl lg:text-4xl font-bold truncate">{channel.fullName}</p>
 
-                            <div className="flex text-sm space-x-1 text-gray-500">
+                            <div className="flex flex-wrap justify-center md:justify-start text-sm space-x-1 text-gray-500">
                                 <p>@{channel.username}</p>
                                 <span>•</span>
                                 <p>{subscribers} followers</p>
                             </div>
 
-                            <div className="flex text-gray-500 text-sm">
+                            <div className="flex justify-center md:justify-start text-gray-500 text-sm">
                                 <p>More about this channel</p>
-                                <p className="ml-1 cursor-pointer hover:underline">
+                                <p className="ml-1 cursor-pointer hover:underline text-zinc-900 font-medium">
                                     ...more
                                 </p>
                             </div>
                         </div>
 
                         {/* Action Button */}
-                        <div className="flex gap-4 h-10">
+                        <div className="flex gap-4 h-10 shrink-0 mt-2 md:mt-0">
                             {isOwner ? (
                                 <button
                                     onClick={() => navigate("channel")}
-                                    className="rounded-full bg-gray-100 px-4 hover:bg-gray-200 transition"
+                                    className="rounded-full bg-gray-100 px-4 hover:bg-gray-200 transition text-sm font-medium"
                                 >
                                     Customize Channel
                                 </button>
                             ) : (
                                 <button
                                     onClick={handleToggleSubscription}
-                                    className={`rounded-full px-4 py-2 transition font-medium ${isSubscribed
-                                            ? "bg-gray-200 text-black hover:bg-gray-300"
-                                            : "bg-black text-white hover:bg-gray-800"
+                                    className={`rounded-full px-4 py-2 transition font-medium text-sm ${isSubscribed
+                                        ? "bg-gray-200 text-black hover:bg-gray-300"
+                                        : "bg-black text-white hover:bg-gray-800"
                                         }`}
                                 >
                                     {isSubscribed ? "Subscribed" : "Subscribe"}
@@ -153,9 +153,9 @@ export default function Channel() {
                 </div>
 
                 {/* Tabs */}
-                <div>
+                <div className="relative mt-6">
                     <div className="absolute w-full -bottom-[1px] border-b border-gray-200"></div>
-                    <div className="flex px-10">
+                    <div className="flex px-4 md:px-10 overflow-x-auto scrollbar-hide whitespace-nowrap gap-1">
                         {activeTabs.map(({ id, label }) => (
                             <NavLink
                                 key={id}
@@ -176,7 +176,7 @@ export default function Channel() {
             </div>
 
             {/* Tab Content */}
-            <div className="px-8 py-6">
+            <div className="px-4 md:px-8 py-6">
                 <Outlet context={{ channel, isOwner }} />
             </div>
         </div>

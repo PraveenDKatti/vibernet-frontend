@@ -51,7 +51,7 @@ export default function Subscription() {
             )}
 
             {subscriptions.length > 0 && (
-                <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-6'>
+                <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6'>
                     {subscriptions.map((video) => {
                         const duration = formatDuration(video.duration)
                         const viewsCount = formatCount(video.views)
@@ -59,10 +59,10 @@ export default function Subscription() {
                         return (
                             <div
                                 key={video._id}
-                                className="hover:bg-blue-50 rounded-2xl space-y-2 cursor-pointer p-2"
+                                className="hover:bg-blue-50 dark:hover:bg-zinc-800/50 rounded-2xl space-y-2 cursor-pointer p-2 transition-colors"
                                 onClick={() => navigate(`/watch/${video._id}`)}
                             >
-                                <div className="relative h-52">
+                                <div className="relative aspect-video w-full">
                                     <img
                                         src={video.thumbnail}
                                         alt={video.title}
@@ -75,19 +75,19 @@ export default function Subscription() {
                                 </div>
 
                                 <div className="flex justify-between items-start">
-                                    <div className="flex flex-1 space-x-3">
+                                    <div className="flex flex-1 space-x-3 min-w-0">
                                         <img
                                             src={video.ownerDetails?.avatar}
                                             alt={video.ownerDetails?.username}
-                                            className='rounded-full w-10 h-10'
+                                            className='rounded-full w-10 h-10 object-cover shrink-0'
                                         />
 
-                                        <div>
-                                            <p className="font-medium line-clamp-2">
+                                        <div className="min-w-0 flex-1">
+                                            <p className="font-medium truncate">
                                                 {video.title}
                                             </p>
 
-                                            <p className="text-sm text-gray-500">
+                                            <p className="text-sm text-gray-500 truncate">
                                                 {video.ownerDetails?.username}
                                             </p>
 
@@ -101,7 +101,7 @@ export default function Subscription() {
                                         </div>
                                     </div>
 
-                                    <EllipsisVertical size={20} />
+                                    <EllipsisVertical size={20} className="shrink-0 text-gray-500" />
                                 </div>
                             </div>
                         )

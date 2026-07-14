@@ -48,7 +48,7 @@ const SearchResults = () => {
     }
 
     return (
-        <div className="grid grid-cols-1 gap-4 min-h-screen">
+        <div className="grid grid-cols-1 gap-6 pt-4 min-h-screen">
             {videos.map((video) => {
                 const duration = formatDuration(video.duration)
                 const viewsCount = formatCount(video.views)
@@ -56,11 +56,11 @@ const SearchResults = () => {
                 return (
                     <div
                         key={video._id}
-                        className="flex gap-4 hover:bg-blue-50 rounded-2xl cursor-pointer transition"
+                        className="flex flex-col sm:flex-row gap-4 hover:bg-blue-50 dark:hover:bg-zinc-800/50 p-2 rounded-2xl cursor-pointer transition-colors"
                         onClick={() => navigate(`/watch/${video._id}`)}
                     >
                         {/* Thumbnail */}
-                        <div className="md:w-[500px] relative h-[280px] flex-shrink-0">
+                        <div className="w-full sm:w-[280px] md:w-[360px] lg:w-[450px] aspect-video relative shrink-0">
                             <img
                                 src={video.thumbnail}
                                 alt={video.title}
@@ -72,13 +72,13 @@ const SearchResults = () => {
                         </div>
 
                         {/* Content */}
-                        <div className="flex-1 space-y-3">
-                            <div className='flex justify-between'>
-                                <div>
-                                    <p className="font-medium line-clamp-2">
+                        <div className="flex-1 min-w-0 space-y-2 py-1">
+                            <div className='flex justify-between items-start gap-2'>
+                                <div className="min-w-0 flex-1">
+                                    <p className="font-semibold text-base md:text-lg line-clamp-2 leading-snug">
                                         {video.title}
                                     </p>
-                                    <div className='flex space-x-2 text-gray-500 text-sm'>
+                                    <div className='flex items-center space-x-1.5 text-gray-500 text-sm mt-1'>
                                         <span>{viewsCount} views</span>
                                         <span>•</span>
                                         <span>
@@ -86,22 +86,22 @@ const SearchResults = () => {
                                         </span>
                                     </div>
                                 </div>
-                                <EllipsisVertical size={20} />
+                                <EllipsisVertical size={20} className="shrink-0 text-gray-500 hover:text-gray-800" />
                             </div>
 
                             {/* Owner */}
-                            <div className="flex items-center gap-2">
+                            <div className="flex items-center gap-2 py-1">
                                 <img
                                     src={video.owner?.avatar}
                                     alt={video.owner?.username}
-                                    className="rounded-full w-10 h-10 object-cover cursor-pointer hover:opacity-85 transition shrink-0"
+                                    className="rounded-full w-8 h-8 object-cover cursor-pointer hover:opacity-85 transition shrink-0"
                                     onClick={(e) => {
                                         e.stopPropagation();
                                         navigate(`/${video.owner?.username}`);
                                     }}
                                 />
                                 <p
-                                    className="text-sm text-gray-500 cursor-pointer hover:text-zinc-800 hover:underline"
+                                    className="text-sm text-gray-500 cursor-pointer hover:text-zinc-800 hover:underline truncate"
                                     onClick={(e) => {
                                         e.stopPropagation();
                                         navigate(`/${video.owner?.username}`);
@@ -112,7 +112,7 @@ const SearchResults = () => {
                             </div>
 
                             {/* Description */}
-                            <div className="text-sm text-gray-600 line-clamp-2">
+                            <div className="text-sm text-gray-500 line-clamp-2 max-w-2xl">
                                 {video.description}
                             </div>
                         </div>

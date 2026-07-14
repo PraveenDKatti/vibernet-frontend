@@ -38,44 +38,48 @@ export default function VideoInfo() {
     };
 
     return (
-        <div className='space-y-4 leading-none'>
-            <p className='leading-none text-xl font-bold'>{video.title}</p>
-            <div className='flex justify-between items-center'>
-                <div className='flex space-x-4'>
-                    <Link to={`/${video.owner.username}`}>
-                        <img src={video.owner.avatar} className='rounded-full bg-yellow-500 h-10 w-10 hover:opacity-85 transition' />
-                    </Link>
-                    <div className='text-sm'>
-                        <Link to={`/${video.owner.username}`} className="font-semibold hover:underline">{video.owner.username}</Link>
-                        <p className='text-gray-500 text-sm'>{subscriberCount} subscribers</p>
+        <div className='space-y-4 leading-normal p-2 sm:p-0'>
+            <p className='text-lg md:text-xl font-bold leading-snug'>{video.title}</p>
+            <div className='flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-gray-100 dark:border-zinc-800 pb-3'>
+                <div className='flex items-center justify-between sm:justify-start gap-4 w-full sm:w-auto'>
+                    <div className='flex space-x-3 items-center min-w-0'>
+                        <Link to={`/${video.owner.username}`} className="shrink-0">
+                            <img src={video.owner.avatar} className='rounded-full bg-yellow-500 h-10 w-10 object-cover hover:opacity-85 transition' />
+                        </Link>
+                        <div className='text-sm min-w-0'>
+                            <Link to={`/${video.owner.username}`} className="font-semibold hover:underline block truncate">{video.owner.username}</Link>
+                            <p className='text-gray-500 text-xs truncate'>{subscriberCount} subscribers</p>
+                        </div>
                     </div>
                     <button
                         onClick={handleSubscription}
-                        className={`rounded-full ${video.owner.isSubscribed ? "bg-zinc-200 text-black" : "bg-black text-white"} text-sm font-semibold px-3 py-2 h-9`}
+                        className={`rounded-full shrink-0 ${video.owner.isSubscribed ? "bg-zinc-200 text-black hover:bg-zinc-300" : "bg-black text-white hover:bg-zinc-800"} text-xs sm:text-sm font-semibold px-4 py-2 h-9 transition-colors`}
                     >{video.owner.isSubscribed ? "Unsubscribe" : "Subscribe"}</button>
                 </div>
-                <div className='flex space-x-2 font-semibold text-md'>
-                    <div className='flex items-center bg-gray-100 rounded-full px-3 py-2 h-9'>
-                        <div className='flex space-x-2'>
+                <div className='flex flex-wrap items-center gap-2 font-semibold text-sm w-full sm:w-auto justify-start sm:justify-end'>
+                    <div className='flex items-center bg-gray-100 dark:bg-zinc-800 rounded-full px-3 py-2 h-9'>
+                        <div className='flex space-x-2 items-center cursor-pointer hover:opacity-80' onClick={() => handleReaction(video._id, "like")}>
                             <ThumbsUp
-                                size={20}
-                                fill={video.isLiked ? "black" : "white"}
-                                onClick={() => handleReaction(video._id, "like")} />
-                            <p className="text-gray-500">{video.likesCount || 0}</p>
+                                size={18}
+                                fill={video.isLiked ? "currentColor" : "none"}
+                                className={video.isLiked ? "text-black dark:text-white" : "text-gray-600 dark:text-zinc-400"} />
+                            <p className="text-gray-700 dark:text-zinc-300 text-xs">{video.likesCount || 0}</p>
                         </div>
-                        <Minus strokeWidth={1} size={35} className='text-gray-400 mr-0 transform rotate-90' />
-                        <div>
+                        <Minus strokeWidth={1} size={30} className='text-gray-300 dark:text-zinc-600 mx-1 transform rotate-90' />
+                        <div className='flex items-center cursor-pointer hover:opacity-80' onClick={() => handleReaction(video._id, "dislike")}>
                             <ThumbsDown
-                                size={20}
-                                fill={video.isDisliked ? "black" : "white"}
-                                onClick={() => handleReaction(video._id, "dislike")} />
+                                size={18}
+                                fill={video.isDisliked ? "currentColor" : "none"}
+                                className={video.isDisliked ? "text-black dark:text-white" : "text-gray-600 dark:text-zinc-400"} />
                         </div>
                     </div>
-                    <div className='flex items-center space-x-4 rounded-full bg-gray-100 px-3 py-2 h-9'>
-                        <Forward />
-                        <p>share</p>
+                    <div className='flex items-center space-x-2 rounded-full bg-gray-100 dark:bg-zinc-800 px-3 py-2 h-9 cursor-pointer hover:bg-gray-200 dark:hover:bg-zinc-700 transition-colors'>
+                        <Forward size={18} />
+                        <span className="text-xs">share</span>
                     </div>
-                    <EllipsisVertical />
+                    <button className="p-2 hover:bg-gray-105 rounded-full text-gray-500">
+                        <EllipsisVertical size={18} />
+                    </button>
                 </div>
             </div>
             <div className='rounded-2xl bg-zinc-100 text-sm p-3'>
