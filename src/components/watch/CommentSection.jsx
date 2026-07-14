@@ -169,7 +169,7 @@ export default function CommentSection() {
 
                         return (
                             <div key={c._id} className="flex space-x-4">
-                                <Link to={`/${c?.owner?.username}`}>
+                                <Link to={`/${c?.owner?.username}`} className="shrink-0">
                                     <img
                                         src={c?.owner?.avatar}
                                         alt="avatar"

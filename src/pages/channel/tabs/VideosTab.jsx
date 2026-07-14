@@ -72,7 +72,7 @@ export default function VideosTab() {
                   <img
                     src={video.owner.avatar}
                     alt={video.owner.username}
-                    className='rounded-full w-10 h-10 cursor-pointer hover:opacity-85 transition'
+                    className='rounded-full w-10 h-10 object-cover cursor-pointer hover:opacity-85 transition shrink-0'
                     onClick={(e) => {
                       e.stopPropagation();
                       navigate(`/${video.owner.username}`);

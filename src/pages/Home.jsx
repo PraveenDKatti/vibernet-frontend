@@ -52,8 +52,8 @@ const Home = () => {
             </div>
             <div className="flex justify-between items-start">
               <div className="flex flex-1 space-x-3">
-                <Link to={`/${video.owner.username}`} className='z-50' onClick={(e) => e.stopPropagation()}>
-                  <img src={video.owner.avatar} alt={video.owner.username} className='rounded-full w-10 h-10 hover:opacity-85 transition' />
+                <Link to={`/${video.owner.username}`} className='z-50 shrink-0' onClick={(e) => e.stopPropagation()}>
+                  <img src={video.owner.avatar} alt={video.owner.username} className='rounded-full w-10 h-10 object-cover hover:opacity-85 transition' />
                 </Link>
                 <div>
                   <p className="font-medium">{video.title}</p>
