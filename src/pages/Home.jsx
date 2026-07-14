@@ -1,6 +1,6 @@
 import { EllipsisVertical } from 'lucide-react'
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { getAllVideos } from '../api/video.api'
 import { formatActionTime } from "../utils/formatActionTime"
 import PageLoader from '../components/common/PageLoader'
@@ -42,7 +42,7 @@ const Home = () => {
         const viewsCount = formatCount(video.views)
 
         return (
-          <div key={video._id} className="hover:bg-blue-50 rounded-2xl space-y-3 cursor-pointer" onClick={() => navigate(`/Watch/${video._id}`)}>
+          <div key={video._id} className="hover:bg-blue-50 rounded-2xl space-y-3 cursor-pointer z-10" onClick={() => navigate(`/Watch/${video._id}`)}>
             <div className="relative h-52">
               <img src={video.thumbnail} className='h-full w-full rounded-xl' />
               <div
@@ -52,10 +52,12 @@ const Home = () => {
             </div>
             <div className="flex justify-between items-start">
               <div className="flex flex-1 space-x-3">
-                <img src={video.owner.avatar} alt={video.owner.username} className='rounded-full w-10 h-10' />
+                <Link to={`/${video.owner.username}`} className='z-50' onClick={(e) => e.stopPropagation()}>
+                  <img src={video.owner.avatar} alt={video.owner.username} className='rounded-full w-10 h-10 hover:opacity-85 transition' />
+                </Link>
                 <div>
                   <p className="font-medium">{video.title}</p>
-                  <p className="text-sm text-gray-500">{video.owner.username}</p>
+                  <Link to={`/${video.owner.username}`} className="z-50 text-sm text-gray-500 hover:text-gray-800" onClick={(e) => e.stopPropagation()}>{video.owner.username}</Link>
                   <div className='flex space-x-2 text-gray-500 text-sm'>
                     <span>{viewsCount}</span>
                     <span className="text-zinc-700">•</span>

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { EllipsisVertical } from 'lucide-react'
 import { getAllVideos } from '../../api/video.api'
 import { formatActionTime } from "../../utils/formatActionTime"
@@ -41,7 +42,11 @@ export default function SuggestedVideos() {
                         </div>
                         <div className='w-[50%] h-full text-gray-500'>
                             <p className='font-bold text-black'>{v.title}</p>
-                            <p>{v.username}</p>
+                            <Link to={`/${v.owner?.username}`}>
+                                <p className="z-50 text-sm text-gray-500 hover:text-gray-800 hover:underline">
+                                    {v.owner?.username || v.username}
+                                </p>
+                            </Link>
                             <p>{viewsCount} {formatActionTime(v.createdAt)} </p>
                         </div>
                         <EllipsisVertical />

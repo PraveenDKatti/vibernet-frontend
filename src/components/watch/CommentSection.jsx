@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { ThumbsUp, ThumbsDown, EllipsisVertical, Laugh } from "lucide-react";
 import {
     getVideoComments,
@@ -168,17 +169,19 @@ export default function CommentSection() {
 
                         return (
                             <div key={c._id} className="flex space-x-4">
-                                <img
-                                    src={c?.owner?.avatar}
-                                    alt="avatar"
-                                    className="rounded-full w-9 h-9 object-cover"
-                                />
+                                <Link to={`/${c?.owner?.username}`}>
+                                    <img
+                                        src={c?.owner?.avatar}
+                                        alt="avatar"
+                                        className="rounded-full w-9 h-9 object-cover hover:opacity-85 transition cursor-pointer"
+                                    />
+                                </Link>
 
                                 <div className="flex-1">
                                     <div className="flex space-x-4 text-sm">
-                                        <p className="font-medium">
+                                        <Link to={`/${c?.owner?.username}`} className="font-medium hover:underline cursor-pointer">
                                             {c?.owner?.username || "Unknown"}
-                                        </p>
+                                        </Link>
                                         <p className="text-gray-500">
                                             {formatActionTime(c.createdAt)}
                                         </p>

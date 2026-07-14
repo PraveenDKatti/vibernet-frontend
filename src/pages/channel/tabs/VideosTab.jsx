@@ -69,10 +69,26 @@ export default function VideosTab() {
               </div>
               <div className="flex justify-between items-start">
                 <div className="flex flex-1 space-x-3">
-                  <img src={video.owner.avatar} alt={video.owner.username} className='rounded-full w-10 h-10' />
+                  <img
+                    src={video.owner.avatar}
+                    alt={video.owner.username}
+                    className='rounded-full w-10 h-10 cursor-pointer hover:opacity-85 transition'
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      navigate(`/${video.owner.username}`);
+                    }}
+                  />
                   <div>
                     <p className="font-medium">{video.title}</p>
-                    <p className="text-sm text-gray-500">{video.owner.username}</p>
+                    <p
+                      className="text-sm text-gray-500 cursor-pointer hover:text-zinc-800 hover:underline"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        navigate(`/${video.owner.username}`);
+                      }}
+                    >
+                      {video.owner.username}
+                    </p>
                     <div className='flex space-x-2 text-gray-500 text-sm'>
                       <span>{viewsCount}</span>
                       <span className="text-zinc-700">•</span>

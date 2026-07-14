@@ -29,18 +29,24 @@ export default function VideoCard({ video }) {
       <div className="flex gap-3 px-1">
         <img
           src={video.owner?.avatar}
-          className="w-9 h-9 rounded-full object-cover shrink-0 border border-gray-100 dark:border-zinc-800"
+          className="w-9 h-9 rounded-full object-cover shrink-0 border border-gray-100 dark:border-zinc-800 hover:opacity-85 transition"
           alt="avatar"
           onClick={(e) => {
             e.stopPropagation();
-            navigate(`/channel/${video.owner?.username}`);
+            navigate(`/${video.owner?.username}`);
           }}
         />
         <div className="flex flex-col overflow-hidden">
           <h3 className="text-sm font-semibold line-clamp-2 leading-tight text-zinc-900 dark:text-zinc-100">
             {video.title}
           </h3>
-          <p className="text-xs text-zinc-500 mt-1 hover:text-zinc-700 dark:hover:text-zinc-300">
+          <p
+            className="text-xs text-zinc-500 mt-1 cursor-pointer hover:text-zinc-700 dark:hover:text-zinc-300 hover:underline"
+            onClick={(e) => {
+              e.stopPropagation();
+              navigate(`/${video.owner?.username}`);
+            }}
+          >
             {video.owner?.fullName}
           </p>
           <div className="text-[11px] text-zinc-500 flex items-center gap-1">

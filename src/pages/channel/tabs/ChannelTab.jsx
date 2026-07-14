@@ -1,8 +1,14 @@
 import React, { useRef, useState } from "react";
+import { useOutletContext, Navigate } from "react-router-dom";
 import { UserRound } from 'lucide-react';
 import { updateAccount, avatar, cover } from "../../../api/user.api";
 
 export default function ChannelTab() {
+  const { isOwner } = useOutletContext();
+
+  if (!isOwner) {
+    return <Navigate to=".." replace />;
+  }
   const [previews, setPreviews] = useState({
     cover: "",
     avatar: "",

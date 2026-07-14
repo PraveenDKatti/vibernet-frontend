@@ -38,18 +38,18 @@ export default function App() {
           {/* Home page */}
           <Route path="/" element={<Home />} />
           <Route path="/results" element={<SearchResults />} />
+          <Route path="/:username" element={<Channel />}>
+            <Route index element={<HomeTab />} />
+            <Route path="videos" element={<VideosTab />} />
+            <Route path="playlists" element={<PlaylistsTab />} />
+            <Route path="community" element={<CommunityTab />} />
+            <Route path="channel" element={<ChannelTab />} />
+          </Route>
 
           <Route element={<AuthLayout authentication={true} />}>
             <Route path="/profile" element={<Profile />} />
             <Route path="/profile/subscriptions" element={<Subscription />} />
             <Route path="/profile/channels" element={<SubscribedChannels />} />
-            <Route path="/:username" element={<Channel />}>
-              <Route index element={<HomeTab />} />
-              <Route path="videos" element={<VideosTab />} />
-              <Route path="playlists" element={<PlaylistsTab />} />
-              <Route path="community" element={<CommunityTab />} />
-              <Route path="channel" element={<ChannelTab />} />
-            </Route>
             <Route path="/upload" element={<UploadVideo />} />
           </Route>
         </Route>

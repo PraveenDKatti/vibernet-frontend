@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { ThumbsUp, ThumbsDown, Forward, Minus, EllipsisVertical } from 'lucide-react'
 import { formatActionTime } from "../../utils/formatActionTime"
 import { toggleSubscription } from '../../api/subscription.api'
@@ -12,6 +13,7 @@ export default function VideoInfo() {
     const updateLikeStatus = useVideoStore((s) => s.updateLikeStatus)
 
     const viewsCount = formatCount(video.views)
+    const subscriberCount = formatCount(video.owner?.subscribers | 0)
 
     const handleSubscription = async () => {
         try {
@@ -40,10 +42,12 @@ export default function VideoInfo() {
             <p className='leading-none text-xl font-bold'>{video.title}</p>
             <div className='flex justify-between items-center'>
                 <div className='flex space-x-4'>
-                    <img src={video.owner.avatar} className='rounded-full bg-yellow-500 h-10 w-10' />
+                    <Link to={`/${video.owner.username}`}>
+                        <img src={video.owner.avatar} className='rounded-full bg-yellow-500 h-10 w-10 hover:opacity-85 transition' />
+                    </Link>
                     <div className='text-sm'>
-                        <p>{video.owner.username}</p>
-                        <p className='text-gray-500 text-sm'>10.3M subscribers</p>
+                        <Link to={`/${video.owner.username}`} className="font-semibold hover:underline">{video.owner.username}</Link>
+                        <p className='text-gray-500 text-sm'>{subscriberCount} subscribers</p>
                     </div>
                     <button
                         onClick={handleSubscription}

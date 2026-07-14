@@ -94,9 +94,19 @@ const SearchResults = () => {
                                 <img
                                     src={video.owner?.avatar}
                                     alt={video.owner?.username}
-                                    className="rounded-full w-10 h-10 object-cover"
+                                    className="rounded-full w-10 h-10 object-cover cursor-pointer hover:opacity-85 transition"
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        navigate(`/${video.owner?.username}`);
+                                    }}
                                 />
-                                <p className="text-sm text-gray-500">
+                                <p
+                                    className="text-sm text-gray-500 cursor-pointer hover:text-zinc-800 hover:underline"
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        navigate(`/${video.owner?.username}`);
+                                    }}
+                                >
                                     {video.owner?.username}
                                 </p>
                             </div>
