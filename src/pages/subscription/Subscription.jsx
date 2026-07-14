@@ -6,6 +6,7 @@ import useAuthStore from '../../store/authStore'
 import { getSubscribedFeed } from '../../api/subscription.api'
 import PageLoader from '../../components/common/PageLoader'
 import { formatDuration } from '../../utils/formatDuration'
+import { formatCount } from '../../utils/formatCount'
 
 export default function Subscription() {
     const [subscriptions, setSubscriptions] = useState([])
@@ -53,6 +54,7 @@ export default function Subscription() {
                 <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-6'>
                     {subscriptions.map((video) => {
                         const duration = formatDuration(video.duration)
+                        const viewsCount = formatCount(video.views)
 
                         return (
                             <div
@@ -90,7 +92,7 @@ export default function Subscription() {
                                             </p>
 
                                             <div className='flex space-x-2 text-gray-500 text-sm'>
-                                                <span>{video.views} views</span>
+                                                <span>{viewsCount} views</span>
                                                 <span>•</span>
                                                 <span>
                                                     {formatDistanceToNow(new Date(video.createdAt))} ago

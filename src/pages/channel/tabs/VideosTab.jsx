@@ -5,6 +5,7 @@ import { getAllVideos } from '../../../api/video.api';
 import { formatDistanceToNow } from "date-fns";
 import { EllipsisVertical } from 'lucide-react'
 import { formatDuration } from "../../../utils/formatDuration";
+import { formatCount } from "../../../utils/formatCount";
 
 export default function VideosTab() {
   const { username } = useParams();
@@ -54,6 +55,7 @@ export default function VideosTab() {
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {channelVideos.map((video) => {
           const duration = formatDuration(video.duration)
+          const viewsCount = formatCount(video.views)
 
           return (
             <div key={video._id} className="hover:bg-blue-50 rounded-2xl space-y-2 cursor-pointer" onClick={() => navigate(`/Watch/${video._id}`)}>
@@ -71,7 +73,7 @@ export default function VideosTab() {
                     <p className="font-medium">{video.title}</p>
                     <p className="text-sm text-gray-500">{video.owner.username}</p>
                     <div className='flex space-x-2 text-gray-500 text-sm'>
-                      <span>{video.views}</span>
+                      <span>{viewsCount}</span>
                       <span className="text-zinc-700">•</span>
                       <span>{formatDistanceToNow(new Date(video.createdAt))} ago</span>
                     </div>

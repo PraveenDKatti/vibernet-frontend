@@ -4,11 +4,14 @@ import { formatDistanceToNow } from "date-fns"
 import { toggleSubscription } from '../../api/subscription.api'
 import { toggleLikeReaction } from '../../api/like.api'
 import useVideoStore from '../../store/videoStore'
+import { formatCount } from '../../utils/formatCount'
 
 export default function VideoInfo() {
     const video = useVideoStore((s) => s.currentVideo)
     const updateSubscriptionStatus = useVideoStore((s) => s.updateSubscriptionStatus)
     const updateLikeStatus = useVideoStore((s) => s.updateLikeStatus)
+
+    const viewsCount = formatCount(video.views)
 
     const handleSubscription = async () => {
         try {
@@ -72,7 +75,7 @@ export default function VideoInfo() {
                 </div>
             </div>
             <div className='rounded-2xl bg-zinc-100 text-sm p-3'>
-                <p className='font-medium'>{video.views} views {formatDistanceToNow(new Date(video.createdAt))} ago </p>
+                <p className='font-medium'>{viewsCount} views {formatDistanceToNow(new Date(video.createdAt))} ago </p>
                 <p>{video.description}</p>
             </div>
         </div>

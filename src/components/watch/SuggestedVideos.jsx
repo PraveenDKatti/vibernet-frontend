@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { EllipsisVertical } from 'lucide-react'
 import { getAllVideos } from '../../api/video.api'
 import { formatDistanceToNow } from "date-fns"
+import { formatCount } from '../../utils/formatCount'
 
 
 export default function SuggestedVideos() {
@@ -16,9 +17,13 @@ export default function SuggestedVideos() {
         fetchVideos()
     }, [])
 
+
     return (
         <div className='hidden lg:block col-span-3 space-y-4'>
-            {suggestedVideos.map((v) => (
+            {suggestedVideos.map((v) => {
+                const viewsCount = formatCount(video.views)
+                
+                return(
                 <div key={v._id} className='flex space-x-4 text-xs h-25'>
                     <div className='aspect-video w-[40%]'>
                         <video
@@ -37,11 +42,12 @@ export default function SuggestedVideos() {
                     <div className='w-[50%] h-full text-gray-500'>
                         <p className='font-bold text-black'>{v.title}</p>
                         <p>{v.username}</p>
-                        <p>{v.views} views {formatDistanceToNow(new Date(v.createdAt))} ago </p>
+                        <p>{viewsCount} views {formatDistanceToNow(new Date(v.createdAt))} ago </p>
                     </div>
                     <EllipsisVertical />
                 </div>
-            ))
+            )
+            })
             }
         </div>
     )

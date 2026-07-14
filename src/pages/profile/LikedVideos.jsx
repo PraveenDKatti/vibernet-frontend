@@ -2,6 +2,7 @@ import { CircleChevronLeft, CircleChevronRight, EllipsisVertical } from "lucide-
 import { useEffect, useState } from "react";
 import { getLikedVideos } from '../../api/like.api'
 import { formatDistanceToNow, set } from "date-fns"
+import { formatCount } from '../../utils/formatCount'
 
 export default function LikedVideos({user, loading}) {
     const [likedFeed, setLikedFeed] = useState() //liked videos
@@ -35,7 +36,10 @@ export default function LikedVideos({user, loading}) {
             </div>
 
             <div className="grid grid-cols-4 gap-4">
-                {likedFeed.map((v) => (
+                {likedFeed.map((v) => {
+                    const viewsCount = formatCount(v.views)
+
+                    return(
                     <div key={v._id} className="space-y-2">
                         <div className="h-38"><img src={v.thumbnail} className="w-full h-full rounded-md" /></div>
                         <div className="flex space-x-4">
@@ -44,7 +48,7 @@ export default function LikedVideos({user, loading}) {
                                 <p className="h-10 leading-tight font-semibold overflow-hidden">{v.title}</p>
                                 <p className="text-gray-500 text-sm">{v.owner.username}</p>
                                 <p className='flex space-x-2 text-gray-500 text-sm'>
-                                    <span>64M views</span>
+                                    <span>{viewsCount} views</span>
                                     <span className="text-zinc-700">•</span>
                                     <span>{formatDistanceToNow(new Date(v.createdAt))} ago</span>
                                 </p>
@@ -52,7 +56,8 @@ export default function LikedVideos({user, loading}) {
                             <EllipsisVertical size={20} />
                         </div>
                     </div>
-                ))}
+                )
+                })}
             </div>
         </div>
     );

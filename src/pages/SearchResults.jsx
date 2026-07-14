@@ -5,6 +5,7 @@ import client from '../api/client'
 import { formatDistanceToNow } from "date-fns"
 import PageLoader from '../components/common/PageLoader'
 import { formatDuration } from '../utils/formatDuration'
+import { formatCount } from '../utils/formatCount'
 
 const SearchResults = () => {
     const [searchParams] = useSearchParams();
@@ -50,6 +51,7 @@ const SearchResults = () => {
         <div className="grid grid-cols-1 gap-4 min-h-screen">
             {videos.map((video) => {
                 const duration = formatDuration(video.duration)
+                const viewsCount = formatCount(video.views)
                 
                 return (
                     <div
@@ -77,7 +79,7 @@ const SearchResults = () => {
                                         {video.title}
                                     </p>
                                     <div className='flex space-x-2 text-gray-500 text-sm'>
-                                        <span>{video.views ?? 0} views</span>
+                                        <span>{viewsCount} views</span>
                                         <span>•</span>
                                         <span>
                                             {video.createdAt

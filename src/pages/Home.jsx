@@ -5,6 +5,7 @@ import { getAllVideos } from '../api/video.api'
 import { formatDistanceToNow, set } from "date-fns"
 import PageLoader from '../components/common/PageLoader'
 import { formatDuration } from '../utils/formatDuration'
+import { formatCount } from '../utils/formatCount'
 
 const Home = () => {
   const [homeFeed, setHomeFeed] = useState([]) //videos for home feed.
@@ -38,6 +39,7 @@ const Home = () => {
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4 space-y-4 min-h-screen">
       {homeFeed.map((video) => {
         const duration = formatDuration(video.duration)
+        const viewsCount = formatCount(video.views)
         
         return (
           <div key={video._id} className="hover:bg-blue-50 rounded-2xl space-y-3 cursor-pointer" onClick={() => navigate(`/Watch/${video._id}`)}>
@@ -55,7 +57,7 @@ const Home = () => {
                   <p className="font-medium">{video.title}</p>
                   <p className="text-sm text-gray-500">{video.owner.username}</p>
                   <div className='flex space-x-2 text-gray-500 text-sm'>
-                    <span>{video.views}</span>
+                    <span>{viewsCount} views</span>
                     <span className="text-zinc-700">•</span>
                     <span>{formatDistanceToNow(new Date(video.createdAt))} ago</span>
                   </div>

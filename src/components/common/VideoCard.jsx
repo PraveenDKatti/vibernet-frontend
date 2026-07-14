@@ -1,11 +1,12 @@
 import { useNavigate } from "react-router-dom";
 import { formatDistanceToNow } from "date-fns";
 import { formatDuration } from "../../utils/formatDuration"
+import { formatCount } from "../../utils/formatCount";
 
 export default function VideoCard({ video }) {
   const navigate = useNavigate();
   const duration = formatDuration(video.duration)
-  
+  const viewsCount = formatCount(video.views)
 
   return (
     <div 
@@ -43,7 +44,7 @@ export default function VideoCard({ video }) {
             {video.owner?.fullName}
           </p>
           <div className="text-[11px] text-zinc-500 flex items-center gap-1">
-            <span>{video.views} views</span>
+            <span>{viewsCount} views</span>
             <span>•</span>
             <span>{formatDistanceToNow(new Date(video.createdAt))} ago</span>
           </div>
