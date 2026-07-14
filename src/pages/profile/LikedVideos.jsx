@@ -49,7 +49,7 @@ export default function LikedVideos({ user, loading }) {
                                     <p className="h-10 leading-tight font-semibold overflow-hidden">{v.title}</p>
                                     <p className="text-gray-500 text-sm">{v.owner.username}</p>
                                     <p className='flex space-x-2 text-gray-500 text-sm'>
-                                        <span>{viewsCount} views</span>
+                                        <span>{viewsCount}</span>
                                         <span className="text-zinc-700">•</span>
                                         <span>{formatActionTime(v.createdAt)}</span>
                                     </p>

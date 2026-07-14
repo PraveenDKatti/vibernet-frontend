@@ -42,7 +42,7 @@ export default function SuggestedVideos() {
                         <div className='w-[50%] h-full text-gray-500'>
                             <p className='font-bold text-black'>{v.title}</p>
                             <p>{v.username}</p>
-                            <p>{viewsCount} views {formatActionTime(v.createdAt)} </p>
+                            <p>{viewsCount} {formatActionTime(v.createdAt)} </p>
                         </div>
                         <EllipsisVertical />
                     </div>

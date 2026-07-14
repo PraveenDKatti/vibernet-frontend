@@ -92,7 +92,7 @@ export default function Subscription() {
                                             </p>
 
                                             <div className='flex space-x-2 text-gray-500 text-sm'>
-                                                <span>{viewsCount} views</span>
+                                                <span>{viewsCount}</span>
                                                 <span>•</span>
                                                 <span>
                                                     {formatActionTime(video.createdAt)}

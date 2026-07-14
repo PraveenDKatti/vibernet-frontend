@@ -57,7 +57,7 @@ const Home = () => {
                   <p className="font-medium">{video.title}</p>
                   <p className="text-sm text-gray-500">{video.owner.username}</p>
                   <div className='flex space-x-2 text-gray-500 text-sm'>
-                    <span>{viewsCount} views</span>
+                    <span>{viewsCount}</span>
                     <span className="text-zinc-700">•</span>
                     <span>{formatActionTime(video.createdAt)}</span>
                   </div>

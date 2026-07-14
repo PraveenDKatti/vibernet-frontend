@@ -71,7 +71,7 @@ export default function VideosTab() {
                   {video.title}
                 </p>
                 <p className="text-sm text-gray-500">
-                  {viewsCount} views
+                  {viewsCount}
                 </p>
               </div>
             )
@@ -97,7 +97,7 @@ export default function VideosTab() {
                   {video.title}
                 </p>
                 <p className="text-sm text-gray-500">
-                  {viewsCount} views
+                  {viewsCount}
                 </p>
               </div>
             )

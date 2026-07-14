@@ -44,7 +44,7 @@ export default function VideoCard({ video }) {
             {video.owner?.fullName}
           </p>
           <div className="text-[11px] text-zinc-500 flex items-center gap-1">
-            <span>{viewsCount} views</span>
+            <span>{viewsCount}</span>
             <span>•</span>
             <span>{formatActionTime(video.createdAt)}</span>
           </div>
