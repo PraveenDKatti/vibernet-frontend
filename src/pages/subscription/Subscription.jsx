@@ -5,6 +5,7 @@ import { formatDistanceToNow } from 'date-fns'
 import useAuthStore from '../../store/authStore'
 import { getSubscribedFeed } from '../../api/subscription.api'
 import PageLoader from '../../components/common/PageLoader'
+import { formatDuration } from '../../utils/formatDuration'
 
 export default function Subscription() {
     const [subscriptions, setSubscriptions] = useState([])
@@ -51,8 +52,7 @@ export default function Subscription() {
             {subscriptions.length > 0 && (
                 <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-6'>
                     {subscriptions.map((video) => {
-                        const minutes = Math.floor(video.duration / 60)
-                        const seconds = String(Math.floor(video.duration % 60)).padStart(2, '0')
+                        const duration = formatDuration(video.duration)
 
                         return (
                             <div
@@ -68,7 +68,7 @@ export default function Subscription() {
                                     />
 
                                     <div className='absolute bg-black/60 text-white font-medium right-2 bottom-2 px-1 py-0.5 text-xs rounded-md'>
-                                        {minutes}:{seconds}
+                                        {duration}
                                     </div>
                                 </div>
 

@@ -1,8 +1,11 @@
 import { useNavigate } from "react-router-dom";
 import { formatDistanceToNow } from "date-fns";
+import { formatDuration } from "../../utils/formatDuration"
 
 export default function VideoCard({ video }) {
   const navigate = useNavigate();
+  const duration = formatDuration(video.duration)
+  
 
   return (
     <div 
@@ -17,7 +20,7 @@ export default function VideoCard({ video }) {
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
         />
         <div className="absolute bottom-2 right-2 bg-black/80 px-2 py-0.5 rounded text-[10px] text-white font-medium">
-          {video.duration ? `${Math.floor(video.duration / 60)}:${String(Math.floor(video.duration % 60)).padStart(2, '0')}` : "0:00"}
+          {duration}
         </div>
       </div>
 
