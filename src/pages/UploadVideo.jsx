@@ -3,6 +3,9 @@ import { X, ArrowUpFromLine, Check } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import { publishVideo } from '../api/video.api'
 import useAuthStore from '../store/authStore'
+import Input from '../components/ui/Input'
+import Textarea from '../components/ui/Textarea'
+import Button from '../components/ui/Button'
 
 const STEPS = ["Video Info", "Elements", "Privacy", "Overview"]
 
@@ -52,7 +55,7 @@ export default function UploadVideo() {
         const success = await publishVideo(formData);
 
         if (success) {
-            navigate(`/${username}/videos`);
+            navigate(`/${user.username}/videos`);
         }
     }
     const handleClose = () => {
@@ -71,7 +74,7 @@ export default function UploadVideo() {
                     <X size={22} className="cursor-pointer hover:text-red-500 transition-colors" onClick={handleClose} />
                 </div>
 
-                {/* Progressive Stepper UI Header (Only visible after file insertion) */}
+                {/* Progressive Stepper UI Header */}
                 {videoFile && (
                     <div className='flex items-center justify-between px-16 py-4 bg-zinc-50 border-b border-gray-200 select-none'>
                         {STEPS.map((step, index) => (
@@ -100,7 +103,7 @@ export default function UploadVideo() {
                     {!videoFile ? (
                         /* STEP 0: Initial File Drop UI */
                         <div className='grid place-items-center h-full max-w-2xl mx-auto text-center'>
-                            <div className="flex flex-col items-center justify-center" >
+                            <div className="flex flex-col items-center justify-center animate-fadeIn" >
                                 <label className='cursor-pointer relative group w-32 h-32 rounded-full grid place-items-center text-black/50 bg-zinc-100 my-5 hover:bg-zinc-200 transition-colors'>
                                     <ArrowUpFromLine className='w-10 h-10 text-gray-600 group-hover:scale-110 transition-transform' />
                                     <input type="file" accept='video/*' onChange={fetchFile} className="hidden" />
@@ -109,7 +112,7 @@ export default function UploadVideo() {
                             <p className='font-medium text-lg text-zinc-700'>Drag and drop video files to upload</p>
                             <p className='text-sm text-gray-500 mt-1'>Your videos will be private until you publish them.</p>
 
-                            <label className='cursor-pointer text-white font-semibold text-sm bg-black rounded-full my-8 px-6 py-2.5 hover:bg-zinc-800 transition-colors'>
+                            <label className='cursor-pointer inline-block text-white font-semibold text-sm bg-black rounded-full my-8 px-6 py-2.5 hover:bg-zinc-800 transition-colors'>
                                 Select files
                                 <input type="file" accept='video/*' onChange={fetchFile} className="hidden" />
                             </label>
@@ -124,17 +127,30 @@ export default function UploadVideo() {
                             {currentStep === 0 && (
                                 <div className='space-y-5 animate-fadeIn'>
                                     <h3 className='text-lg font-bold text-zinc-800'>Details</h3>
-                                    <div className='flex flex-col space-y-2'>
-                                        <label className='text-xs font-semibold text-zinc-500 uppercase tracking-wider'>Title (required)</label>
-                                        <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Add a title that describes your video" className='w-full border border-gray-300 rounded-lg p-3 outline-none focus:border-black transition-colors' />
-                                    </div>
-                                    <div className='flex flex-col space-y-2'>
-                                        <label className='text-xs font-semibold text-zinc-500 uppercase tracking-wider'>Description</label>
-                                        <textarea value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Tell viewers about your video" rows={4} className='w-full border border-gray-300 rounded-lg p-3 outline-none focus:border-black transition-colors resize-none' />
-                                    </div>
-                                    <div className='flex flex-col space-y-2'>
+
+                                    <Input
+                                        label="Title (required)"
+                                        value={title}
+                                        onChange={(e) => setTitle(e.target.value)}
+                                        placeholder="Add a title that describes your video"
+                                    />
+
+                                    <Textarea
+                                        label="Description"
+                                        value={description}
+                                        onChange={(e) => setDescription(e.target.value)}
+                                        placeholder="Tell viewers about your video"
+                                        rows={4}
+                                    />
+
+                                    <div className='flex flex-col space-y-1.5'>
                                         <label className='text-xs font-semibold text-zinc-500 uppercase tracking-wider'>Thumbnail</label>
-                                        <input type="file" accept="image/*" onChange={(e) => setThumbnail(e.target.files[0])} className='text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-zinc-100 file:text-black hover:file:bg-zinc-200 cursor-pointer' />
+                                        <input
+                                            type="file"
+                                            accept="image/*"
+                                            onChange={(e) => setThumbnail(e.target.files[0])}
+                                            className='text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-zinc-150 file:text-black hover:file:bg-zinc-200 cursor-pointer'
+                                        />
                                     </div>
                                 </div>
                             )}
@@ -184,28 +200,28 @@ export default function UploadVideo() {
                 {/* Sticky Progress Control Footer Block */}
                 {videoFile && (
                     <div className='flex items-center justify-between px-6 py-4 bg-zinc-50 border-t border-gray-200'>
-                        <button
+                        <Button
+                            variant="outline"
                             onClick={handleBack}
                             disabled={currentStep === 0}
-                            className={`px-5 py-2 rounded-full font-semibold text-sm transition-colors border ${currentStep === 0 ? 'text-gray-300 border-gray-200 cursor-not-allowed' : 'text-zinc-700 border-gray-300 hover:bg-zinc-100'}`}
                         >
                             Back
-                        </button>
+                        </Button>
 
                         {currentStep < STEPS.length - 1 ? (
-                            <button
+                            <Button
                                 onClick={handleNext}
-                                className='px-6 py-2 bg-black text-white rounded-full font-semibold text-sm hover:bg-zinc-800 transition-colors'
                             >
                                 Next
-                            </button>
+                            </Button>
                         ) : (
-                            <button
+                            <Button
                                 onClick={uploadVideo}
-                                className='px-6 py-2 bg-emerald-600 text-white rounded-full font-semibold text-sm hover:bg-emerald-700 transition-colors'
+                                variant="primary"
+                                className="bg-emerald-600 hover:bg-emerald-700 text-white dark:bg-emerald-600 dark:hover:bg-emerald-700"
                             >
                                 Publish Video
-                            </button>
+                            </Button>
                         )}
                     </div>
                 )}

@@ -1,7 +1,8 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { User, Settings, LogOut, LayoutDashboard } from "lucide-react";
 import useAuthStore from "../../store/authStore";
+import useClickOutside from "../../hooks/useClickOutside";
 
 export default function UserMenu() {
   const [isOpen, setIsOpen] = useState(false);
@@ -9,14 +10,10 @@ export default function UserMenu() {
   const navigate = useNavigate();
   const menuRef = useRef();
 
-  // Close when clicking outside
-  useEffect(() => {
-    const handler = (e) => {
-      if (menuRef.current && !menuRef.current.contains(e.target)) setIsOpen(false);
-    };
-    document.addEventListener("mousedown", handler);
-    return () => document.removeEventListener("mousedown", handler);
-  }, []);
+  // Close when clicking outside using custom hook
+  useClickOutside(menuRef, () => {
+    setIsOpen(false);
+  });
 
   const handleLogout = async () => {
     await logout();
@@ -27,10 +24,10 @@ export default function UserMenu() {
   return (
     <div className="relative mx-4" ref={menuRef}>
       <button onClick={() => setIsOpen(!isOpen)} className="flex items-center">
-        <img 
-          src={user?.avatar} 
-          className="w-8 h-8 rounded-full border border-gray-300 dark:border-gray-700 object-cover" 
-          alt="User" 
+        <img
+          src={user?.avatar}
+          className="w-8 h-8 rounded-full border border-gray-300 dark:border-gray-700 object-cover"
+          alt="User"
         />
       </button>
 
@@ -40,7 +37,7 @@ export default function UserMenu() {
             <p className="text-sm font-semibold truncate">{user?.fullName}</p>
             <p className="text-xs text-gray-500 truncate">@{user?.username}</p>
           </div>
-          
+
           <Link to={`/${user?.username}`} className="flex items-center gap-3 px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-800">
             <User size={16} /> Your Channel
           </Link>
@@ -50,7 +47,7 @@ export default function UserMenu() {
           <Link to="/settings" className="flex items-center gap-3 px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-800">
             <Settings size={16} /> Settings
           </Link>
-          
+
           <button onClick={handleLogout} className="w-full flex items-center gap-3 px-4 py-2 text-sm text-red-500 hover:bg-gray-100 dark:hover:bg-gray-800 mt-2 border-t border-gray-100 dark:border-gray-800">
             <LogOut size={16} /> Sign Out
           </button>

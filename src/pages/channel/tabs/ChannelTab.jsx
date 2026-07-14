@@ -2,13 +2,13 @@ import React, { useRef, useState } from "react";
 import { useOutletContext, Navigate } from "react-router-dom";
 import { UserRound } from 'lucide-react';
 import { updateAccount, avatar, cover } from "../../../api/user.api";
+import Input from "../../../components/ui/Input";
+import Textarea from "../../../components/ui/Textarea";
+import Button from "../../../components/ui/Button";
 
 export default function ChannelTab() {
   const { isOwner } = useOutletContext();
 
-  if (!isOwner) {
-    return <Navigate to=".." replace />;
-  }
   const [previews, setPreviews] = useState({
     cover: "",
     avatar: "",
@@ -20,6 +20,10 @@ export default function ChannelTab() {
   const [message, setMessage] = useState("");
 
   const formRef = useRef(null);
+
+  if (!isOwner) {
+    return <Navigate to=".." replace />;
+  }
 
   const handleFilePreview = (e) => {
     const { name, files } = e.target;
@@ -61,7 +65,6 @@ export default function ChannelTab() {
     setMessage("");
 
     try {
-      console.log(previews)
       const formData = new FormData(e.currentTarget);
 
       // Extract text fields
@@ -110,27 +113,27 @@ export default function ChannelTab() {
     <form
       ref={formRef}
       onSubmit={handleSubmit}
-      className="py-6 space-y-6 max-w-2xl"
+      className="py-6 space-y-6 max-w-2xl text-zinc-900 dark:text-zinc-100"
     >
       <h2 className="text-xl font-semibold">Channel Settings</h2>
 
       {message && (
-        <div className={`p-3 rounded-md ${message.includes("successfully") ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}`}>
+        <div className={`p-3 rounded-md text-sm font-medium ${message.includes("successfully") ? "bg-green-100 text-green-800 dark:bg-green-950/30 dark:text-green-400" : "bg-red-100 text-red-800 dark:bg-red-950/30 dark:text-red-400"}`}>
           {message}
         </div>
       )}
 
       {/* COVER IMAGE */}
       <div className="space-y-4">
-        <div className="space-y-2">
-          <p className="font-medium">Cover Image</p>
-          <p className="text-sm text-gray-500">
+        <div className="space-y-1">
+          <p className="font-semibold text-sm">Cover Image</p>
+          <p className="text-xs text-gray-500">
             This image will appear across the top of your channel
           </p>
         </div>
 
         <div className="flex gap-4">
-          <div className="relative h-35 w-full bg-zinc-100 rounded-lg overflow-hidden">
+          <div className="relative h-35 w-full bg-zinc-150 rounded-lg overflow-hidden border border-zinc-200">
             {previews.cover && (
               <img
                 src={previews.cover}
@@ -140,48 +143,51 @@ export default function ChannelTab() {
             )}
           </div>
 
-          <div className="space-y-3">
-            <p className="text-sm">
+          <div className="space-y-3 shrink-0 w-1/2">
+            <p className="text-xs text-zinc-500 leading-relaxed">
               Use an image that's at least 2048 x 1152 pixels and 6MB or less.
             </p>
 
-            <div className="relative inline-block mr-4 font-medium">
-              <button type="button" className="px-3 py-2 bg-zinc-200 rounded-full">
-                {previews.cover ? "Change" : "Upload"}
-              </button>
-              <input
-                type="file"
-                name="cover"
-                accept="image/*"
-                onChange={handleFilePreview}
-                className="absolute inset-0 opacity-0 cursor-pointer"
-              />
-            </div>
+            <div className="flex gap-2">
+              <div className="relative inline-block">
+                <Button type="button" variant="secondary" size="sm">
+                  {previews.cover ? "Change" : "Upload"}
+                </Button>
+                <input
+                  type="file"
+                  name="cover"
+                  accept="image/*"
+                  onChange={handleFilePreview}
+                  className="absolute inset-0 opacity-0 cursor-pointer"
+                />
+              </div>
 
-            {previews.cover && (
-              <button
-                type="button"
-                onClick={() => handleRemove("cover")}
-                className="px-3 py-2 bg-zinc-200 rounded-full font-medium"
-              >
-                Remove
-              </button>
-            )}
+              {previews.cover && (
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handleRemove("cover")}
+                >
+                  Remove
+                </Button>
+              )}
+            </div>
           </div>
         </div>
       </div>
 
       {/* AVATAR */}
       <div className="space-y-4">
-        <div className="space-y-2">
-          <p className="font-medium">Avatar</p>
-          <p className="text-sm text-gray-500">
+        <div className="space-y-1">
+          <p className="font-semibold text-sm">Avatar</p>
+          <p className="text-xs text-gray-500">
             Your avatar appears next to your videos and comments
           </p>
         </div>
 
         <div className="flex gap-4">
-          <div className="w-full bg-zinc-100 h-35 rounded-lg flex items-center justify-center">
+          <div className="bg-zinc-150 h-35 w-full rounded-lg flex items-center justify-center border border-zinc-200">
             <div className="relative h-30 w-30 overflow-hidden">
               {previews.avatar ? (
                 <img
@@ -195,91 +201,84 @@ export default function ChannelTab() {
                     className="w-[90%] h-[90%] text-blue-500 fill-current stroke-none"
                   />
                 </div>
-              )
-              }
+              )}
             </div>
           </div>
 
-          <div className="space-y-3">
-            <p className="text-sm">
+          <div className="space-y-3 shrink-0 w-1/2">
+            <p className="text-xs text-zinc-500 leading-relaxed">
               Use an image that's at least 98 x 98 pixels and 4MB or less.
             </p>
 
-            <div className="relative inline-block mr-4 font-medium">
-              <button type="button" className="px-3 py-2 bg-zinc-200 rounded-full">
-                {previews.avatar ? "Change" : "Upload"}
-              </button>
-              <input
-                type="file"
-                name="avatar"
-                accept="image/*"
-                onChange={handleFilePreview}
-                className="absolute inset-0 opacity-0 cursor-pointer"
-              />
-            </div>
+            <div className="flex gap-2">
+              <div className="relative inline-block">
+                <Button type="button" variant="secondary" size="sm">
+                  {previews.avatar ? "Change" : "Upload"}
+                </Button>
+                <input
+                  type="file"
+                  name="avatar"
+                  accept="image/*"
+                  onChange={handleFilePreview}
+                  className="absolute inset-0 opacity-0 cursor-pointer"
+                />
+              </div>
 
-            {previews.avatar && (
-              <button
-                type="button"
-                onClick={() => handleRemove("avatar")}
-                className="px-3 py-2 bg-zinc-200 rounded-full font-medium"
-              >
-                Remove
-              </button>
-            )}
+              {previews.avatar && (
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handleRemove("avatar")}
+                >
+                  Remove
+                </Button>
+              )}
+            </div>
           </div>
         </div>
       </div>
 
       {/* FULL NAME */}
-      <div>
-        <label className="block text-sm font-medium">Full Name</label>
-        <input
-          name="fullName"
-          type="text"
-          required
-          placeholder="John Doe"
-          className="mt-1 border rounded-md px-3 py-2 w-full"
-        />
-      </div>
+      <Input
+        label="Full Name"
+        name="fullName"
+        type="text"
+        required
+        placeholder="John Doe"
+      />
 
       {/* DESCRIPTION */}
-      <div>
-        <div>
-          <label className="block text-sm font-medium">Description</label>
-        </div>
-        <textarea
-          name="description"
-          rows={4}
-          placeholder="Tell viewers about your channel. Your description will appear in the About section of your channel and search results, among other places."
-          className="mt-1 border rounded-md px-3 py-2 w-full"
-        />
-      </div>
+      <Textarea
+        label="Description"
+        name="description"
+        rows={4}
+        placeholder="Tell viewers about your channel."
+      />
 
       {/* CONTACT EMAIL */}
-      <div>
-        <div>
-          <label className="block text-sm font-medium">Contact Email</label>
-          <p className="text-sm text-gray-500">
-            Let people know how to contact you with business inquiries.
-            The email address you enter may appear in the About section of your channel and be visible to viewers.
-          </p>
-        </div>
-        <input
+      <div className="space-y-1.5 flex flex-col">
+        <label className="text-xs font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">
+          Contact Email
+        </label>
+        <p className="text-xs text-gray-500 leading-none mb-1">
+          Let people know how to contact you with business inquiries.
+        </p>
+        <Input
           name="contactEmail"
           type="email"
           placeholder="you@example.com"
-          className="mt-1 border rounded-md px-3 py-2 w-full"
         />
       </div>
 
       {/* LINKS SECTION */}
       <div className="space-y-4">
-        <div>
-          <label className="block text-sm font-medium">Links</label>
-          <p className="text-sm text-gray-500">
-            Share external links with your viewers. They'll be visible on your
-            channel profile and about page.
+        <div className="space-y-1">
+          <label className="text-xs font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">
+            Links
+          </label>
+          <p className="text-xs text-gray-500">
+            Share external links with your viewers.
           </p>
         </div>
 
@@ -292,7 +291,7 @@ export default function ChannelTab() {
               onChange={(e) =>
                 handleLinkChange(index, "title", e.target.value)
               }
-              className="border rounded-md px-3 py-2"
+              className="px-4 py-2 border rounded-xl outline-none focus:border-sky-400 text-sm bg-white dark:bg-zinc-800 border-zinc-200 dark:border-zinc-700"
             />
 
             <input
@@ -302,13 +301,13 @@ export default function ChannelTab() {
               onChange={(e) =>
                 handleLinkChange(index, "url", e.target.value)
               }
-              className="border col-span-3 rounded-md px-3 py-2"
+              className="px-4 py-2 border col-span-3 rounded-xl outline-none focus:border-sky-400 text-sm bg-white dark:bg-zinc-800 border-zinc-200 dark:border-zinc-700"
             />
 
             <button
               type="button"
               onClick={() => handleRemoveLink(index)}
-              className="text-red-600 text-sm"
+              className="text-red-500 hover:text-red-700 text-sm font-semibold ml-2 text-left"
             >
               Remove
             </button>
@@ -318,20 +317,19 @@ export default function ChannelTab() {
         <button
           type="button"
           onClick={handleAddLink}
-          className="text-blue-600 text-sm"
+          className="text-blue-500 hover:text-blue-700 text-sm font-semibold"
         >
           + Add Link
         </button>
       </div>
 
       {/* SUBMIT */}
-      <button
+      <Button
         type="submit"
-        disabled={loading}
-        className="bg-black text-white px-3 py-2 rounded-full disabled:opacity-50"
+        isLoading={loading}
       >
         Save Changes
-      </button>
+      </Button>
     </form>
   );
 }

@@ -15,7 +15,6 @@ export default function VideosTab() {
   const [channelVideos, setChannelVideos] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const isOwner = user?.username === username;
 
   useEffect(() => {
     async function fetchChannelData() {

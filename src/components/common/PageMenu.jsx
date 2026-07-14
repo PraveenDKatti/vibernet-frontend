@@ -1,33 +1,21 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import { EllipsisVertical, Moon, Languages, Settings, Info, MessageSquareWarning, ChevronRight } from 'lucide-react';
+import useClickOutside from '../../hooks/useClickOutside';
 
 export default function PageMenu() {
     const [active, setActive] = useState(false);
-    const modalRef = useRef(null)
+    const modalRef = useRef(null);
 
-    useEffect(() => {
-        function handleClickOutside(event) {
-            if (modalRef.current && !modalRef.current.contains(event.target)) {
-                setActive(false)
-            }
-        }
-
-        if (active) {
-            document.addEventListener('mousedown', handleClickOutside);
-        }
-        return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
-        }
-    }, [active])
-
+    useClickOutside(modalRef, () => {
+        setActive(false);
+    });
 
     return (
         <>
-            <EllipsisVertical onClick={() => setActive(!active)} />
-            <div className='relative'>
+            <EllipsisVertical onClick={() => setActive(!active)} className="cursor-pointer" />
+            <div className='relative' ref={modalRef}>
                 {active && (
                     <div
-                        ref={modalRef}
                         className="absolute rounded-xl py-2 px-1 w-56 bg-white right-1 top-2 
                     shadow-[0px_0px_10px_0.1px_rgba(0,0,0,0.1)] z-50 text-sm text-gray-700"
                     >
@@ -52,5 +40,5 @@ export default function PageMenu() {
                 )}
             </div>
         </>
-    )
+    );
 }

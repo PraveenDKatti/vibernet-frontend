@@ -4,6 +4,8 @@ import { Image, Video, AlignStartVertical } from "lucide-react";
 import ImagePost from "./ImagePost";
 import VideoPost from "./VideoPost";
 import PollPost from "./PollPost";
+import Button from "../ui/Button";
+import Textarea from "../ui/Textarea";
 
 export default function PostEditor({
   mode = "create",           // "create" | "edit"
@@ -22,6 +24,7 @@ export default function PostEditor({
     options: ["", ""],
   });
 
+  // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => {
     if (mode === "edit" && initialData) {
       setPostContent(initialData.postContent || "");
@@ -30,10 +33,6 @@ export default function PostEditor({
       setPoll(
         initialData.poll || { question: "", options: ["", ""] }
       );
-
-      // ⚠️ Images are files in create mode,
-      // but in edit mode they are URLs.
-      // You may want to handle existing images differently.
     }
   }, [mode, initialData]);
 
@@ -61,7 +60,7 @@ export default function PostEditor({
     try {
       if (!postContent && postType === "text") return
 
-      let payload = { postContent, postType,}
+      let payload = { postContent, postType, }
 
       // IMAGE POST (FormData)
       if (postType === "image") {
@@ -78,7 +77,6 @@ export default function PostEditor({
 
       // OTHER TYPES (JSON)
       else {
-
         if (postType === "video") {
           payload.videoId = videoId;
         }
@@ -106,7 +104,7 @@ export default function PostEditor({
   }
 
   return (
-    <div className="rounded-2xl border border-gray-300 p-4 space-y-4 bg-white w-2/3">
+    <div className="rounded-2xl border border-gray-300 p-6 space-y-4 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800 w-2/3">
 
       {/* HEADER */}
       <div className="flex items-center gap-3">
@@ -115,16 +113,16 @@ export default function PostEditor({
           alt={user?.fullName}
           className="w-10 h-10 rounded-full object-cover"
         />
-        <p className="font-medium">{user?.fullName}</p>
+        <p className="font-semibold text-sm text-zinc-900 dark:text-zinc-100">{user?.fullName}</p>
       </div>
 
       {/* TEXTAREA */}
-      <textarea
+      <Textarea
         placeholder="What's on your mind?"
         value={postContent}
         onChange={(e) => setPostContent(e.target.value)}
         rows={2}
-        className="w-full resize-none rounded-lg px-3 py-2 focus:outline-none"
+        className="w-full resize-none border-zinc-150 dark:border-zinc-800"
       />
 
       {/* MEDIA SECTION */}
@@ -152,13 +150,13 @@ export default function PostEditor({
       </div>
 
       {/* FOOTER */}
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between items-center pt-2">
 
         {/* TYPE SELECTORS */}
         <div className="flex gap-4">
           <div
             onClick={() => setPostType("image")}
-            className="flex rounded-full hover:bg-zinc-200 p-2 gap-2 items-center text-gray-600 cursor-pointer"
+            className="flex rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-800 p-2 gap-2 items-center text-gray-600 dark:text-zinc-400 cursor-pointer transition-colors"
           >
             <Image size={20} />
             <span className="text-sm font-medium">Image</span>
@@ -166,7 +164,7 @@ export default function PostEditor({
 
           <div
             onClick={() => setPostType("video")}
-            className="flex rounded-full hover:bg-zinc-200 p-2 gap-2 items-center text-gray-600 cursor-pointer"
+            className="flex rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-800 p-2 gap-2 items-center text-gray-600 dark:text-zinc-400 cursor-pointer transition-colors"
           >
             <Video size={20} />
             <span className="text-sm font-medium">Video</span>
@@ -174,7 +172,7 @@ export default function PostEditor({
 
           <div
             onClick={() => setPostType("poll")}
-            className="flex rounded-full hover:bg-zinc-200 p-2 gap-2 items-center text-gray-600 cursor-pointer"
+            className="flex rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-800 p-2 gap-2 items-center text-gray-600 dark:text-zinc-400 cursor-pointer transition-colors"
           >
             <AlignStartVertical size={20} />
             <span className="text-sm font-medium">Poll</span>
@@ -183,19 +181,20 @@ export default function PostEditor({
 
         {/* ACTIONS */}
         <div className="flex gap-2">
-          <button
+          <Button
             onClick={mode === "edit" ? onCancel : resetForm}
-            className="px-4 py-2 hover:bg-zinc-200 text-black rounded-full"
+            variant="ghost"
+            size="sm"
           >
             Cancel
-          </button>
+          </Button>
 
-          <button
+          <Button
             onClick={handleSubmit}
-            className="px-4 py-2 bg-zinc-700 hover:bg-black text-white rounded-full"
+            size="sm"
           >
             {mode === "edit" ? "Update" : "Post"}
-          </button>
+          </Button>
         </div>
       </div>
     </div>

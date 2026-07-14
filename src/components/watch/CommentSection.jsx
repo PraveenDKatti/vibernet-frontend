@@ -20,7 +20,6 @@ export default function CommentSection() {
 
     const [text, setText] = useState("");
     const [comments, setComments] = useState([]);
-    const [loading, setLoading] = useState(false);
     const [openEmoji, setOpenEmoji] = useState(false);
     const [activeDropdown, setActiveDropdown] = useState(null);
 
@@ -53,36 +52,33 @@ export default function CommentSection() {
     const handleAdd = async () => {
         if (!text.trim()) return;
         try {
-            setLoading(true);
             await addVideoComment({ videoId, content: text });
             setText("");
             fetchComments();
-        } finally {
-            setLoading(false);
+        } catch (error) {
+            console.error(error);
         }
     };
 
     const handleEdit = async (id) => {
         if (!text.trim()) return;
         try {
-            setLoading(true);
             await updateComment({ commentId: id, content: text });
             setText("");
             setActiveDropdown(null);
             fetchComments();
-        } finally {
-            setLoading(false);
+        } catch (error) {
+            console.error(error);
         }
     };
 
     const handleDelete = async (id) => {
         try {
-            setLoading(true);
             await deleteComment(id);
             setActiveDropdown(null);
             fetchComments();
-        } finally {
-            setLoading(false);
+        } catch (error) {
+            console.error(error);
         }
     };
 

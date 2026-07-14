@@ -4,14 +4,13 @@ import useAuthStore from "../../../store/authStore";
 import { getAllVideos } from "../../../api/video.api";
 import { formatCount } from "../../../utils/formatCount";
 
-export default function VideosTab() {
+export default function HomeTab() {
   const { username } = useParams();
   const { user } = useAuthStore();
 
   const [videos, setVideos] = useState([0, 0]);
   const [loading, setLoading] = useState(true);
 
-  const isOwner = user?.username === username;
 
   useEffect(() => {
     async function fetchChannelData() {

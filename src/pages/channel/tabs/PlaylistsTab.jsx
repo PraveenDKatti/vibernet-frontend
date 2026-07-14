@@ -11,7 +11,6 @@ export default function PlaylistsTab() {
   const [channelPlaylists, setChannelPlaylists] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const isOwner = user?.username === username;
 
   useEffect(() => {
     async function fetchChannelPlaylists() {
