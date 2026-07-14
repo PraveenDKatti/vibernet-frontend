@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { EllipsisVertical } from 'lucide-react'
 import { formatDistanceToNow } from 'date-fns'
-import useAuthStore from '../store/authStore'
-import { getSubscribedFeed } from '../api/subscription.api'
-import PageLoader from '../components/common/PageLoader'
+import useAuthStore from '../../store/authStore'
+import { getSubscribedFeed } from '../../api/subscription.api'
+import PageLoader from '../../components/common/PageLoader'
 
 export default function Subscription() {
     const [subscriptions, setSubscriptions] = useState([])

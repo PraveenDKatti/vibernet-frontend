@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Bell, List, LayoutGrid, ChevronDown } from 'lucide-react'
-import { getSubscribedChannels, toggleSubscription } from '../api/subscription.api'
-import PageLoader from '../components/common/PageLoader'
-import MenuModal from '../components/ui/MenuModal'
+import { getSubscribedChannels, toggleSubscription } from '../../api/subscription.api'
+import PageLoader from '../../components/common/PageLoader'
+import MenuModal from '../../components/ui/MenuModal'
 
 export default function SubscribedChannels() {
     const [layout, setLayout] = useState('grid') // 'grid' | 'list'

@@ -9,8 +9,8 @@ import Register from "./pages/auth/Register";
 import AuthLayout from "./layouts/AuthLayout";
 import useAuthStore from "./store/authStore";
 import Profile from "./pages/profile/Profile";
-import Subscription from "./pages/Subscription";
-import SubscribedChannels from "./pages/SubscribedChannels";
+import Subscription from "./pages/subscription/Subscription";
+import SubscribedChannels from "./pages/subscription/SubscribedChannels";
 import Channel from "./pages/channel/Channel"
 import SearchResults from "./pages/SearchResults"
 import NotFound from './pages/NotFound'
