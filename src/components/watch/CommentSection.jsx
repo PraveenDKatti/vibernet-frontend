@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ThumbsUp, ThumbsDown, EllipsisVertical, Laugh } from "lucide-react";
 import {
@@ -23,19 +23,18 @@ export default function CommentSection() {
     const [openEmoji, setOpenEmoji] = useState(false);
     const [activeDropdown, setActiveDropdown] = useState(null);
 
-    const fetchComments = useCallback(async () => {
+    useEffect(() => {
+        if (videoId) fetchComments();
+    }, [videoId]);
+
+    const fetchComments = async () => {
         try {
             const { data } = await getVideoComments(videoId);
             setComments(data?.docs || []);
         } catch (err) {
             console.error(err);
         }
-    }, [videoId]);
-
-    useEffect(() => {
-        // eslint-disable-next-line react-hooks/set-state-in-effect
-        if (videoId) fetchComments();
-    }, [videoId, fetchComments]);
+    };
 
     const handleReaction = async (commentId, type) => {
         try {
@@ -106,48 +105,48 @@ export default function CommentSection() {
             </p>
 
             {/* Add Comment */}
-            <div className="flex space-x-3 mb-10 text-sm">
-                <label className="rounded-full w-8 h-8 flex items-center justify-center bg-green-600 text-white text-base shrink-0 select-none">
+            <div className="flex space-x-4 mb-10">
+                <label className="rounded-full w-8 h-8 flex items-center justify-center bg-green-600 text-white text-xl">
                     {user?.username?.[0]?.toUpperCase()}
                 </label>
 
-                <div className="flex-1 space-y-2 min-w-0">
+                <div className="flex-1 space-y-2">
                     <input
                         value={text}
                         onChange={(e) => setText(e.target.value)}
                         type="text"
                         placeholder="Add a comment"
-                        className="w-full text-sm border-gray-300 outline-none border-b pb-1 focus:border-black transition-colors"
+                        className="w-full text-sm border-gray-300 outline-none border-b pb-1"
                     />
 
-                    <div className="flex justify-between items-center">
+                    <div className="flex justify-between">
                         <div className="relative">
                             <button
                                 type="button"
                                 onClick={() => setOpenEmoji((p) => !p)}
-                                className="text-xl hover:scale-110 transition-transform flex items-center"
+                                className="text-xl hover:scale-110 transition-transform"
                             >
-                                <Laugh size={24} strokeWidth={1.5} className="text-gray-500 hover:text-gray-800" />
+                                <Laugh size={30} strokeWidth={1.5} className="text-gray-500" />
                             </button>
 
                             {openEmoji && (
-                                <div className="absolute mt-2 z-50 left-0 w-[280px] xs:w-[325px] sm:w-[350px]">
-                                    <EmojiPicker onEmojiClick={onEmojiClick} width="100%" height={320} />
+                                <div className="absolute mt-2 z-50">
+                                    <EmojiPicker onEmojiClick={onEmojiClick} />
                                 </div>
                             )}
                         </div>
 
-                        <div className="text-sm font-medium space-x-2">
+                        <div className="text-sm font-medium space-x-4">
                             <button
                                 onClick={() => setText("")}
-                                className="px-3 py-1.5 hover:bg-zinc-200 rounded-full text-gray-500 hover:text-black"
+                                className="px-3 py-2 hover:bg-zinc-200 rounded-full"
                             >
                                 Cancel
                             </button>
 
                             <button
                                 onClick={handleAdd}
-                                className="bg-black text-white px-3 py-1.5 rounded-full disabled:opacity-50 hover:bg-zinc-800"
+                                className="bg-black text-white px-3 py-2 rounded-full disabled:opacity-50"
                             >
                                 Comment
                             </button>
