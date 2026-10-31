@@ -6,103 +6,53 @@ const useAuthStore = create((set, get) => ({
   // 🔹 state
   user: null,
   isAuthenticated: false,
-  loading: true,
-  error: null,
+  initializing: true,
 
   // 🔹 actions
   checkAuth: async () => {
     try {
       const response = await client.get("/users/current-user");
-      set({ user: response.data.data, isAuthenticated: true, loading: false });
+      set({ user: response.data.data, isAuthenticated: true });
     } catch (error) {
-      set({ user: null, isAuthenticated: false, loading: false });
+      set({ user: null, isAuthenticated: false });
     }finally{
-      set({loading:false})
+      set({initializing:false})
     }
   },
 
   login: async (credentials) => {
-    set({ loading: true, error: null });
-
-    try {
-      if (!credentials.email || !credentials.password) throw new Error("Email and password are required")
-      
-      const response = await authApi.login(credentials)
-
-      set({
-        user: response.data.user,
-        isAuthenticated: true,
-        loading: false,
-      });
-
-      return response;
-    } catch (err) {
-      set({
-        error: err.message || "Login failed",
-        loading: false,
-      });
-      throw err;
-    }
+    if (!credentials.email || !credentials.password)
+      throw new Error("Email and password are required")
+    const response = await authApi.login(credentials)
+    set({ user: response.data.user, isAuthenticated: true });
+    return response;
   },
 
   register: async (payload) => {
-    set({ loading: true, error: null });
-
-    try {
-      if ([...payload.entries()].some(([key, value]) => !value)) throw new Error("All text fields and images are required");
-      const response = await authApi.register(payload);
-
-      set({
-        loading: false
-      })
-
-      //if data is set and authenticated logins immediately without navigating to login page.
-      /* set({
-        user: response.data,
-        isAuthenticated: true,
-        loading: false,
-      }); */
-
-      return response;
-    } catch (err) {
-      set({
-        error: err.message || "Registration failed",
-        loading: false,
-      });
-      throw err;
-    }
+    if ([...payload.entries()].some(([_, value]) => !value)) 
+      throw new Error("All text fields and images are required");
+    const response = await authApi.register(payload);
+    return response;
   },
 
   logout: async () => {
-    set({ loading: true });
-
     try {
       await authApi.logout();
-    } finally {
+    } 
+    finally {
       // even if API fails, clear local state
-      set({
-        user: null,
-        isAuthenticated: false,
-        loading: false,
-      });
+      set({ user: null, isAuthenticated: false });
     }
   },
 
   refresh: async () => {
     try {
       const response = await authApi.refresh();
-
-      set({
-        user: response.data,
-        isAuthenticated: true,
-      });
-
+      set({ user: response.data, isAuthenticated: true });
       return response;
-    } catch {
-      set({
-        user: null,
-        isAuthenticated: false,
-      });
+    } 
+    catch {
+      set({ user: null, isAuthenticated: false });
     }
   },
 }));

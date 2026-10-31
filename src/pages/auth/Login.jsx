@@ -8,14 +8,23 @@ import useAuthStore from "../../store/authStore";
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
-  const { login, loading, error } = useAuthStore();
+  const { login } = useAuthStore();
 
   const handleLogin = async () => {
-    const success = await login({ email, password });
-    if (success) {
-      navigate("/");
+    setLoading(true)
+    setError(null)
+    try {
+      const success = await login({ email, password });
+      if (success) {
+        navigate("/");
+      }
+    } catch (err) {
+      setError(err.message || "Login failed");
+    } finally {
+      setLoading(false)
     }
   };
 

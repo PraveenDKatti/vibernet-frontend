@@ -3,22 +3,23 @@ import { useEffect, useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { getAllVideos } from '../api/video.api'
 import { formatActionTime } from "../utils/formatActionTime"
-import PageLoader from '../components/common/PageLoader'
 import { formatDuration } from '../utils/formatDuration'
 import { formatCount } from '../utils/formatCount'
 
 const Home = () => {
   const [homeFeed, setHomeFeed] = useState([]) //videos for home feed.
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(null)
 
   useEffect(() => {
+    setLoading(true)
     async function fetchVideos() {
       try {
         setLoading(true)
         const response = await getAllVideos()
         setHomeFeed(response.data.docs)
-      } catch (error) {
-        console.log(error)
+      } catch (err) {
+        setError(err.message || 'failed to fetch feed')
       } finally {
         setLoading(false)
       }
@@ -28,12 +29,6 @@ const Home = () => {
   }, [])
 
   const navigate = useNavigate()
-
-  if (loading) {
-    return (
-      <PageLoader />
-    );
-  }
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4 space-y-4 min-h-screen">

@@ -4,13 +4,9 @@ import PlayList from './PlayList'
 import WatchLater from './WatchLater'
 import LikedVideos from './LikedVideos'
 import useAuthStore from "../../store/authStore";
-import PageLoader from "../../components/common/PageLoader";
 
 export default function Profile() {
-  const { user, loading } = useAuthStore();
-
-  if (loading) return <PageLoader />;
-  if(!user) return <p>Something Went Wrong..</p>
+  const { user } = useAuthStore();
 
   return (
     <div>

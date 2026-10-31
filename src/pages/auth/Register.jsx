@@ -12,9 +12,11 @@ export default function SignUp() {
   const [password, setPassword] = useState("");
   const [avatar, setAvatar] = useState(null);
   const [avatarPreview, setAvatarPreview] = useState(null);
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(null)
 
   const navigate = useNavigate();
-  const { register, loading, error } = useAuthStore();
+  const { register } = useAuthStore();
 
   const handleAvatarChange = (e) => {
     const file = e.target.files[0];
@@ -25,16 +27,23 @@ export default function SignUp() {
   };
 
   const handleRegister = async () => {
+    setLoading(true)
+    setError(null)
     const formData = new FormData();
     formData.append("fullName", fullName);
     formData.append("username", username);
     formData.append("email", email);
     formData.append("password", password);
     if (avatar) formData.append("avatar", avatar);
-
-    const success = await register(formData);
-    if (success) {
-      navigate("/login");
+    try {
+      const success = await register(formData);
+      if (success) {
+        navigate("/login");
+      }
+    } catch (err) {
+      setError(err.message || "Login failed");
+    } finally{
+      setLoading(false)
     }
   };
 

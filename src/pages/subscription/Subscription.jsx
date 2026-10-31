@@ -10,24 +10,27 @@ import { formatCount } from '../../utils/formatCount'
 
 export default function Subscription() {
     const [subscriptions, setSubscriptions] = useState([])
-    const { user, loading } = useAuthStore()
+    const [loading, setLoading] = useState(false)
+    const [error, setError] = useState(null)
+    const { user } = useAuthStore()
 
     const navigate = useNavigate()
 
     useEffect(() => {
-        if (!user?._id) return
+        setLoading(true)
+        setError(null)
         async function fetchSubscriptionData() {
             try {
                 const response = await getSubscribedFeed()
                 setSubscriptions(response?.data || [])
-            } catch (error) {
-                console.error(error)
+            } catch (err) {
+                setError(err.message || "Subscribed data not found")
+            }finally {
+                setLoading(false)
             }
         }
         fetchSubscriptionData()
     }, [user])
-
-    if (loading) return <PageLoader />
 
     return (
         <div className="space-y-6">

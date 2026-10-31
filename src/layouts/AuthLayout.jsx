@@ -6,13 +6,11 @@ import PageLoader from '../components/common/PageLoader'
 
 export default function AuthLayout({ authentication = true }) {
     const navigate = useNavigate()
-    const { isAuthenticated, loading } = useAuthStore()
-
+    const { isAuthenticated, initializing } = useAuthStore()
     const location = useLocation()
 
     useEffect(() => {
-        if (loading) return;
-
+        if (initializing) return;
         if (authentication && !isAuthenticated) {
             navigate("/login", {
                 replace: true,
@@ -26,7 +24,7 @@ export default function AuthLayout({ authentication = true }) {
                 replace: true
             });
         }
-    }, [isAuthenticated, authentication, loading, navigate, location]);
+    }, [isAuthenticated, authentication, initializing , navigate, location]);
 
-    return loading ? <PageLoader /> : <Outlet />
+    return initializing ? <PageLoader /> : <Outlet />
 }
