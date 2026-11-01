@@ -25,7 +25,6 @@ const Home = () => {
     }
     try {
       const response = await getAllVideos(params);
-      console.log(response)
       const { data, hasMore: moreAvailable, nextCursor: newCursor } = response;
       setHomeFeed((prevFeed) => [...prevFeed, ...data.docs])
       setHasMore(moreAvailable)
