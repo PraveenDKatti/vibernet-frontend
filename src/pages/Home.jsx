@@ -12,9 +12,11 @@ const Home = () => {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
   const [hasMore, setHasMore] = useState(true)
-  const [nextCursor, setNextCursor] = useState(null);
+  const [nextCursor, setNextCursor] = useState(null)
+  const [skeletonCount, setSkeletonCount] = useState(6)
 
-  const observerRef = useRef(null);
+  const containerRef = useRef(null)
+  const observerRef = useRef(null)
 
   const fetchVideos = useCallback(async (cursor) => {
     if (loading || !hasMore) return
@@ -54,12 +56,25 @@ const Home = () => {
 
   useEffect(() => {
     fetchVideos(null)
+    const observer = new ResizeObserver((entries)=>{
+      for(entry of entries) {
+        const containerWidth = entry.contentRect.width
+        const skeletonMinWidth = 280
+        
+        const columns = Math.floor(containerWidth/skeletonMinWidth) || 1
+        const rows = 2
+        const totalSkeletons = columns * rows
+        setSkeletonCount(totalSkeletons)
+      }
+    })
+    observer.observe(containerRef.current)
+    return ()=> observer.disconnect()
   }, [])
 
   const navigate = useNavigate()
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4 space-y-4 min-h-screen">
+    <div ref={containerRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4 space-y-4 min-h-screen">
       {homeFeed.map((video, index) => {
         const duration = formatDuration(video.duration)
         const viewsCount = formatCount(video.views)
@@ -94,7 +109,9 @@ const Home = () => {
           </div>)
       })}
 
-      {loading && Array.from({ length: 16 }).map((_, index) => (<SkeletonLoader key={`skeleton-${index}`}/>))}
+      {loading && Array.from({ length: skeletonCount }).map((_, index) => (
+          <SkeletonLoader key={`skeleton-${index}`} />
+        ))}
     </div>
   );
 };
