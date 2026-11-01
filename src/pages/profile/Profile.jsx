@@ -3,7 +3,8 @@ import History from './History'
 import PlayList from './PlayList'
 import WatchLater from './WatchLater'
 import LikedVideos from './LikedVideos'
-import useAuthStore from "../../store/authStore";
+import useAuthStore from "../../store/authStore"
+import LoadingScreen from "../../components/common/LoadingScreen"
 
 export default function Profile() {
   const { user } = useAuthStore();
@@ -12,11 +13,11 @@ export default function Profile() {
     <div>
       {/* Profile Header */}
       <div className="flex h-[135px] items-center gap-4">
-        <img src={user.avatar} className="rounded-full w-30 h-30" />
+        <img src={user?.avatar} className="rounded-full w-30 h-30" />
         <div className="space-y-2">
-          <p className="text-4xl font-bold">{user.fullName}</p>
+          <p className="text-4xl font-bold">{user?.fullName}</p>
           <div className="flex text-sm space-x-1 text-gray-500">
-            <p>@{user.username}</p>
+            <p>@{user?.username}</p>
             <span>•</span>
             <p>View Channel</p>
           </div>

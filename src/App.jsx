@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import MainLayout from "./layouts/MainLayout";
 import WatchLayout from "./layouts/WatchLayout"
 import Home from "./pages/Home";
@@ -31,40 +31,38 @@ export default function App() {
   }, [checkAuth]);
 
   return (
-    <BrowserRouter>
-      <Routes>
-        {/* Wrap all pages with MainLayout */}
-        <Route element={<MainLayout />}>
-          {/* Home page */}
-          <Route path="/" element={<Home />} />
-          <Route path="/results" element={<SearchResults />} />
-          <Route path="/:username" element={<Channel />}>
-            <Route index element={<HomeTab />} />
-            <Route path="videos" element={<VideosTab />} />
-            <Route path="playlists" element={<PlaylistsTab />} />
-            <Route path="community" element={<CommunityTab />} />
-            <Route path="channel" element={<ChannelTab />} />
-          </Route>
-
-          <Route element={<AuthLayout authentication={true} />}>
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/profile/subscriptions" element={<Subscription />} />
-            <Route path="/profile/channels" element={<SubscribedChannels />} />
-            <Route path="/upload" element={<UploadVideo />} />
-          </Route>
+    <Routes>
+      {/* Wrap all pages with MainLayout */}
+      <Route element={<MainLayout />}>
+        {/* Home page */}
+        <Route path="/" element={<Home />} />
+        <Route path="/results" element={<SearchResults />} />
+        <Route path="/:username" element={<Channel />}>
+          <Route index element={<HomeTab />} />
+          <Route path="videos" element={<VideosTab />} />
+          <Route path="playlists" element={<PlaylistsTab />} />
+          <Route path="community" element={<CommunityTab />} />
+          <Route path="channel" element={<ChannelTab />} />
         </Route>
 
-        <Route element={<AuthLayout authentication={false} />}>
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
+        <Route element={<AuthLayout authentication={true} />}>
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/profile/subscriptions" element={<Subscription />} />
+          <Route path="/profile/channels" element={<SubscribedChannels />} />
+          <Route path="/upload" element={<UploadVideo />} />
         </Route>
+      </Route>
 
-        <Route element={<WatchLayout />}>
-          <Route path="/Watch/:videoId" element={<Watch />} />
-        </Route>
+      <Route element={<AuthLayout authentication={false} />}>
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+      </Route>
 
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </BrowserRouter>
+      <Route element={<WatchLayout />}>
+        <Route path="/Watch/:videoId" element={<Watch />} />
+      </Route>
+
+      <Route path="*" element={<NotFound />} />
+    </Routes>
   );
 }

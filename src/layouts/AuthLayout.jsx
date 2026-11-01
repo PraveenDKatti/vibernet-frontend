@@ -1,30 +1,23 @@
 // src/components/AuthLayout.jsx (Final Version)
 import React, { useEffect } from 'react'
-import { useNavigate, Outlet, useLocation } from 'react-router-dom'
+import { Navigate, Outlet, useLocation } from 'react-router-dom'
 import useAuthStore from '../store/authStore'
 import PageLoader from '../components/common/PageLoader'
 
 export default function AuthLayout({ authentication = true }) {
-    const navigate = useNavigate()
     const { isAuthenticated, initializing } = useAuthStore()
     const location = useLocation()
 
-    useEffect(() => {
-        if (initializing) return;
-        if (authentication && !isAuthenticated) {
-            navigate("/login", {
-                replace: true,
-                state: { from: location }
-            });
-            return;
-        }
+    if(initializing) return <PageLoader />
 
-        if (!authentication && isAuthenticated) {
-            navigate(location.state?.from?.pathname || "/", {
-                replace: true
-            });
-        }
-    }, [isAuthenticated, authentication, initializing , navigate, location]);
+    if (authentication && !isAuthenticated) {
+        return <Navigate to="/login" state={{ from: location }} replace />
+    }
 
-    return initializing ? <PageLoader /> : <Outlet />
+    if (!authentication && isAuthenticated) {
+        const origin = location.state?.from?.pathname || "/"
+        return <Navigate to={origin} replace />
+    }
+
+    return <Outlet />
 }
