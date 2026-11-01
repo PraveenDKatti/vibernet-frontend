@@ -57,7 +57,7 @@ const Home = () => {
   useEffect(() => {
     fetchVideos(null)
     const observer = new ResizeObserver((entries)=>{
-      for(entry of entries) {
+      for(let entry of entries) {
         const containerWidth = entry.contentRect.width
         const skeletonMinWidth = 280
         
