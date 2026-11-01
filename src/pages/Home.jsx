@@ -1,43 +1,73 @@
 import { EllipsisVertical } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { getAllVideos } from '../api/video.api'
 import { formatActionTime } from "../utils/formatActionTime"
 import { formatDuration } from '../utils/formatDuration'
 import { formatCount } from '../utils/formatCount'
+import SkeletonLoader from '../components/common/SkeletonLoader'
 
 const Home = () => {
   const [homeFeed, setHomeFeed] = useState([]) //videos for home feed.
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
+  const [hasMore, setHasMore] = useState(true)
+  const [nextCursor, setNextCursor] = useState(null);
+
+  const observerRef = useRef(null);
+
+  const fetchVideos = useCallback(async (cursor) => {
+    if (loading || !hasMore) return
+    setLoading(true)
+    let params = ""
+    if (cursor && cursor.lastId && cursor.lastDate) {
+      params = { lastId: cursor.lastId, lastDate: cursor.lastDate }
+    }
+    try {
+      const response = await getAllVideos(params);
+      console.log(response)
+      const { data, hasMore: moreAvailable, nextCursor: newCursor } = response;
+      setHomeFeed((prevFeed) => [...prevFeed, ...data.docs])
+      setHasMore(moreAvailable)
+      setNextCursor(newCursor)
+    } catch (err) {
+      setError(err.message || 'failed to fetch feed')
+    } finally {
+      setLoading(false)
+    }
+  }, [loading, hasMore])
+
+  const lastVideoElementRef = useCallback(
+    (node) => {
+      if (loading) return;
+      if (observerRef.current) observerRef.current.disconnect();
+
+      observerRef.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting && hasMore) {
+          fetchVideos(nextCursor);
+        }
+      });
+
+      if (node) observerRef.current.observe(node);
+    },
+    [loading, hasMore, nextCursor, fetchVideos]
+  );
 
   useEffect(() => {
-    setLoading(true)
-    async function fetchVideos() {
-      try {
-        setLoading(true)
-        const response = await getAllVideos()
-        setHomeFeed(response.data.docs)
-      } catch (err) {
-        setError(err.message || 'failed to fetch feed')
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    fetchVideos()
+    fetchVideos(null)
   }, [])
 
   const navigate = useNavigate()
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4 space-y-4 min-h-screen">
-      {homeFeed.map((video) => {
+      {homeFeed.map((video, index) => {
         const duration = formatDuration(video.duration)
         const viewsCount = formatCount(video.views)
+        const isLastElement = nextCursor && video._id === nextCursor.lastId
 
         return (
-          <div key={video._id} className="hover:bg-blue-50 rounded-2xl space-y-3 cursor-pointer z-10" onClick={() => navigate(`/Watch/${video._id}`)}>
+          <div ref={isLastElement ? lastVideoElementRef : null} key={`${video._id}-${index}`} className="hover:bg-blue-50 rounded-2xl space-y-3 cursor-pointer z-10" onClick={() => navigate(`/Watch/${video._id}`)}>
             <div className="relative h-52">
               <img src={video.thumbnail} className='h-full w-full rounded-xl' />
               <div
@@ -64,6 +94,8 @@ const Home = () => {
             </div>
           </div>)
       })}
+
+      {loading && Array.from({ length: 16 }).map((_, index) => (<SkeletonLoader key={`skeleton-${index}`}/>))}
     </div>
   );
 };
