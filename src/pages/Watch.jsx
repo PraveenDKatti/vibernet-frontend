@@ -4,7 +4,7 @@ import useVideoStore from '../store/videoStore'
 import CommentSection from '../components/watch/CommentSection'
 import SuggestedVideos from '../components/watch/SuggestedVideos'
 import VideoInfo from '../components/watch/VideoInfo'
-import PageLoader from '../components/common/PageLoader'
+import SkeletonLoader from '../components/common/SkeletonLoader'
 
 export default function Watch() {
     
@@ -17,7 +17,7 @@ export default function Watch() {
         fetchVideo(videoId)
     }, [videoId, fetchVideo])
 
-    if (!currentVideo) return <PageLoader />
+    if (!currentVideo) return <SkeletonLoader />
 
     return (
         <div className='grid grid-cols-1 lg:grid-cols-9 lg:space-x-4'>

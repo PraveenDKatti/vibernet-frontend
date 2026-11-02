@@ -58,7 +58,7 @@ export default function VideosTab() {
           const viewsCount = formatCount(video.views)
 
           return (
-            <div key={video._id} className="hover:bg-blue-50 rounded-2xl space-y-2 cursor-pointer" onClick={() => navigate(`/Watch/${video._id}`)}>
+            <div key={video._id} className="hover:bg-blue-50 rounded-2xl space-y-2 cursor-pointer" onClick={() => navigate(`/watch/${video._id}`)}>
               <div className="relative h-36">
                 <img src={video.thumbnail} className='h-full w-full rounded-xl' />
                 <div

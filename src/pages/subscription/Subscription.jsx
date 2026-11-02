@@ -4,9 +4,9 @@ import { EllipsisVertical } from 'lucide-react'
 import { formatActionTime } from '../../utils/formatActionTime'
 import useAuthStore from '../../store/authStore'
 import { getSubscribedFeed } from '../../api/subscription.api'
-import PageLoader from '../../components/common/PageLoader'
 import { formatDuration } from '../../utils/formatDuration'
 import { formatCount } from '../../utils/formatCount'
+import LoadingScreen from '../../components/common/LoadingScreen'
 
 export default function Subscription() {
     const [subscriptions, setSubscriptions] = useState([])
@@ -109,9 +109,9 @@ export default function Subscription() {
                             </div>
                         )
                     })}
+                    {loading && <LoadingScreen />}
                 </div>
             )}
-
         </div>
     )
 }

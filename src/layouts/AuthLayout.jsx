@@ -1,5 +1,4 @@
 // src/components/AuthLayout.jsx (Final Version)
-import React, { useEffect } from 'react'
 import { Navigate, Outlet, useLocation } from 'react-router-dom'
 import useAuthStore from '../store/authStore'
 import PageLoader from '../components/common/PageLoader'
@@ -19,5 +18,9 @@ export default function AuthLayout({ authentication = true }) {
         return <Navigate to={origin} replace />
     }
 
-    return <Outlet />
+    return (
+        <Suspense fallback={<PageLoader />}>
+            <Outlet />
+        </Suspense>
+    )
 }

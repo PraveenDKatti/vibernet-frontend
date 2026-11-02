@@ -3,9 +3,9 @@ import { useEffect, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import client from '../api/client'
 import { formatActionTime } from "../utils/formatActionTime"
-import PageLoader from '../components/common/PageLoader'
 import { formatDuration } from '../utils/formatDuration'
 import { formatCount } from '../utils/formatCount'
+import SkeletonLoader from '../components/common/SkeletonLoader'
 
 const SearchResults = () => {
     const [searchParams] = useSearchParams();
@@ -34,10 +34,6 @@ const SearchResults = () => {
 
         fetchSearchResults();
     }, [query]);
-
-    if (loading) {
-        return <PageLoader />;
-    }
 
     if (!videos.length) {
         return (
@@ -119,6 +115,8 @@ const SearchResults = () => {
                     </div>
                 )
             })}
+
+            {loading && <SkeletonLoader />}
         </div>
     );
 };

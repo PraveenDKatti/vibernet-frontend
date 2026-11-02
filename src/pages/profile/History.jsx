@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { CircleChevronLeft, CircleChevronRight, EllipsisVertical } from "lucide-react";
-import PageLoader from '../../components/common/PageLoader'
 import { getWatchHistory, removeFromHistory } from '../../api/history.api'
+import LoadingScreen from '../../components/common/LoadingScreen'
 
 export default function History({ user }) {
     const [historyFeed, setHistoryFeed] = useState([]) //user video watch history
@@ -22,7 +22,6 @@ export default function History({ user }) {
         fetchHistory()
     }, [])
 
-    if (loading) return <PageLoader />
     if (!history) return <p>your watch history appears here</p>
 
     return (
@@ -55,6 +54,7 @@ export default function History({ user }) {
                         </div>
                     </div>
                 ))}
+                { loading && <LoadingScreen />}
             </div>
         </div>
     );

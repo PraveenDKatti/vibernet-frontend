@@ -81,7 +81,7 @@ const Home = () => {
         const isLastElement = nextCursor && video._id === nextCursor.lastId
 
         return (
-          <div ref={isLastElement ? lastVideoElementRef : null} key={`${video._id}-${index}`} className="hover:bg-blue-50 rounded-2xl space-y-3 cursor-pointer z-10" onClick={() => navigate(`/Watch/${video._id}`)}>
+          <div ref={isLastElement ? lastVideoElementRef : null} key={`${video._id}-${index}`} className="hover:bg-blue-50 rounded-2xl space-y-3 cursor-pointer z-10" onClick={() => navigate(`/watch/${video._id}`)}>
             <div className="relative h-52">
               <img src={video.thumbnail} className='h-full w-full rounded-xl' />
               <div

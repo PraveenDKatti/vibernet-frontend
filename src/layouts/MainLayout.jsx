@@ -2,14 +2,15 @@ import { Outlet } from "react-router-dom";
 import Sidebar from "../components/navigation/Sidebar";
 import TopBar from "../components/navigation/Topbar";
 import OverlaySidebar from "../components/navigation/OverlaySidebar";
-import { useState } from "react";
+import { Suspense, useState } from "react";
+import PageLoader from "../components/common/PageLoader";
 
 export default function MainLayout() {
   const [overlayOpen, setOverlayOpen] = useState(false);
 
   return (
     <div className="h-screen flex flex-col">
-      
+
       {/* Top bar */}
       <TopBar onMenuClick={() => setOverlayOpen(true)} />
 
@@ -23,7 +24,9 @@ export default function MainLayout() {
         <Sidebar />
 
         <main className="flex-1 overflow-y-auto px-4 sm:px-5 lg:px-6">
-          <Outlet />
+          <Suspense fallback={<PageLoader />}>
+            <Outlet />
+          </Suspense>
         </main>
       </div>
     </div>

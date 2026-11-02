@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import PageLoader from '../../components/common/PageLoader'
 import { CircleChevronLeft, CircleChevronRight, EllipsisVertical } from 'lucide-react'
 import { getUserPlaylists, getMyPlaylists } from '../../api/playlist.api'
+import SkeletonLoader from "../../components/common/SkeletonLoader"
 
 export default function PlayList() {
     const { username } = useParams()
@@ -29,8 +29,6 @@ export default function PlayList() {
 
         fetchPlaylists()
     }, [username])
-
-    if (loading) return <PageLoader />
 
     return (
         <div className="space-y-4">
@@ -62,6 +60,8 @@ export default function PlayList() {
                         </div>
                     </div>
                 ))}
+
+                {loading && <SkeletonLoader />}
             </div>
         </div>
     )

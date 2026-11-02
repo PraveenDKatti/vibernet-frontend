@@ -1,9 +1,9 @@
-import { CircleChevronLeft, CircleChevronRight, EllipsisVertical } from "lucide-react";
-import { useEffect, useState } from "react";
-import { getLikedVideos } from '../../api/like.api'
+import { CircleChevronLeft, CircleChevronRight, EllipsisVertical } from "lucide-react"
+import { useEffect, useState } from "react"
+import { getLikedVideos } from "../../api/like.api"
 import { formatActionTime } from "../../utils/formatActionTime"
-import PageLoader from "../../components/common/PageLoader"
-import { formatCount } from '../../utils/formatCount'
+import { formatCount } from "../../utils/formatCount"
+import SkeletonLoader from "../../components/common/SkeletonLoader"
 
 export default function LikedVideos({ user, loading }) {
     const [likedFeed, setLikedFeed] = useState() //liked videos
@@ -17,7 +17,6 @@ export default function LikedVideos({ user, loading }) {
         fetchLikedVideos()
     }, [])
 
-    if (loading) return <PageLoader />
     if (!likedFeed) return <p>your liked videos appears here</p>
 
     return (
@@ -59,6 +58,7 @@ export default function LikedVideos({ user, loading }) {
                         </div>
                     )
                 })}
+                {loading && <SkeletonLoader />}
             </div>
         </div>
     );

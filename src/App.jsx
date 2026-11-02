@@ -1,26 +1,33 @@
-import React, { useEffect } from "react";
+import React, { lazy, Suspense, useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
-import MainLayout from "./layouts/MainLayout";
-import WatchLayout from "./layouts/WatchLayout"
-import Home from "./pages/Home";
-import Watch from "./pages/Watch"
-import Login from "./pages/auth/Login";
-import Register from "./pages/auth/Register";
-import AuthLayout from "./layouts/AuthLayout";
-import useAuthStore from "./store/authStore";
-import Profile from "./pages/profile/Profile";
-import Subscription from "./pages/subscription/Subscription";
-import SubscribedChannels from "./pages/subscription/SubscribedChannels";
-import Channel from "./pages/channel/Channel"
-import SearchResults from "./pages/SearchResults"
-import NotFound from './pages/NotFound'
-import UploadVideo from "./pages/UploadVideo";
 
-import HomeTab from "./pages/channel/tabs/HomeTab";
-import VideosTab from "./pages/channel/tabs/VideosTab";
-import PlaylistsTab from "./pages/channel/tabs/PlaylistsTab";
-import CommunityTab from "./pages/channel/tabs/CommunityTab";
-import ChannelTab from "./pages/channel/tabs/ChannelTab";
+import useAuthStore from "./store/authStore";
+
+// layout
+import MainLayout from "./layouts/MainLayout";
+import WatchLayout from "./layouts/WatchLayout";
+import AuthLayout from "./layouts/AuthLayout";
+import PageLoader from "./components/common/PageLoader";
+
+// pages
+const Home = lazy(() => import("./pages/Home"));
+const Watch = lazy(() => import("./pages/Watch"));
+const Login = lazy(() => import("./pages/auth/Login"));
+const Register = lazy(() => import("./pages/auth/Register"));
+const Profile = lazy(() => import("./pages/profile/Profile"));
+const Subscription = lazy(() => import("./pages/subscription/Subscription"));
+const SubscribedChannels = lazy(() => import("./pages/subscription/SubscribedChannels"));
+const Channel = lazy(() => import("./pages/channel/Channel"));
+const SearchResults = lazy(() => import("./pages/SearchResults"));
+const NotFound = lazy(() => import('./pages/NotFound'));
+const UploadVideo = lazy(() => import("./pages/UploadVideo"));
+
+// tabs
+const HomeTab = lazy(() => import("./pages/channel/tabs/HomeTab"));
+const VideosTab = lazy(() => import("./pages/channel/tabs/VideosTab"));
+const PlaylistsTab = lazy(() => import("./pages/channel/tabs/PlaylistsTab"));
+const CommunityTab = lazy(() => import("./pages/channel/tabs/CommunityTab"));
+const ChannelTab = lazy(() => import("./pages/channel/tabs/ChannelTab"));
 
 export default function App() {
   const { checkAuth } = useAuthStore();
@@ -37,19 +44,20 @@ export default function App() {
         {/* Home page */}
         <Route path="/" element={<Home />} />
         <Route path="/results" element={<SearchResults />} />
-        <Route path="/:username" element={<Channel />}>
-          <Route index element={<HomeTab />} />
-          <Route path="videos" element={<VideosTab />} />
-          <Route path="playlists" element={<PlaylistsTab />} />
-          <Route path="community" element={<CommunityTab />} />
-          <Route path="channel" element={<ChannelTab />} />
-        </Route>
 
         <Route element={<AuthLayout authentication={true} />}>
           <Route path="/profile" element={<Profile />} />
           <Route path="/profile/subscriptions" element={<Subscription />} />
           <Route path="/profile/channels" element={<SubscribedChannels />} />
           <Route path="/upload" element={<UploadVideo />} />
+        </Route>
+
+        <Route path="/:username" element={<Channel />}>
+          <Route index element={<HomeTab />} />
+          <Route path="videos" element={<VideosTab />} />
+          <Route path="playlists" element={<PlaylistsTab />} />
+          <Route path="community" element={<CommunityTab />} />
+          <Route path="channel" element={<ChannelTab />} />
         </Route>
       </Route>
 
@@ -59,10 +67,15 @@ export default function App() {
       </Route>
 
       <Route element={<WatchLayout />}>
-        <Route path="/Watch/:videoId" element={<Watch />} />
+        <Route path="/watch/:videoId" element={<Watch />} />
       </Route>
 
-      <Route path="*" element={<NotFound />} />
+
+      <Route path="*" element={
+        <Suspense fallback={<PageLoader />}>
+          <NotFound />
+        </Suspense>}
+      />
     </Routes>
   );
 }

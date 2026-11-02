@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Bell, List, LayoutGrid, ChevronDown } from 'lucide-react'
 import { getSubscribedChannels, toggleSubscription } from '../../api/subscription.api'
-import PageLoader from '../../components/common/PageLoader'
 import MenuModal from '../../components/ui/MenuModal'
+import LoadingScreen from '../../components/common/LoadingScreen'
 
 export default function SubscribedChannels() {
     const [layout, setLayout] = useState('grid') // 'grid' | 'list'
@@ -56,8 +56,6 @@ export default function SubscribedChannels() {
         // Call an API here to save the notification preference to the backend if applicable
         // await updateNotificationPreference(targetChannel.channelDetails.username, item.label)
     }
-
-    if (loading) return <PageLoader />
 
     return (
         <div className='space-y-6 mx-25'>
@@ -143,6 +141,7 @@ export default function SubscribedChannels() {
                         </MenuModal>
                     </div>
                 ))}
+                {loading && <LoadingScreen />}
             </div>
         </div>
     )

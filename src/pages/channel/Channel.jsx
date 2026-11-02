@@ -3,7 +3,7 @@ import { NavLink, Outlet, useParams, useNavigate } from "react-router-dom"
 import { getUserChannelSubscribers, toggleSubscription } from "../../api/subscription.api"
 import { channelProfile } from "../../api/user.api"
 import useAuthStore from "../../store/authStore"
-import PageLoader from '../../components/common/PageLoader'
+import LoadingScreen from "../../components/common/LoadingScreen"
 
 const tabs = [
     { id: "Home", label: "Home" },
@@ -75,12 +75,6 @@ export default function Channel() {
         }
         return true;
     });
-
-    if (loading) {
-        return (
-            <PageLoader />
-        );
-    }
 
     if (!channel) {
         return (
@@ -179,6 +173,8 @@ export default function Channel() {
             <div className="px-8 py-6">
                 <Outlet context={{ channel, isOwner }} />
             </div>
+
+            { loading && <LoadingScreen /> }
         </div>
     );
 }

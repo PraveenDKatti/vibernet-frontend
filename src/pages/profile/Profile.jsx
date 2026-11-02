@@ -4,7 +4,6 @@ import PlayList from './PlayList'
 import WatchLater from './WatchLater'
 import LikedVideos from './LikedVideos'
 import useAuthStore from "../../store/authStore"
-import LoadingScreen from "../../components/common/LoadingScreen"
 
 export default function Profile() {
   const { user } = useAuthStore();

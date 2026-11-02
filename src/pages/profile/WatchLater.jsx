@@ -1,7 +1,7 @@
 import { CircleChevronLeft, CircleChevronRight, EllipsisVertical } from 'lucide-react'
 import { useEffect, useState } from 'react'
-import PageLoader from '../../components/common/PageLoader'
 import { getWatchLaterVideos, toggleWatchLater, deleteFromWatchLater } from '../../api/watchlater.api'
+import SkeletonLoader from "../../components/common/SkeletonLoader"
 
 export default function LikedVideos({user}) {
     const [watchLaterFeed, setWatchLaterFeed] = useState() //watch later videos
@@ -21,8 +21,6 @@ export default function LikedVideos({user}) {
         }
         fetchWatchList()
     }, [])
-
-    if (loading) return <PageLoader />
 
     return (
         <div className="space-y-4">
@@ -54,6 +52,8 @@ export default function LikedVideos({user}) {
                         </div>
                     </div>
                 ))}
+
+                {loading && <SkeletonLoader />}
             </div>
         </div>
     );
