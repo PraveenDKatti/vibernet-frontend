@@ -59,7 +59,7 @@ export default function VideosTab() {
 
           return (
             <div key={video._id} className="hover:bg-blue-50 rounded-2xl space-y-2 cursor-pointer" onClick={() => navigate(`/watch/${video._id}`)}>
-              <div className="relative h-36">
+              <div className="relative h-45 md:h-36">
                 <img src={video.thumbnail} className='h-full w-full rounded-xl' />
                 <div
                   className='absolute bg-black/60 text-white font-medium right-2 bottom-2 px-1 py-0.5 text-xs rounded-md'

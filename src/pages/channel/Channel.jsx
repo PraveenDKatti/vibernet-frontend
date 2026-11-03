@@ -87,7 +87,7 @@ export default function Channel() {
     return (
         <div>
             <div className="relative">
-                <div className="px-10 space-y-4">
+                <div className="md:px-10 space-y-4">
                     {/* Cover */}
                     <div className="h-44">
                         <img
@@ -98,19 +98,20 @@ export default function Channel() {
                     </div>
 
                     {/* Channel Header */}
-                    <div className="flex items-center gap-4">
+                    <div className="md:flex items-center justify-between space-y-4">
+                        <div className="flex items-center gap-4">
                         <img
                             src={channel.avatar}
                             alt="avatar"
-                            className="rounded-full w-40 h-40 object-cover"
+                            className="rounded-full w-20 h-20 md:w-40 md:h-40 object-cover"
                         />
 
-                        <div className="flex-1 space-y-2">
+                        <div className="flex-1 space-y-1 md:space-y-2">
                             <p className="text-4xl font-bold">{channel.fullName}</p>
 
-                            <div className="flex text-sm space-x-1 text-gray-500">
+                            <div className="md:flex text-sm space-x-1 text-gray-500">
                                 <p>@{channel.username}</p>
-                                <span>•</span>
+                                <span className="hidden md:inline">•</span>
                                 <p>{subscribers} followers</p>
                             </div>
 
@@ -120,6 +121,7 @@ export default function Channel() {
                                     ...more
                                 </p>
                             </div>
+                        </div>
                         </div>
 
                         {/* Action Button */}
@@ -134,7 +136,7 @@ export default function Channel() {
                             ) : (
                                 <button
                                     onClick={handleToggleSubscription}
-                                    className={`rounded-full px-4 py-2 transition font-medium ${isSubscribed
+                                    className={`rounded-full px-4 py-2 w-full md:auto transition font-medium ${isSubscribed
                                             ? "bg-gray-200 text-black hover:bg-gray-300"
                                             : "bg-black text-white hover:bg-gray-800"
                                         }`}
@@ -149,7 +151,7 @@ export default function Channel() {
                 {/* Tabs */}
                 <div>
                     <div className="absolute w-full -bottom-[1px] border-b border-gray-200"></div>
-                    <div className="flex px-10">
+                    <div className="flex md:px-10">
                         {activeTabs.map(({ id, label }) => (
                             <NavLink
                                 key={id}
@@ -170,7 +172,7 @@ export default function Channel() {
             </div>
 
             {/* Tab Content */}
-            <div className="px-8 py-6">
+            <div className="md:px-8 md:py-6">
                 <Outlet context={{ channel, isOwner }} />
             </div>
 

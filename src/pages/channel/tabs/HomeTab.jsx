@@ -64,7 +64,7 @@ export default function HomeTab() {
                 <img
                   src={video.thumbnail}
                   alt={video.title}
-                  className="w-full h-30 object-cover rounded-xl"
+                  className="w-full h-45 md:h-30 object-cover rounded-xl"
                 />
                 <p className="font-medium line-clamp-2">
                   {video.title}
@@ -90,7 +90,7 @@ export default function HomeTab() {
                 <img
                   src={video.thumbnail}
                   alt={video.title}
-                  className="w-full h-30 object-cover rounded-xl"
+                  className="w-full h-45 md:h-30 object-cover rounded-xl"
                 />
                 <p className="font-medium line-clamp-2">
                   {video.title}

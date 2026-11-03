@@ -106,7 +106,7 @@ export default function PostCard({ post, setPosts }) {
   }
 
   return (
-    <div className="w-2/3">
+    <div className="md:w-2/3">
       <div className="flex flex-col space-y-4 border p-5 rounded-xl border-gray-300 bg-white">
 
         {/* HEADER */}
