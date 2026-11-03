@@ -2,6 +2,7 @@
 import { Navigate, Outlet, useLocation } from 'react-router-dom'
 import useAuthStore from '../store/authStore'
 import PageLoader from '../components/common/PageLoader'
+import { Suspense } from 'react'
 
 export default function AuthLayout({ authentication = true }) {
     const { isAuthenticated, initializing } = useAuthStore()
