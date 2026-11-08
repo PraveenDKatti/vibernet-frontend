@@ -12,17 +12,19 @@ export default function VideoInfo() {
     const updateSubscriptionStatus = useVideoStore((s) => s.updateSubscriptionStatus)
     const updateLikeStatus = useVideoStore((s) => s.updateLikeStatus)
 
-    const viewsCount = formatCount(video.views)
-    const subscriberCount = formatCount(video.owner?.subscribers | 0)
+    const viewsCount = formatCount(video?.views)
+    const subscriberCount = formatCount(video?.owner?.subscribers | 0)
 
     const handleSubscription = async () => {
         try {
-            const res = await toggleSubscription(video.owner.username)
+            const res = await toggleSubscription(video?.owner.username)
             updateSubscriptionStatus(res.data.subscribed)
         } catch (error) {
             console.error(error);
         }
     };
+
+    if(!video) return;
 
     const handleReaction = async (videoId, type) => {
         try {

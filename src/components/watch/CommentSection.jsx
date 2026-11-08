@@ -12,11 +12,16 @@ import useAuthStore from "../../store/authStore";
 import useVideoStore from '../../store/videoStore'
 import { formatActionTime } from "../../utils/formatActionTime";
 import EmojiPicker from "emoji-picker-react";
+import LoadingScreen from "../common/LoadingScreen"
 
 export default function CommentSection() {
     const { user, isAuthenticated } = useAuthStore();
-    const videoId = useVideoStore((s) => s.currentVideo._id)
-    const commentsCount = useVideoStore((s) => s.currentVideo.commentsCount)
+    const [loading, setLoading] = useState(false)
+    const [error, setError] = useState(null)
+
+    const video = useVideoStore((s) => s.currentVideo)
+    const videoId = video?._id
+    const commentsCount = video?.commentsCount
 
     const [text, setText] = useState("");
     const [comments, setComments] = useState([]);
@@ -89,6 +94,18 @@ export default function CommentSection() {
         setText((prev) => prev + emoji.emoji);
         setOpenEmoji(false);
     };
+    
+    if(videoId == null) return;
+
+    if (loading) return (
+        <div className="flex items-center justify-center">
+            <LoadingScreen />
+        </div>
+    )
+
+    if (error) {
+        return <p role="alert">Couldn’t load comments.</p>;
+    }
 
     if (!isAuthenticated) {
         return (

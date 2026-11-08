@@ -4,20 +4,44 @@ import { EllipsisVertical } from 'lucide-react'
 import { getAllVideos } from '../../api/video.api'
 import { formatActionTime } from "../../utils/formatActionTime"
 import { formatCount } from '../../utils/formatCount'
+import SkeletonLoader from '../common/SkeletonLoader'
 
 
 export default function SuggestedVideos() {
-
+    const [loading, setLoading] = useState(false)
+    const [error, setError] = useState(null)
     const [suggestedVideos, setSugggestedVideos] = useState([]) //Suggested videos at Watch page 
 
     useEffect(() => {
         async function fetchVideos() {
-            const response = await getAllVideos()
-            setSugggestedVideos(response.data.docs)
+            setLoading(true)
+            try {
+                const response = await getAllVideos()
+                setSugggestedVideos(response.data.docs)
+            } catch (err) {
+                setError(err)
+            } finally {
+                setLoading(false)
+            }
         }
         fetchVideos()
     }, [])
 
+    if (loading) return (
+        <div className='hidden lg:block col-span-3 space-y-4'>
+            <div key={v._id} className='flex space-x-4 text-xs h-25'>
+                <SkeletonLoader />
+            </div>
+        </div>
+    )
+
+    if (error) {
+        return <p role="alert">Couldn’t load suggested videos.</p>;
+    }
+
+    if (suggestedVideos.length === 0) {
+        return <p>No suggested videos yet.</p>;
+    }
 
     return (
         <div className='hidden lg:block col-span-3 space-y-4'>
