@@ -8,6 +8,8 @@ import useAuthStore from "../../store/authStore"
 export default function Profile() {
   const { user } = useAuthStore();
 
+  if(!user) return;
+
   return (
     <div>
       {/* Profile Header */}

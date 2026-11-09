@@ -6,6 +6,7 @@ import LoadingScreen from '../../components/common/LoadingScreen'
 export default function History({ user }) {
     const [historyFeed, setHistoryFeed] = useState([]) //user video watch history
     const [loading, setLoading] = useState(true)
+    const [error, setError] = useState(null)
 
     useEffect(() => {
         async function fetchHistory() {
@@ -13,8 +14,8 @@ export default function History({ user }) {
                 setLoading(true)
                 const response = await getWatchHistory()
                 setHistoryFeed(response.data)
-            } catch (error) {
-                console.log(error)
+            } catch (err) {
+                setError(err)
             } finally {
                 setLoading(false)
             }
@@ -22,7 +23,15 @@ export default function History({ user }) {
         fetchHistory()
     }, [])
 
-    if (!history) return <p>your watch history appears here</p>
+    if (!historyFeed) return;
+    
+    if(loading) return(
+        <LoadingScreen />
+    )
+    
+    if(error) return (
+        <div>something went wrong, couldn't load history</div>
+    )
 
     return (
         <div className="space-y-4">
@@ -40,6 +49,8 @@ export default function History({ user }) {
                 </div>
             </div>
 
+            {historyFeed.length == 0?
+            <p className="text-center">No history found</p> :
             <div className="grid grid-cols-4 gap-4">
                 {historyFeed.map((v) => (
                     <div key={v._id} className="space-y-2">
@@ -56,6 +67,7 @@ export default function History({ user }) {
                 ))}
                 { loading && <LoadingScreen />}
             </div>
+            }
         </div>
     );
 };

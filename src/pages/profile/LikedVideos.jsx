@@ -4,20 +4,37 @@ import { getLikedVideos } from "../../api/like.api"
 import { formatActionTime } from "../../utils/formatActionTime"
 import { formatCount } from "../../utils/formatCount"
 import SkeletonLoader from "../../components/common/SkeletonLoader"
+import LoadingScreen from "../../components/common/LoadingScreen"
 
-export default function LikedVideos({ user, loading }) {
+export default function LikedVideos() {
     const [likedFeed, setLikedFeed] = useState() //liked videos
+    const [loading, setLoading] = useState(false)
+    const [error, setError] = useState(null)
 
     useEffect(() => {
         async function fetchLikedVideos() {
-            const response = await getLikedVideos()
-            console.log(response)
-            setLikedFeed(response.data)
+            setLoading(true)
+            try {
+                const response = await getLikedVideos()
+                setLikedFeed(response.data)
+            } catch (err) {
+                setError(err)
+            } finally {
+                setLoading(false)
+            }
         }
         fetchLikedVideos()
     }, [])
 
-    if (!likedFeed) return <p>your liked videos appears here</p>
+    if (!likedFeed) return;
+    
+    if(loading) return (
+        <LoadingScreen />
+    )
+
+    if(error) return (
+        <div>Someting went wrong</div>
+    )
 
     return (
         <div className="space-y-4">
@@ -35,6 +52,8 @@ export default function LikedVideos({ user, loading }) {
                 </div>
             </div>
 
+            {likedFeed.length==0 ?
+            <p className="text-center">No liked videos</p> :
             <div className="grid grid-cols-4 gap-4">
                 {likedFeed.map((v) => {
                     const viewsCount = formatCount(v.views)
@@ -58,8 +77,8 @@ export default function LikedVideos({ user, loading }) {
                         </div>
                     )
                 })}
-                {loading && <SkeletonLoader />}
             </div>
+            }
         </div>
     );
 };

@@ -1,26 +1,37 @@
-import { CircleChevronLeft, CircleChevronRight, EllipsisVertical } from 'lucide-react'
+import { CircleChevronLeft, CircleChevronRight, EllipsisVertical, Loader } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { getWatchLaterVideos, toggleWatchLater, deleteFromWatchLater } from '../../api/watchlater.api'
-import SkeletonLoader from "../../components/common/SkeletonLoader"
+import LoadingScreen from '../../components/common/LoadingScreen'
 
-export default function LikedVideos({user}) {
-    const [watchLaterFeed, setWatchLaterFeed] = useState() //watch later videos
+export default function LikedVideos() {
+    const [watchLaterFeed, setWatchLaterFeed] = useState([]) //watch later videos
     const [loading, setLoading] = useState(true)
+    const [error, setError] = useState(null)
 
     useEffect(() => {
         async function fetchWatchList() {
             try {
                 setLoading(true)
-                const response = await getWatchLaterVideos() 
+                const response = await getWatchLaterVideos()
                 setWatchLaterFeed(response.data)
-            } catch (error) {
-                console.log(error)
+            } catch (err) {
+                setError(err)
             } finally {
                 setLoading(false)
             }
         }
         fetchWatchList()
     }, [])
+
+    if (!watchLaterFeed) return;
+
+    if (loading) return (
+        <LoadingScreen />
+    )
+
+    if(error){
+        <div>Something went wrong, videos can't be loaded</div>
+    }
 
     return (
         <div className="space-y-4">
@@ -38,23 +49,26 @@ export default function LikedVideos({user}) {
                 </div>
             </div>
 
-            <div className="grid grid-cols-4 gap-4">
-                {watchLaterFeed.map((v) => (
-                    <div key={v._id} className="space-y-2">
-                        <div className="h-38 bg-red-900 rounded-md"></div>
-                        <div className="flex space-x-4">
-                            <img src={v.owner.avatar} className="w-10 h-10 rounded-full" />
-                            <div className="flex-1">
-                                <p>{v.title}</p>
-                                <p className="text-gray-500">{v.description}</p>
+            {watchLaterFeed.length == 0 ?
+                <div className='text-center'>
+                    <p>No videos Found</p>
+                </div> :
+                <div className="grid grid-cols-4 gap-4">
+                    {watchLaterFeed.map((v) => (
+                        <div key={v._id} className="space-y-2">
+                            <div className="h-38 bg-red-900 rounded-md"></div>
+                            <div className="flex space-x-4">
+                                <img src={v.owner.avatar} className="w-10 h-10 rounded-full" />
+                                <div className="flex-1">
+                                    <p>{v.title}</p>
+                                    <p className="text-gray-500">{v.description}</p>
+                                </div>
+                                <EllipsisVertical size={20} />
                             </div>
-                            <EllipsisVertical size={20} />
                         </div>
-                    </div>
-                ))}
-
-                {loading && <SkeletonLoader />}
-            </div>
+                    ))}
+                </div>
+            }
         </div>
     );
 };
