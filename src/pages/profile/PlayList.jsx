@@ -54,7 +54,7 @@ export default function PlayList() {
                 </div>
             </div>
             {playlists.length == 0 ?
-                <p className='text-center'>No plalists created</p> :
+                <p className='text-center'>No playlist created</p> :
                 <div className="grid grid-cols-4 gap-4">
                     {playlists.map((p) => (
                         <div key={p._id} className="space-y-2">

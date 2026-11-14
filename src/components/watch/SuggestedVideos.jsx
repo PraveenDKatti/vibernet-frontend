@@ -29,7 +29,7 @@ export default function SuggestedVideos() {
 
     if (loading) return (
         <div className='hidden lg:block col-span-3 space-y-4'>
-            <div key={v._id} className='flex space-x-4 text-xs h-25'>
+            <div className='flex space-x-4 text-xs h-25'>
                 <SkeletonLoader />
             </div>
         </div>
