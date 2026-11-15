@@ -5,16 +5,22 @@ import CommentSection from '../components/watch/CommentSection'
 import SuggestedVideos from '../components/watch/SuggestedVideos'
 import VideoInfo from '../components/watch/VideoInfo'
 import SkeletonLoader from '../components/common/SkeletonLoader'
+import useAuthStore from '../store/authStore'
+import {updateHistory} from '../api/history.api'
 
 export default function Watch() {
-
     const { videoId } = useParams()
+    const {isAuthenticated} = useAuthStore()
+    const {currentVideo, fetchVideo} = useVideoStore()
 
-    const currentVideo = useVideoStore((s) => s.currentVideo)
-    const fetchVideo = useVideoStore((s) => s.fetchVideo)
+    async function updateWatchHistory(){
+        if(!isAuthenticated) return;
+        await updateHistory(videoId)
+    }
 
     useEffect(() => {
         fetchVideo(videoId)
+        updateWatchHistory()
     }, [videoId, fetchVideo])
 
     return (

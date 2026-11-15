@@ -55,7 +55,7 @@ export default function LikedVideos() {
             {likedFeed.length==0 ?
             <p className="text-center">No liked videos</p> :
             <div className="grid grid-cols-4 gap-4">
-                {likedFeed.map((v) => {
+                {likedFeed.slice(0,4).map((v) => {
                     const viewsCount = formatCount(v.views)
 
                     return (

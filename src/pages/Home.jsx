@@ -74,14 +74,14 @@ const Home = () => {
   const navigate = useNavigate()
 
   return (
-    <div ref={containerRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4 space-y-4 min-h-screen">
+    <div ref={containerRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-y-1 min-h-screen">
       {homeFeed.map((video, index) => {
         const duration = formatDuration(video.duration)
         const viewsCount = formatCount(video.views)
         const isLastElement = nextCursor && video._id === nextCursor.lastId
 
         return (
-          <div ref={isLastElement ? lastVideoElementRef : null} key={`${video._id}-${index}`} className="hover:bg-blue-50 rounded-2xl space-y-3 cursor-pointer z-10" onClick={() => navigate(`/watch/${video._id}`)}>
+          <div ref={isLastElement ? lastVideoElementRef : null} key={`${video._id}-${index}`} className="h-[max-content] hover:bg-blue-50 rounded-2xl space-y-3 cursor-pointer z-10" onClick={() => navigate(`/watch/${video._id}`)}>
             <div className="relative h-52">
               <img src={video.thumbnail} className='h-full w-full rounded-xl' />
               <div

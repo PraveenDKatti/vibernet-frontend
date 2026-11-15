@@ -43,7 +43,7 @@ export default function PlayList() {
             <div className="flex justify-between">
                 <div>
                     <p className="text-xl font-bold">PlayList</p>
-                    <p className="text-sm text-gray-500">Your created playlists</p>
+                    <p className="text-sm text-gray-500">your created playlists</p>
                 </div>
                 <div className="flex text-sm font-medium h-10 space-x-2">
                     <button className="w-20 rounded-full border border-gray-200">
