@@ -63,7 +63,7 @@ export default function History() {
                             <div className="flex space-x-4">
                                 <img src={v.owner.avatar} className="w-10 h-10 rounded-full" />
                                 <div className="flex-1">
-                                    <p className="h-10 leading-tight font-semibold overflow-hidden">{v.title}</p>
+                                    <p className="max-h-10 leading-tight font-semibold overflow-hidden">{v.title}</p>
                                     <p className="text-gray-500 text-sm">{v.owner.username}</p>
                                     <p className='flex space-x-2 text-gray-500 text-sm'>
                                         <span>{viewsCount}</span>

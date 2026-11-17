@@ -60,10 +60,9 @@ export default function PlayList() {
                         <div key={p._id} className="space-y-2">
                             <div className="h-38 bg-blue-900 rounded-md"></div>
                             <div className="flex space-x-4">
-                                <img src={p.owner.avatar} className="w-10 h-10 rounded-full" />
                                 <div className="flex-1">
                                     <p>{p.name}</p>
-                                    <p className="text-gray-500">{p.description}</p>
+                                    <p className="text-gray-500">{p.visibility} playlist</p>
                                 </div>
                                 <EllipsisVertical size={20} />
                             </div>
