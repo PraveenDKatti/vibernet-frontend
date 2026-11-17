@@ -74,7 +74,7 @@ const Home = () => {
   const navigate = useNavigate()
 
   return (
-    <div ref={containerRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-y-1 min-h-screen">
+    <div ref={containerRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-2 min-h-screen">
       {homeFeed.map((video, index) => {
         const duration = formatDuration(video.duration)
         const viewsCount = formatCount(video.views)
