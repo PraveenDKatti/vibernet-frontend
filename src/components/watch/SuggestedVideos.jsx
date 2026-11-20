@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { EllipsisVertical } from 'lucide-react'
 import { getAllVideos } from '../../api/video.api'
 import { formatActionTime } from "../../utils/formatActionTime"
 import { formatCount } from '../../utils/formatCount'
 import SkeletonLoader from '../common/SkeletonLoader'
-
+import ThreeDotMenu from '../ui/ThreeDotMenu'
 
 export default function SuggestedVideos() {
     const [loading, setLoading] = useState(false)
@@ -73,7 +72,13 @@ export default function SuggestedVideos() {
                             </Link>
                             <p>{viewsCount} {formatActionTime(v.createdAt)} </p>
                         </div>
-                        <EllipsisVertical />
+                        <ThreeDotMenu 
+                            items={[
+                                {title:'Save To playlist', icon:'saveToPlaylist'}, 
+                                {title:'Save to watch later', icon:'watchLater'},
+                                {title:'Share', icon:'share'},
+                                {title:'Download', icon:'download'}
+                            ]}/>
                     </div>
                 )
             })

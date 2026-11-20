@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { ThumbsUp, ThumbsDown, Forward, Minus, EllipsisVertical, Bookmark } from 'lucide-react'
+import { ThumbsUp, ThumbsDown, Forward, Bookmark } from 'lucide-react'
 import { formatActionTime } from "../../utils/formatActionTime"
 import { toggleSubscription } from '../../api/subscription.api'
 import { toggleLikeReaction } from '../../api/like.api'
@@ -9,6 +9,7 @@ import { formatCount } from '../../utils/formatCount'
 import Modal from '../ui/Modal'
 import useAuthStore from '../../store/authStore'
 import {createPlaylist, addVideoToPlaylist} from '../../api/playlist.api'
+import ThreeDotMenu from '../ui/ThreeDotMenu'
 
 export default function VideoInfo() {
     const video = useVideoStore((s) => s.currentVideo)
@@ -169,7 +170,13 @@ export default function VideoInfo() {
                             <Forward size={20} />
                             <p>share</p>
                         </div>
-                        <EllipsisVertical />
+                        <ThreeDotMenu 
+                            items={[
+                                {title:'Save To playlist', icon:'saveToPlaylist'}, 
+                                {title:'Save to watch later', icon:'watchLater'},
+                                {title:'Share', icon:'share'},
+                                {title:'Download', icon:'download'}
+                            ]}/>
                     </div>
                 </div>
                 <div className='rounded-2xl bg-zinc-100 text-sm p-3'>
@@ -211,7 +218,13 @@ export default function VideoInfo() {
                         <div className='flex items-center space-x-4'>
                             <Forward />
                         </div>
-                        <EllipsisVertical />
+                        <ThreeDotMenu 
+                            items={[
+                                {title:'Save To playlist', icon:'saveToPlaylist'}, 
+                                {title:'Save to watch later', icon:'watchLater'},
+                                {title:'Share', icon:'share'},
+                                {title:'Download', icon:'download'}
+                            ]}/>
                     </div>
                 </div>
             </div>
