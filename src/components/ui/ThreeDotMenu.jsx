@@ -10,15 +10,22 @@ const itemIcons = {
     share: Forward
 }
 
-function ThreeDotMenu({ items }) {
+function ThreeDotMenu({ items, onToggleMenu }) {
     const [isOpen, setIsOpen] = useState(false)
     const menuRef = useRef(null)
     const dropdownRef = useRef(null)
 
     useClickOutside(menuRef, () => {
         setIsOpen(false)
+        onToggleMenu(false)
     });
     useAutoPosition(dropdownRef, isOpen)
+
+    const handleClick = ()=>{
+        const status = !isOpen
+        setIsOpen(status)
+        onToggleMenu(status)
+    }
 
     return (
         <div
@@ -26,12 +33,12 @@ function ThreeDotMenu({ items }) {
             className='relative inline-flex h-[fit-content]'
             onClick={(event) => event.stopPropagation()}
         >
-            <EllipsisVertical onClick={() => setIsOpen((open) => !open)} size={20} />
+            <EllipsisVertical onClick={handleClick} size={20} />
             {isOpen &&
                 <div
                     ref={dropdownRef}
                     role='menu'
-                    className='absolute right-0 top-full z-50 mt-2 min-w-max rounded-lg bg-white py-2 shadow-md'
+                    className='absolute left-0 top-full z-50 mt-2 min-w-max rounded-lg bg-white py-2 shadow-md'
                 >
                     {items.map((item, index) => {
                         const Icon = itemIcons[item.icon]
@@ -40,7 +47,7 @@ function ThreeDotMenu({ items }) {
                                 key={`${item.icon}-${index}`}
                                 type='button'
                                 role='menuitem'
-                                className='flex w-full cursor-pointer items-center gap-4 whitespace-nowrap p-3 text-left hover:bg-gray-100'
+                                className='flex w-full text-[14px] font-normal cursor-pointer items-center gap-4 whitespace-nowrap p-3 text-left hover:bg-gray-100'
                             >
                                 {Icon && <Icon size={20} />}
                                 {item.title}

@@ -6,6 +6,7 @@ import { formatActionTime } from "../utils/formatActionTime"
 import { formatDuration } from '../utils/formatDuration'
 import { formatCount } from '../utils/formatCount'
 import SkeletonLoader from '../components/common/SkeletonLoader'
+import ThreeDotMenu from '../components/ui/ThreeDotMenu'
 
 const Home = () => {
   const [homeFeed, setHomeFeed] = useState([]) //videos for home feed.
@@ -14,6 +15,7 @@ const Home = () => {
   const [hasMore, setHasMore] = useState(true)
   const [nextCursor, setNextCursor] = useState(null)
   const [skeletonCount, setSkeletonCount] = useState(6)
+  const [activeCard, setActiveCard] = useState(null)
 
   const containerRef = useRef(null)
   const observerRef = useRef(null)
@@ -56,19 +58,19 @@ const Home = () => {
 
   useEffect(() => {
     fetchVideos(null)
-    const observer = new ResizeObserver((entries)=>{
-      for(let entry of entries) {
+    const observer = new ResizeObserver((entries) => {
+      for (let entry of entries) {
         const containerWidth = entry.contentRect.width
         const skeletonMinWidth = 280
-        
-        const columns = Math.floor(containerWidth/skeletonMinWidth) || 1
+
+        const columns = Math.floor(containerWidth / skeletonMinWidth) || 1
         const rows = 2
         const totalSkeletons = columns * rows
         setSkeletonCount(totalSkeletons)
       }
     })
     observer.observe(containerRef.current)
-    return ()=> observer.disconnect()
+    return () => observer.disconnect()
   }, [])
 
   const navigate = useNavigate()
@@ -81,7 +83,7 @@ const Home = () => {
         const isLastElement = nextCursor && video._id === nextCursor.lastId
 
         return (
-          <div ref={isLastElement ? lastVideoElementRef : null} key={`${video._id}-${index}`} className="h-[max-content] hover:bg-blue-50 rounded-2xl space-y-3 cursor-pointer z-10" onClick={() => navigate(`/watch/${video._id}`)}>
+          <div ref={isLastElement ? lastVideoElementRef : null} key={`${video._id}-${index}`} className={`h-[max-content] hover:bg-blue-50 rounded-2xl space-y-3 cursor-pointer ${activeCard == video._id ? 'z-50':'z-10'}`} onClick={() => navigate(`/watch/${video._id}`)}>
             <div className="relative h-52">
               <img src={video.thumbnail} className='h-full w-full rounded-xl' />
               <div
@@ -104,14 +106,21 @@ const Home = () => {
                   </div>
                 </div>
               </div>
-              <EllipsisVertical size={20} />
+              <ThreeDotMenu
+                onToggleMenu={(isOpen)=>setActiveCard(isOpen ? video._id : null)}
+                items={[
+                  { title: 'Save To playlist', icon: 'saveToPlaylist' },
+                  { title: 'Save to watch later', icon: 'watchLater' },
+                  { title: 'Share', icon: 'share' },
+                  { title: 'Download', icon: 'download' }
+                ]} />
             </div>
           </div>)
       })}
 
       {loading && Array.from({ length: skeletonCount }).map((_, index) => (
-          <SkeletonLoader key={`skeleton-${index}`} />
-        ))}
+        <SkeletonLoader key={`skeleton-${index}`} />
+      ))}
     </div>
   );
 };
