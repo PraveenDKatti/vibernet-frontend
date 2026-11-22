@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { CircleChevronLeft, CircleChevronRight, EllipsisVertical } from 'lucide-react'
+import { CircleChevronLeft, CircleChevronRight } from 'lucide-react'
 import { getUserPlaylists, getMyPlaylists } from '../../api/playlist.api'
 import LoadingScreen from "../../components/common/LoadingScreen"
+import ThreeDotMenu from '../../components/ui/ThreeDotMenu'
+import SkeletonLoader from '../../components/common/SkeletonLoader'
 
 export default function PlayList() {
     const { username } = useParams()
@@ -32,14 +34,31 @@ export default function PlayList() {
     if (!playlists) return;
 
     if (loading) return (
-        <LoadingScreen />
+        <div className="space-y-4">
+            <div className="flex justify-between">
+                <div>
+                    <p className="text-xl font-bold">PlayList</p>
+                    <p className="text-sm text-gray-500">your created playlists</p>
+                </div>
+                <div className="flex text-sm font-medium h-10 space-x-2">
+                    <button className="w-20 rounded-full border border-gray-200">
+                        View all
+                    </button>
+                    <CircleChevronLeft size={40} strokeWidth={0.6} className="text-gray-300" />
+                    <CircleChevronRight size={40} strokeWidth={0.6} className="text-gray-300" />
+                </div>
+            </div>
+            <div className="grid grid-cols-4 gap-4 h-50">
+                {Array.from({ length: 4 }).map(() => <SkeletonLoader />)}
+            </div>
+        </div>
     )
     if (error) return (
         <div>Someting went wrong</div>
     )
 
     return (
-        <div className="space-y-4">
+        <div className="space-y-4 minh-40">
             <div className="flex justify-between">
                 <div>
                     <p className="text-xl font-bold">PlayList</p>
@@ -64,7 +83,13 @@ export default function PlayList() {
                                     <p>{p.name}</p>
                                     <p className="text-gray-500">{p.visibility} playlist</p>
                                 </div>
-                                <EllipsisVertical size={20} />
+                                <ThreeDotMenu
+                                    items={[
+                                        { title: 'Save To playlist', icon: 'saveToPlaylist' },
+                                        { title: 'Save to watch later', icon: 'watchLater' },
+                                        { title: 'Share', icon: 'share' },
+                                        { title: 'Download', icon: 'download' }
+                                    ]} />
                             </div>
                         </div>
                     ))}

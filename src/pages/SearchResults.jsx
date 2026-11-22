@@ -1,4 +1,3 @@
-import { EllipsisVertical } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import client from '../api/client'
@@ -6,6 +5,7 @@ import { formatActionTime } from "../utils/formatActionTime"
 import { formatDuration } from '../utils/formatDuration'
 import { formatCount } from '../utils/formatCount'
 import SkeletonLoader from '../components/common/SkeletonLoader'
+import ThreeDotMenu from '../components/ui/ThreeDotMenu'
 
 const SearchResults = () => {
     const [searchParams] = useSearchParams();
@@ -82,7 +82,13 @@ const SearchResults = () => {
                                         </span>
                                     </div>
                                 </div>
-                                <EllipsisVertical size={20} />
+                                <ThreeDotMenu
+                                    items={[
+                                        { title: 'Save To playlist', icon: 'saveToPlaylist' },
+                                        { title: 'Save to watch later', icon: 'watchLater' },
+                                        { title: 'Share', icon: 'share' },
+                                        { title: 'Download', icon: 'download' }
+                                    ]} />
                             </div>
 
                             {/* Owner */}

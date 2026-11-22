@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { EllipsisVertical } from 'lucide-react'
 import { formatActionTime } from '../../utils/formatActionTime'
 import useAuthStore from '../../store/authStore'
 import { getSubscribedFeed } from '../../api/subscription.api'
 import { formatDuration } from '../../utils/formatDuration'
 import { formatCount } from '../../utils/formatCount'
 import LoadingScreen from '../../components/common/LoadingScreen'
+import ThreeDotMenu from '../../components/ui/ThreeDotMenu'
 
 export default function Subscription() {
     const [subscriptions, setSubscriptions] = useState([])
@@ -25,7 +25,7 @@ export default function Subscription() {
                 setSubscriptions(response?.data || [])
             } catch (err) {
                 setError(err.message || "Subscribed data not found")
-            }finally {
+            } finally {
                 setLoading(false)
             }
         }
@@ -104,7 +104,13 @@ export default function Subscription() {
                                         </div>
                                     </div>
 
-                                    <EllipsisVertical size={20} />
+                                    <ThreeDotMenu
+                                        items={[
+                                            { title: 'Save To playlist', icon: 'saveToPlaylist' },
+                                            { title: 'Save to watch later', icon: 'watchLater' },
+                                            { title: 'Share', icon: 'share' },
+                                            { title: 'Download', icon: 'download' }
+                                        ]} />
                                 </div>
                             </div>
                         )

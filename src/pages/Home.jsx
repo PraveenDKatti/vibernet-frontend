@@ -1,4 +1,3 @@
-import { EllipsisVertical } from 'lucide-react'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { getAllVideos } from '../api/video.api'

@@ -1,7 +1,9 @@
-import { CircleChevronLeft, CircleChevronRight, EllipsisVertical, Loader } from 'lucide-react'
+import { CircleChevronLeft, CircleChevronRight, Loader } from 'lucide-react'
 import { useEffect, useState } from 'react'
-import { getWatchLaterVideos, toggleWatchLater, deleteFromWatchLater } from '../../api/watchlater.api'
+import { getWatchLaterVideos, removeFromWatchLater } from '../../api/watchlater.api'
 import LoadingScreen from '../../components/common/LoadingScreen'
+import ThreeDotMenu from '../../components/ui/ThreeDotMenu'
+import SkeletonLoader from '../../components/common/SkeletonLoader'
 
 export default function LikedVideos() {
     const [watchLaterFeed, setWatchLaterFeed] = useState([]) //watch later videos
@@ -26,15 +28,32 @@ export default function LikedVideos() {
     if (!watchLaterFeed) return;
 
     if (loading) return (
-        <LoadingScreen />
+        <div className="space-y-4">
+            <div className="flex justify-between">
+                <div>
+                    <p className="text-xl font-bold">Watch Later</p>
+                    <p className="text-sm text-gray-500">save to watch later</p>
+                </div>
+                <div className="flex text-sm font-medium h-10 space-x-2">
+                    <button className="w-20 rounded-full border border-gray-200">
+                        View all
+                    </button>
+                    <CircleChevronLeft size={40} strokeWidth={0.6} className="text-gray-300" />
+                    <CircleChevronRight size={40} strokeWidth={0.6} className="text-gray-300" />
+                </div>
+            </div>
+            <div className="grid grid-cols-4 gap-4 h-50">
+                {Array.from({ length: 4 }).map(() => <SkeletonLoader />)}
+            </div>
+        </div>
     )
 
-    if(error){
+    if (error) {
         <div>Something went wrong, videos can't be loaded</div>
     }
 
     return (
-        <div className="space-y-4">
+        <div className="space-y-4 min-h-40">
             <div className="flex justify-between">
                 <div>
                     <p className="text-xl font-bold">Watch Later</p>
@@ -63,7 +82,13 @@ export default function LikedVideos() {
                                     <p>{v.title}</p>
                                     <p className="text-gray-500">{v.description}</p>
                                 </div>
-                                <EllipsisVertical size={20} />
+                                <ThreeDotMenu
+                                    items={[
+                                        { title: 'Save To playlist', icon: 'saveToPlaylist' },
+                                        { title: 'Share', icon: 'share' },
+                                        { title: 'Download', icon: 'download' },
+                                        { title: 'Remove from Watch Later', icon: 'remove' }
+                                    ]} />
                             </div>
                         </div>
                     ))}

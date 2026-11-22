@@ -1,4 +1,4 @@
-import { Clock5, ArrowDownToLine, ListVideo, Forward, EllipsisVertical } from 'lucide-react'
+import { Clock5, ArrowDownToLine, ListVideo, Forward, EllipsisVertical, Trash } from 'lucide-react'
 import React, { useRef, useState } from 'react'
 import useClickOutside from '../../hooks/useClickOutside'
 import useAutoPosition from '../../hooks/useAutoPosition'
@@ -7,7 +7,8 @@ const itemIcons = {
     watchLater: Clock5,
     download: ArrowDownToLine,
     saveToPlaylist: ListVideo,
-    share: Forward
+    share: Forward,
+    remove: Trash,
 }
 
 function ThreeDotMenu({ items, onToggleMenu }) {
@@ -38,7 +39,7 @@ function ThreeDotMenu({ items, onToggleMenu }) {
                 <div
                     ref={dropdownRef}
                     role='menu'
-                    className='absolute left-0 top-full z-50 mt-2 min-w-max rounded-lg bg-white py-2 shadow-md'
+                    className='absolute left-0 top-full z-50 mt-2 min-w-max rounded-lg bg-white py-2 shadow-[0px_2px_6px_1px_rgb(0_0_0/0.14)]'
                 >
                     {items.map((item, index) => {
                         const Icon = itemIcons[item.icon]
@@ -47,9 +48,9 @@ function ThreeDotMenu({ items, onToggleMenu }) {
                                 key={`${item.icon}-${index}`}
                                 type='button'
                                 role='menuitem'
-                                className='flex w-full text-[14px] font-normal cursor-pointer items-center gap-4 whitespace-nowrap p-3 text-left hover:bg-gray-100'
+                                className='flex w-full text-[14px] font-normal cursor-pointer items-center gap-4 whitespace-nowrap h-10 px-3 text-left hover:bg-gray-100'
                             >
-                                {Icon && <Icon size={20} />}
+                                {Icon && <Icon size={24} />}
                                 {item.title}
                             </button>
                         )

@@ -3,9 +3,9 @@ import { useParams, useNavigate } from "react-router-dom";
 import useAuthStore from "../../../store/authStore";
 import { getAllVideos } from '../../../api/video.api';
 import { formatActionTime } from "../../../utils/formatActionTime";
-import { EllipsisVertical } from 'lucide-react'
 import { formatDuration } from "../../../utils/formatDuration";
 import { formatCount } from "../../../utils/formatCount";
+import ThreeDotMenu from "../../../components/ui/ThreeDotMenu";
 
 export default function VideosTab() {
   const { username } = useParams();
@@ -95,7 +95,13 @@ export default function VideosTab() {
                     </div>
                   </div>
                 </div>
-                <EllipsisVertical size={20} />
+                <ThreeDotMenu
+                  items={[
+                    { title: 'Save To playlist', icon: 'saveToPlaylist' },
+                    { title: 'Save to watch later', icon: 'watchLater' },
+                    { title: 'Share', icon: 'share' },
+                    { title: 'Download', icon: 'download' }
+                  ]} />
               </div>
             </div>
           )
