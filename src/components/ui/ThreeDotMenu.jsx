@@ -18,7 +18,6 @@ function ThreeDotMenu({ items, onToggleMenu }) {
 
     useClickOutside(menuRef, () => {
         setIsOpen(false)
-        onToggleMenu(false)
     });
     useAutoPosition(dropdownRef, isOpen)
 
