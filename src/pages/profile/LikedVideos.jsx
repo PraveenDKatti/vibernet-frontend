@@ -1,6 +1,6 @@
 import { CircleChevronLeft, CircleChevronRight } from "lucide-react"
 import { useEffect, useState } from "react"
-import { getLikedVideos } from "../../api/like.api"
+import { getLikedVideos, toggleLikeReaction } from "../../api/like.api"
 import { formatActionTime } from "../../utils/formatActionTime"
 import { formatCount } from "../../utils/formatCount"
 import SkeletonLoader from "../../components/common/SkeletonLoader"
@@ -91,11 +91,20 @@ export default function LikedVideos() {
                                         </p>
                                     </div>
                                     <ThreeDotMenu
+                                        videoId={v._id}
+                                        videoUrl={v.videoFile}
                                         items={[
                                             { title: 'Save To playlist', icon: 'saveToPlaylist' },
                                             { title: 'Save to watch later', icon: 'watchLater' },
                                             { title: 'Share', icon: 'share' },
-                                            { title: 'Remove from Liked Videos', icon: 'remove' },
+                                            {
+                                                title: 'Remove from Liked Videos',
+                                                icon: 'remove',
+                                                onClick: async () => {
+                                                    await toggleLikeReaction({ targetId: v._id, type: 'like', targetType: 'video' })
+                                                    setLikedFeed((current) => current.filter((video) => video._id !== v._id))
+                                                }
+                                            },
                                         ]} />
                                 </div>
                             </div>

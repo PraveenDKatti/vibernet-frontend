@@ -1,7 +1,12 @@
-import { Clock5, ArrowDownToLine, ListVideo, Forward, EllipsisVertical, Trash } from 'lucide-react'
+import { Clock5, ArrowDownToLine, ListVideo, Forward, EllipsisVertical, Trash, Flag } from 'lucide-react'
 import React, { useRef, useState } from 'react'
 import useClickOutside from '../../hooks/useClickOutside'
 import useAutoPosition from '../../hooks/useAutoPosition'
+import { addToWatchLater } from '../../api/watchlater.api'
+import ShareVideo from '../action/ShareVideo'
+import SaveToPlaylist from '../action/SaveToPlaylist'
+import Report from '../action/Report'
+import useAuthStore from '../../store/authStore'
 
 const itemIcons = {
     watchLater: Clock5,
@@ -9,23 +14,51 @@ const itemIcons = {
     saveToPlaylist: ListVideo,
     share: Forward,
     remove: Trash,
+    report: Flag,
+}
+
+const actionComponents = {
+    saveToPlaylist: SaveToPlaylist,
+    share: ShareVideo,
+    report: Report,
 }
 
 function ThreeDotMenu({ items, onToggleMenu }) {
     const [isOpen, setIsOpen] = useState(false)
+    const [activeAction, setActiveAction] = useState(null)
     const menuRef = useRef(null)
     const dropdownRef = useRef(null)
+    const {isAuthenticated} = useAuthStore()
 
-    useClickOutside(menuRef, () => {
+    const closeMenu = () => {
         setIsOpen(false)
-    });
+        onToggleMenu?.(false)
+    }
+
+    useClickOutside(menuRef, closeMenu)
     useAutoPosition(dropdownRef, isOpen)
 
-    const handleClick = ()=>{
+    const handleClick = () => {
         const status = !isOpen
         setIsOpen(status)
-        onToggleMenu(status)
+        onToggleMenu?.(status)
     }
+
+    const handleAction = async (item) => {
+        closeMenu()
+        setActiveAction(actionComponents[item.icon] ? item.icon : null)
+        const { title } = item
+        if (title == 'WatchLater') {
+            if(!isAuthenticated) return
+            try {
+                const response = await addToWatchLater(videoId)
+            } catch (err) {
+                console.error(err)
+            }
+        }
+    }
+
+    const ActiveAction = actionComponents[activeAction]
 
     return (
         <div
@@ -45,6 +78,7 @@ function ThreeDotMenu({ items, onToggleMenu }) {
                         return (
                             <button
                                 key={`${item.icon}-${index}`}
+                                onClick={() => handleAction(item)}
                                 type='button'
                                 role='menuitem'
                                 className='flex w-full text-[14px] font-normal cursor-pointer items-center gap-4 whitespace-nowrap h-10 px-3 text-left hover:bg-gray-100'
@@ -56,6 +90,12 @@ function ThreeDotMenu({ items, onToggleMenu }) {
                     })}
                 </div>
             }
+            {ActiveAction && (
+                <ActiveAction
+                    onClose={() => setActiveAction(null)}
+                    setActive={() => setActiveAction(null)}
+                />
+            )}
         </div>
     )
 }

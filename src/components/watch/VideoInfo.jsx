@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { ThumbsUp, ThumbsDown, Forward } from 'lucide-react'
+import { ThumbsUp, ThumbsDown, Forward, Bookmark } from 'lucide-react'
 import { formatActionTime } from "../../utils/formatActionTime"
 import { toggleSubscription } from '../../api/subscription.api'
 import { toggleLikeReaction } from '../../api/like.api'
@@ -17,6 +17,8 @@ export default function VideoInfo() {
 
     const viewsCount = formatCount(video?.views)
     const subscriberCount = formatCount(video?.owner?.subscribers | 0)
+    const [isOpen, setIsOpen] = useState(false)
+    const [toggleMenu, setToggleMenu] = useState(false)
 
     const handleSubscription = async () => {
         try {
@@ -62,7 +64,7 @@ export default function VideoInfo() {
                     </div>
                     <div className='flex items-center space-x-2 font-semibold text-md h-9'>
                         <div className='flex items-center bg-gray-100 rounded-full px-3 py-2'>
-                            <div className='flex space-x-2'>
+                            <div className='flex space-x-2 cursor-pointer'>
                                 <ThumbsUp
                                     size={20}
                                     fill={video.isLiked ? "black" : "white"}
@@ -70,18 +72,27 @@ export default function VideoInfo() {
                                 <p className="text-gray-500">{video.likesCount || 0}</p>
                             </div>
                             <div className='h-5 w-[2px] mx-2 bg-gray-300' />
-                            <div>
+                            <div className='cursor-pointer'>
                                 <ThumbsDown
                                     size={20}
                                     fill={video.isDisliked ? "black" : "white"}
                                     onClick={() => handleReaction(video._id, "dislike")} />
                             </div>
                         </div>
-                        <SaveToPlaylist />
-                        <ShareVideo />
+                        <div className='relative' >
+                            <button onClick={()=>setToggleMenu(!toggleMenu)} className='cursor-pointer bg-gray-100 rounded-full px-3 p-2'>
+                                <Bookmark size={20} />
+                            </button>
+                            {toggleMenu && <SaveToPlaylist />}
+                        </div>
+                        <div>
+                            <button onClick={() => setIsOpen(!isOpen)} className='flex cursor-pointer items-center space-x-4 rounded-full bg-gray-100 px-3 py-2'><Forward size={20} /></button>
+                            {isOpen && <ShareVideo onClose={()=>setIsOpen(false)} /> }
+                        </div>
                         <ThreeDotMenu 
                             items={[
-                                {title:'Save to watch later', icon:'watchLater'},
+                                {title:'Share', icon:'share'},
+                                {title:'Report', icon:'report'},
                                 {title:'Download', icon:'download'}
                             ]}/>
                     </div>
@@ -127,7 +138,7 @@ export default function VideoInfo() {
                         </div>
                         <ThreeDotMenu 
                             items={[
-                                {title:'Save To playlist', icon:'saveToPlaylist'}, 
+                                {title:'Save to playlist', icon:'saveToPlaylist'}, 
                                 {title:'Save to watch later', icon:'watchLater'},
                                 {title:'Share', icon:'share'},
                                 {title:'Download', icon:'download'}
