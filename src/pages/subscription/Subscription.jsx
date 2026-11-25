@@ -106,7 +106,7 @@ export default function Subscription() {
 
                                     <ThreeDotMenu
                                         items={[
-                                            { title: 'Save To playlist', icon: 'saveToPlaylist' },
+                                            { title: 'Save to playlist', icon: 'saveToPlaylist' },
                                             { title: 'Save to watch later', icon: 'watchLater' },
                                             { title: 'Share', icon: 'share' },
                                             { title: 'Download', icon: 'download' }

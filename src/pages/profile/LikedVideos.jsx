@@ -94,7 +94,7 @@ export default function LikedVideos() {
                                         videoId={v._id}
                                         videoUrl={v.videoFile}
                                         items={[
-                                            { title: 'Save To playlist', icon: 'saveToPlaylist' },
+                                            { title: 'Save to playlist', icon: 'saveToPlaylist' },
                                             { title: 'Save to watch later', icon: 'watchLater' },
                                             { title: 'Share', icon: 'share' },
                                             {

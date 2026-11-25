@@ -91,7 +91,6 @@ export default function VideoInfo() {
                         </div>
                         <ThreeDotMenu 
                             items={[
-                                {title:'Share', icon:'share'},
                                 {title:'Report', icon:'report'},
                                 {title:'Download', icon:'download'}
                             ]}/>

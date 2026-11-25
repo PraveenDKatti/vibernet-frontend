@@ -84,7 +84,7 @@ export default function LikedVideos() {
                                 </div>
                                 <ThreeDotMenu
                                     items={[
-                                        { title: 'Save To playlist', icon: 'saveToPlaylist' },
+                                        { title: 'Save to playlist', icon: 'saveToPlaylist' },
                                         { title: 'Share', icon: 'share' },
                                         { title: 'Download', icon: 'download' },
                                         { title: 'Remove from Watch Later', icon: 'remove' }

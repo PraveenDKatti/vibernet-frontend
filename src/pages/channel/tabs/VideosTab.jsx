@@ -97,7 +97,7 @@ export default function VideosTab() {
                 </div>
                 <ThreeDotMenu
                   items={[
-                    { title: 'Save To playlist', icon: 'saveToPlaylist' },
+                    { title: 'Save to playlist', icon: 'saveToPlaylist' },
                     { title: 'Save to watch later', icon: 'watchLater' },
                     { title: 'Share', icon: 'share' },
                     { title: 'Download', icon: 'download' }
