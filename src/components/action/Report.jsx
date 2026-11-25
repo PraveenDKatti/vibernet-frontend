@@ -1,8 +1,8 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import Modal from '../ui/Modal'
+import useClickOutside from '../../hooks/useClickOutside'
 
 const reasons = [
-    'image or title',
     'Sexual content',
     'Violent or repulsive content',
     'Hateful or abusive content',
@@ -10,31 +10,42 @@ const reasons = [
     'Spam or misleading',
 ]
 
-function Report({setActive}) {
+function Report({ onClose }) {
     const [selected, setSelected] = useState('')
+    const reportRef = useRef(null)
+    useClickOutside(reportRef, onClose)
+
+    const submitReport = (e) => {
+        e.preventDefault()
+        if (!selected) return
+        onClose()
+    }
+
     return (
-        <Modal>
-            <form onSubmit={createNewPlaylist} className='rounded-md bg-white p-4 space-y-3'>
-                <div className='shadow-md bg-white p-4 w-75 md:w-125 space-y-5 rounded-xl'>
-                    {reasons.map((reason) =>
-                        <label className='flex gap-4' htmlFor="">
-                            <input type="radio" name='report' value={reason} checked={selected == {reason}} onChange={e => setSelected(e.target.value)} />{reason}
+        <Modal ref={reportRef}>
+            <form onSubmit={submitReport} className='rounded-xl w-75 md:w-90 bg-white p-5'>
+                <p className='mb-4'>Report image or title</p>
+                <div className='space-y-4'>
+                    {reasons.map((reason,index) =>
+                        <label
+                            key={index}
+                            className='flex gap-4' htmlFor="name">
+                            <input type="radio" name='report' value={reason} checked={selected == reason } onChange={e => setSelected(e.target.value)} />{reason}
                         </label>
                     )}
                 </div>
-                <div className='space-x-2 flex justify-end'>
+                <div className='space-x-2 mt-8 flex justify-end'>
                     <button
-                        onClick={() => setActive(prev => !prev)}
+                        onClick={onClose}
                         className='rounded-full border-1 border-black/30 hover:border-none hover:bg-gray-100 p-3'>
                         Cancel</button>
                     <button
                         type='submit'
-                        className={`rounded-full border-none ${selected.length === 0 ? "opacity-50 bg-gray-200" : "opacity-100 bg-black text-white"} p-3`}>
+                        className={`rounded-full border-none ${selected ?  "opacity-100 bg-black text-white": "opacity-50 bg-gray-200"} p-3`}>
                         Report
                     </button>
                 </div>
             </form>
-
         </Modal>
     )
 }

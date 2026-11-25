@@ -83,10 +83,12 @@ export default function VideoInfo() {
                             <button onClick={()=>setToggleMenu(!toggleMenu)} className='cursor-pointer bg-gray-100 rounded-full px-3 p-2'>
                                 <Bookmark size={20} />
                             </button>
-                            {toggleMenu && <SaveToPlaylist />}
+                            {toggleMenu && <SaveToPlaylist onClose={()=>setToggleMenu(false)} />}
                         </div>
                         <div>
-                            <button onClick={() => setIsOpen(!isOpen)} className='flex cursor-pointer items-center space-x-4 rounded-full bg-gray-100 px-3 py-2'><Forward size={20} /></button>
+                            <button onClick={() => setIsOpen(!isOpen)} className='flex cursor-pointer items-center space-x-4 rounded-full bg-gray-100 px-3 py-2'>
+                                <Forward size={20} />
+                            </button>
                             {isOpen && <ShareVideo onClose={()=>setIsOpen(false)} /> }
                         </div>
                         <ThreeDotMenu 
