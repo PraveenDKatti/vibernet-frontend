@@ -29,8 +29,8 @@ function Report({ onClose }) {
                     {reasons.map((reason,index) =>
                         <label
                             key={index}
-                            className='flex gap-4' htmlFor="name">
-                            <input type="radio" name='report' value={reason} checked={selected == reason } onChange={e => setSelected(e.target.value)} />{reason}
+                            className='flex gap-4' htmlFor={`${reason}index`}>
+                            <input type="radio" name='report' id={`${reason}index`} value={reason} checked={selected == reason } onChange={e => setSelected(e.target.value)} />{reason}
                         </label>
                     )}
                 </div>
