@@ -22,8 +22,8 @@ function Report({ onClose }) {
     }
 
     return (
-        <Modal ref={reportRef}>
-            <form onSubmit={submitReport} className='rounded-xl w-75 md:w-90 bg-white p-5'>
+        <Modal >
+            <form ref={reportRef} onSubmit={submitReport} className='rounded-xl w-75 md:w-90 bg-white p-5'>
                 <p className='mb-4'>Report image or title</p>
                 <div className='space-y-4'>
                     {reasons.map((reason,index) =>

@@ -1,8 +1,9 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import Modal from '../ui/Modal'
 import { Forward, X, Code } from 'lucide-react'
 import { SocialIcon } from 'react-social-icons'
 import { useNavigate } from 'react-router-dom'
+import useClickOutside from '../../hooks/useClickOutside'
 
 const socials = [
     { title: "embed", icon: <Code className='rounded-full border-1 p-2 border-gray-500' color='gray' size={50} />, link: "" },
@@ -15,11 +16,15 @@ const socials = [
 ]
 
 function ShareVideo({onClose}) {
+
+    const shareRef = useRef(null)
     const navigate = useNavigate()
+
+    useClickOutside(shareRef,onClose)
 
     return (
         <Modal>
-            <div className='shadow-md bg-white p-4 w-75 md:w-125 space-y-5 rounded-xl'>
+            <div ref={shareRef} className='shadow-md bg-white p-4 w-75 md:w-125 space-y-5 rounded-xl'>
                 <div className='text-center'>
                     <X onClick={onClose} className='justify-self-end' />
                     <p className='text-md mb-5 font-normal'>Share in a Post</p>
