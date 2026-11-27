@@ -4,6 +4,7 @@ import { getAllVideos } from '../api/video.api'
 import { formatActionTime } from "../utils/formatActionTime"
 import { formatDuration } from '../utils/formatDuration'
 import { formatCount } from '../utils/formatCount'
+import { getVideoShareUrl } from '../utils/getVideoShareUrl'
 import SkeletonLoader from '../components/common/SkeletonLoader'
 import ThreeDotMenu from '../components/ui/ThreeDotMenu'
 
@@ -77,12 +78,18 @@ const Home = () => {
   return (
     <div ref={containerRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-2 min-h-screen">
       {homeFeed.map((video, index) => {
+        const videoId = video._id
         const duration = formatDuration(video.duration)
         const viewsCount = formatCount(video.views)
-        const isLastElement = nextCursor && video._id === nextCursor.lastId
+        const isLastElement = nextCursor && videoId === nextCursor.lastId
+        
+        const shareLink = getVideoShareUrl(
+          `/watch/${encodeURIComponent(videoId)}`,
+          window.location.origin
+        )
 
         return (
-          <div ref={isLastElement ? lastVideoElementRef : null} key={`${video._id}-${index}`} className={`h-[max-content] hover:bg-blue-50 rounded-2xl space-y-3 cursor-pointer ${activeCard == video._id ? 'z-50':'z-10'}`} onClick={() => navigate(`/watch/${video._id}`)}>
+          <div ref={isLastElement ? lastVideoElementRef : null} key={`${videoId}-${index}`} className={`h-[max-content] hover:bg-blue-50 rounded-2xl space-y-3 cursor-pointer ${activeCard == videoId ? 'z-50':'z-10'}`} onClick={() => navigate(`/watch/${videoId}`)}>
             <div className="relative h-52">
               <img src={video.thumbnail} className='h-full w-full rounded-xl' />
               <div
@@ -106,12 +113,12 @@ const Home = () => {
                 </div>
               </div>
               <ThreeDotMenu
-                onToggleMenu={(isOpen)=>setActiveCard(isOpen ? video._id : null)}
+                onToggleMenu={(isOpen)=>setActiveCard(isOpen ? videoId : null)}
                 items={[
-                  { title: 'Save to playlist', icon: 'saveToPlaylist' },
-                  { title: 'Save to watch later', icon: 'watchLater' },
-                  { title: 'Share', icon: 'share' },
-                  { title: 'Download', icon: 'download' }
+                  { title: 'Save to playlist', icon: 'saveToPlaylist', id: videoId },
+                  { title: 'Save to watch later', icon: 'watchLater', id: videoId  },
+                  { title: 'Share', icon: 'share', link: shareLink, id: videoId },
+                  { title: 'Download', icon: 'download'}
                 ]} />
             </div>
           </div>)

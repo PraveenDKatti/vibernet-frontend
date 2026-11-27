@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react'
 import Modal from '../ui/Modal'
-import { Forward, X, Code } from 'lucide-react'
+import { X, Code } from 'lucide-react'
 import { SocialIcon } from 'react-social-icons'
 import { useNavigate } from 'react-router-dom'
 import useClickOutside from '../../hooks/useClickOutside'
@@ -15,7 +15,7 @@ const socials = [
     { title: "linkedin", icon: <SocialIcon url="https://linkedin.com" />, link: "" }
 ]
 
-function ShareVideo({onClose}) {
+function ShareVideo({onClose, shareLink}) {
 
     const shareRef = useRef(null)
     const navigate = useNavigate()
@@ -44,7 +44,7 @@ function ShareVideo({onClose}) {
                         )}
                     </div>
                     <div className='flex items-center border-1 border-gray-200 rounded-xl p-2'>
-                        <input type="text" placeholder='link' className='flex-1 p-2' />
+                        <input type="text" placeholder={shareLink} className='flex-1 p-2 outline-none' />
                         <button className='px-3.5 py-3 h-[max-content] text-[14px] rounded-full border-1 border-gray-300'>Copy</button>
                     </div>
                 </div>
