@@ -32,7 +32,6 @@ function ThreeDotMenu({ items, onToggleMenu }) {
 
     const closeMenu = () => {
         setIsOpen(false)
-        onToggleMenu?.(false)
     }
 
     useClickOutside(menuRef, closeMenu)
