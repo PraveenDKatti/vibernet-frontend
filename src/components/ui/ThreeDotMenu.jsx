@@ -1,8 +1,8 @@
 import { Clock5, ArrowDownToLine, ListVideo, Forward, EllipsisVertical, Trash, Flag } from 'lucide-react'
-import React, { useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import useClickOutside from '../../hooks/useClickOutside'
 import useAutoPosition from '../../hooks/useAutoPosition'
-import { addToWatchLater } from '../../api/watchlater.api'
+import { addToWatchLater, removeFromWatchLater } from '../../api/watchlater.api'
 import ShareVideo from '../action/ShareVideo'
 import SaveToPlaylist from '../action/SaveToPlaylist'
 import Report from '../action/Report'
@@ -23,12 +23,12 @@ const actionComponents = {
     report: Report,
 }
 
-function ThreeDotMenu({ items, onToggleMenu }) {
+function ThreeDotMenu({ items = [], videoId, onToggleMenu }) {
     const [isOpen, setIsOpen] = useState(false)
     const [activeAction, setActiveAction] = useState(null)
     const menuRef = useRef(null)
     const dropdownRef = useRef(null)
-    const {isAuthenticated} = useAuthStore()
+    const { isAuthenticated } = useAuthStore()
 
     const closeMenu = () => {
         setIsOpen(false)
@@ -44,20 +44,39 @@ function ThreeDotMenu({ items, onToggleMenu }) {
     }
 
     const handleAction = async (item) => {
-        closeMenu()
-        setActiveAction(actionComponents[item.icon] ? item.icon : null)
-        const { title } = item
-        if (title == 'WatchLater') {
-            if(!isAuthenticated) return
+        if (actionComponents[item.icon]) {
+            setIsOpen(false)
+            setActiveAction({
+                type: item.icon,
+                link: typeof item.link === 'string' ? item.link : item.link?.href || '',
+                videoId: item.id || videoId,
+            })
+        } else {
+            closeMenu()
+        }
+
+        const targetVideoId = item.id || videoId
+
+        if (item.icon === 'watchLater') {
+            if (!isAuthenticated || !targetVideoId) return
             try {
-                const response = await addToWatchLater(videoId)
+                await addToWatchLater(targetVideoId)
+            } catch (err) {
+                console.error(err)
+            }
+        }
+
+        if (item.icon === 'remove') {
+            if (!isAuthenticated || !targetVideoId) return
+            try {
+                await removeFromWatchLater(targetVideoId)
             } catch (err) {
                 console.error(err)
             }
         }
     }
 
-    const ActiveAction = actionComponents[activeAction]
+    const ActiveAction = activeAction ? actionComponents[activeAction.type] : null
 
     return (
         <div
@@ -65,7 +84,15 @@ function ThreeDotMenu({ items, onToggleMenu }) {
             className='relative inline-flex h-[fit-content]'
             onClick={(event) => event.stopPropagation()}
         >
-            <EllipsisVertical onClick={handleClick} size={20} />
+            <button
+                type='button'
+                aria-label='Open menu'
+                aria-expanded={isOpen}
+                onClick={handleClick}
+                className='cursor-pointer'
+            >
+                <EllipsisVertical size={20} />
+            </button>
             {isOpen &&
                 <div
                     ref={dropdownRef}
@@ -91,8 +118,12 @@ function ThreeDotMenu({ items, onToggleMenu }) {
             }
             {ActiveAction && (
                 <ActiveAction
-                    onClose={() => setActiveAction(null)}
-                    setActive={() => setActiveAction(null)}
+                    shareLink={activeAction.link}
+                    videoId={activeAction.videoId}
+                    onClose={() => {
+                        setActiveAction(null)
+                        onToggleMenu?.(false)
+                    }}
                 />
             )}
         </div>
